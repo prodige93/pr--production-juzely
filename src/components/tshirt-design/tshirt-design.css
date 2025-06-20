@@ -426,6 +426,43 @@
   font-style: italic;
 }
 
+.comments-section {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.comments-label {
+  display: block;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.comments-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+}
+
+.comments-textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.comments-textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .tshirt-design-header {

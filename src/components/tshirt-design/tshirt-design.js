@@ -19,6 +19,7 @@ function TshirtDesign() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectionId, setSelectionId] = useState(null);
+  const [comments, setComments] = useState('');
   const navigate = useNavigate();
   
   const handleMyOrdersClick = () => {
@@ -306,6 +307,17 @@ function TshirtDesign() {
         </div>
 
         <div className="actions-section">
+          <div className="comments-section">
+            <label htmlFor="comments" className="comments-label">Demandes spéciales ou commentaires</label>
+            <textarea
+              id="comments"
+              className="comments-textarea"
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+              placeholder="Ajoutez vos commentaires ou demandes spéciales ici..."
+              rows={4}
+            />
+          </div>
           <button 
             onClick={handleGenerateQuote}
             className="generate-quote-button"
