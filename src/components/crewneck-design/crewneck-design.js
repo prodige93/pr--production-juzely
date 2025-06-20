@@ -16,8 +16,7 @@ function CrewneckDesign() {
     S: { chest: 93, length: 67, sleeve: 60 },
     M: { chest: 98, length: 70, sleeve: 62 },
     L: { chest: 103, length: 73, sleeve: 64 },
-    XL: { chest: 108, length: 76, sleeve: 66 },
-    XXL: { chest: 113, length: 79, sleeve: 68 }
+    XL: { chest: 108, length: 76, sleeve: 66 }
   });
 
   const measurements = [
@@ -175,15 +174,13 @@ function CrewneckDesign() {
                <table className="size-table">
                  <thead>
                    <tr>
-                     <th>Mesures</th>
-                     <th>XXS</th>
-                     <th>XS</th>
-                     <th>S</th>
-                     <th>M</th>
-                     <th>L</th>
-                     <th>XL</th>
-                     <th>XXL</th>
-                   </tr>
+                      <th>Mesures</th>
+                      <th>XS</th>
+                      <th>S</th>
+                      <th>M</th>
+                      <th>L</th>
+                      <th>XL</th>
+                    </tr>
                  </thead>
                  <tbody>
                    {measurements.map((measurement) => (

@@ -5,13 +5,11 @@ import './pull-design.css';
 
 // Size data definition outside component to avoid re-creation on each render
 const pullSizeData = {
-  'XXS': { totalLength: 68, chestWidth: 52, bottomWidth: 52, sleeveLength: 60, armhole: 24, sleeveOpening: 10, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 50 },
   'XS': { totalLength: 70, chestWidth: 54, bottomWidth: 54, sleeveLength: 61, armhole: 24.5, sleeveOpening: 10.5, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 52 },
   'S': { totalLength: 72, chestWidth: 56, bottomWidth: 56, sleeveLength: 62, armhole: 25, sleeveOpening: 11, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 54 },
   'M': { totalLength: 74, chestWidth: 58, bottomWidth: 58, sleeveLength: 63, armhole: 25.5, sleeveOpening: 11.5, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 56 },
   'L': { totalLength: 76, chestWidth: 60, bottomWidth: 60, sleeveLength: 64, armhole: 26, sleeveOpening: 12, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 58 },
-  'XL': { totalLength: 78, chestWidth: 62, bottomWidth: 62, sleeveLength: 65, armhole: 26.5, sleeveOpening: 12.5, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 60 },
-  'XXL': { totalLength: 80, chestWidth: 64, bottomWidth: 64, sleeveLength: 66, armhole: 27, sleeveOpening: 13, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 62 }
+  'XL': { totalLength: 78, chestWidth: 62, bottomWidth: 62, sleeveLength: 65, armhole: 26.5, sleeveOpening: 12.5, neckRibLength: 3, neckOpening: 20, shoulderToShoulder: 60 }
 };
 
 function PullDesign() {
@@ -180,13 +178,11 @@ function PullDesign() {
                 <thead>
                   <tr>
                     <th>Mesures</th>
-                    <th>XXS</th>
                     <th>XS</th>
                     <th>S</th>
                     <th>M</th>
                     <th>L</th>
                     <th>XL</th>
-                    <th>XXL</th>
                   </tr>
                 </thead>
                 <tbody>

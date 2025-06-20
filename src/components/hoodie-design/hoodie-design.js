@@ -16,8 +16,7 @@ function HoodieDesign() {
     S: { chest: 91, length: 69, sleeve: 61 },
     M: { chest: 96, length: 72, sleeve: 63 },
     L: { chest: 101, length: 75, sleeve: 65 },
-    XL: { chest: 106, length: 78, sleeve: 67 },
-    XXL: { chest: 111, length: 81, sleeve: 69 }
+    XL: { chest: 106, length: 78, sleeve: 67 }
   });
 
   const measurements = [
@@ -176,13 +175,11 @@ function HoodieDesign() {
                  <thead>
                    <tr>
                      <th>Mesures</th>
-                     <th>XXS</th>
                      <th>XS</th>
                      <th>S</th>
                      <th>M</th>
                      <th>L</th>
                      <th>XL</th>
-                     <th>XXL</th>
                    </tr>
                  </thead>
                  <tbody>

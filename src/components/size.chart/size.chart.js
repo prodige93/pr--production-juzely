@@ -5,13 +5,11 @@ import './size.chart.css';
 
 // Size data definition outside component to avoid re-creation on each render
 const sizeData = {
-  'XXS': { totalLength: 63, chestWidth: 50, bottomWidth: 50, sleeveLength: 18, armhole: 22.5, sleeveOpening: 18.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 49 },
   'XS': { totalLength: 65, chestWidth: 52, bottomWidth: 52, sleeveLength: 19, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 51 },
   'S': { totalLength: 67, chestWidth: 54, bottomWidth: 54, sleeveLength: 20, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 53 },
   'M': { totalLength: 69, chestWidth: 56, bottomWidth: 56, sleeveLength: 21, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 55 },
   'L': { totalLength: 71, chestWidth: 58, bottomWidth: 58, sleeveLength: 22, armhole: 24.5, sleeveOpening: 20.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 57 },
-  'XL': { totalLength: 73, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 },
-  'XXL': { totalLength: 75, chestWidth: 62, bottomWidth: 62, sleeveLength: 24, armhole: 25.5, sleeveOpening: 21.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 61 }
+  'XL': { totalLength: 73, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 }
 };
 
 function SizeChart() {
@@ -334,15 +332,13 @@ function SizeChart() {
               <table>
                 <thead>
                   <tr>
-                    <th></th>
-                    <th>XXS</th>
-                    <th>XS</th>
-                    <th>S</th>
-                    <th>M</th>
-                    <th>L</th>
-                    <th>XL</th>
-                    <th>XXL</th>
-                  </tr>
+                     <th></th>
+                     <th>XS</th>
+                     <th>S</th>
+                     <th>M</th>
+                     <th>L</th>
+                     <th>XL</th>
+                   </tr>
                 </thead>
                 <tbody>
                   {measurements.map((measurement) => (

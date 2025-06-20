@@ -16,8 +16,7 @@ function ZiphoodieDesign() {
     S: { chest: 93, length: 71, sleeve: 62 },
     M: { chest: 98, length: 74, sleeve: 64 },
     L: { chest: 103, length: 77, sleeve: 66 },
-    XL: { chest: 108, length: 80, sleeve: 68 },
-    XXL: { chest: 113, length: 83, sleeve: 70 }
+    XL: { chest: 108, length: 80, sleeve: 68 }
   });
 
   const measurements = [
@@ -175,15 +174,13 @@ function ZiphoodieDesign() {
                <table className="size-table">
                  <thead>
                    <tr>
-                     <th>Mesures</th>
-                     <th>XXS</th>
-                     <th>XS</th>
-                     <th>S</th>
-                     <th>M</th>
-                     <th>L</th>
-                     <th>XL</th>
-                     <th>XXL</th>
-                   </tr>
+                      <th>Mesures</th>
+                      <th>XS</th>
+                      <th>S</th>
+                      <th>M</th>
+                      <th>L</th>
+                      <th>XL</th>
+                    </tr>
                  </thead>
                  <tbody>
                    {measurements.map((measurement) => (
