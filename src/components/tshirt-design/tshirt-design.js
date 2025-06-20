@@ -330,7 +330,7 @@ function TshirtDesign() {
             className="generate-quote-button"
             disabled={!isModified && !uploadedImage}
           >
-            Generate Quote
+            Save & Next
           </button>
           {selectionId && (
             <p className="selection-info">ID de sélection: {selectionId}</p>
