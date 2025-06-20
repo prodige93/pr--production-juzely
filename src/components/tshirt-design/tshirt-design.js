@@ -208,7 +208,10 @@ function TshirtDesign() {
                   name="fit"
                   value={option.id}
                   checked={selectedFit === option.id}
-                  onChange={(e) => setSelectedFit(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedFit(e.target.value);
+                    setIsModified(true);
+                  }}
                 />
                 <span className="fit-label">{option.label}</span>
               </label>
