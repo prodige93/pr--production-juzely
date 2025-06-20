@@ -10,9 +10,7 @@ function GarmentSelection() {
     navigate('/');
   };
   
-  const handleSizeChartClick = () => {
-     navigate('/Size');
-   };
+
    
    const handleTShirtClick = () => {
      handleGarmentSelection('tshirt', 'T-Shirt');
