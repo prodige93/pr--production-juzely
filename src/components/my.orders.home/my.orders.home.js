@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 function Orders() {
@@ -10,7 +10,7 @@ function Orders() {
   };
   
   const handleStartDesignClick = () => {
-    navigate("/Size");
+    navigate("/design");
   };
   
   const handleMyOrdersClick = () => {

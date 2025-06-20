@@ -372,53 +372,7 @@ function SizeChart() {
             </div>
           </div>
 
-          <div className="diagram-section">
-            <div className="tshirt-diagram">
-              <svg width="200" height="250" viewBox="0 0 200 250" className="tshirt-svg">
-                {/* T-shirt outline */}
-                <path 
-                  d="M50,50 L75,40 L125,40 L150,50 L140,100 L140,200 L60,200 L60,100 Z" 
-                  fill="none" 
-                  stroke="#000" 
-                  strokeWidth="2"
-                />
-                
-                {/* Neck line */}
-                <path 
-                  d="M75,40 C85,55 115,55 125,40" 
-                  fill="none" 
-                  stroke="#000" 
-                  strokeWidth="2"
-                />
-                
-                {/* Sleeves */}
-                <path d="M50,50 L25,75" stroke="#000" strokeWidth="2" />
-                <path d="M150,50 L175,75" stroke="#000" strokeWidth="2" />
-                
-                {/* Measurement points */}
-                <circle cx="100" cy="40" r="3" fill="#000" />
-                <circle cx="100" cy="200" r="3" fill="#000" />
-                <circle cx="60" cy="75" r="3" fill="#000" />
-                <circle cx="140" cy="75" r="3" fill="#000" />
-                <circle cx="60" cy="160" r="3" fill="#000" />
-                <circle cx="140" cy="160" r="3" fill="#000" />
-                <circle cx="25" cy="75" r="3" fill="#000" />
-                <circle cx="75" cy="40" r="3" fill="#000" />
-                <circle cx="125" cy="40" r="3" fill="#000" />
-                
-                {/* Measurement labels */}
-                <text x="110" y="45" fontSize="12" fill="#000">I</text>
-                <text x="110" y="210" fontSize="12" fill="#000">A</text>
-                <text x="150" y="80" fontSize="12" fill="#000">B</text>
-                <text x="150" y="165" fontSize="12" fill="#000">C</text>
-                <text x="15" y="80" fontSize="12" fill="#000">D</text>
-                <text x="55" y="75" fontSize="12" fill="#000">E</text>
-                <text x="15" y="70" fontSize="12" fill="#000">F</text>
-                <text x="85" y="35" fontSize="12" fill="#000">G</text>
-                <text x="95" y="55" fontSize="12" fill="#000">H</text>
-              </svg>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

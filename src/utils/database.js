@@ -6,7 +6,14 @@ class Database {
     this.STORAGE_KEYS = {
       QUOTES: 'sizeChartQuotes',
       IMAGES: 'uploadedImages',
-      SETTINGS: 'appSettings'
+      SETTINGS: 'appSettings',
+      GARMENT_SELECTIONS: 'garmentSelections',
+      TSHIRT_DESIGNS: 'juzely_tshirt_designs',
+      PULL_DESIGNS: 'juzely_pull_designs',
+      HOODIE_DESIGNS: 'juzely_hoodie_designs',
+      CREWNECK_DESIGNS: 'juzely_crewneck_designs',
+      LONGSLEEVE_DESIGNS: 'juzely_longsleeve_designs',
+      ZIPHOODIE_DESIGNS: 'juzely_ziphoodie_designs'
     };
   }
 
@@ -310,6 +317,303 @@ class Database {
     };
   }
   
+  // ========== GESTION DES SÉLECTIONS DE VÊTEMENTS ==========
+  
+  /**
+   * Sauvegarde une sélection de vêtement
+   * @param {string} garmentType - Type de vêtement (tshirt, pull, etc.)
+   * @param {Object} additionalData - Données supplémentaires
+   * @returns {string} ID de la sélection
+   */
+  saveGarmentSelection(garmentType, additionalData = {}) {
+    try {
+      const selectionId = `selection_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      const selectionData = {
+        id: selectionId,
+        garmentType: garmentType,
+        selectedAt: new Date().toISOString(),
+        ...additionalData
+      };
+      
+      const existingSelections = this.getAllGarmentSelections();
+      existingSelections.push(selectionData);
+      
+      localStorage.setItem(this.STORAGE_KEYS.GARMENT_SELECTIONS, JSON.stringify(existingSelections));
+      
+      console.log('Sélection de vêtement sauvegardée:', selectionId, garmentType);
+      return selectionId;
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde de la sélection:', error);
+      throw new Error('Impossible de sauvegarder la sélection');
+    }
+  }
+  
+  /**
+   * Récupère toutes les sélections de vêtements
+   * @returns {Array} Liste des sélections
+   */
+  getAllGarmentSelections() {
+    try {
+      const selections = localStorage.getItem(this.STORAGE_KEYS.GARMENT_SELECTIONS);
+      return selections ? JSON.parse(selections) : [];
+    } catch (error) {
+      console.error('Erreur lors de la récupération des sélections:', error);
+      return [];
+    }
+  }
+  
+  /**
+   * Récupère les sélections par type de vêtement
+   * @param {string} garmentType - Type de vêtement
+   * @returns {Array} Liste des sélections filtrées
+   */
+  getSelectionsByGarmentType(garmentType) {
+    const selections = this.getAllGarmentSelections();
+    return selections.filter(selection => selection.garmentType === garmentType);
+  }
+  
+  /**
+   * Récupère une sélection par son ID
+   * @param {string} selectionId - ID de la sélection
+   * @returns {Object|null} Données de la sélection ou null
+   */
+  getSelectionById(selectionId) {
+    const selections = this.getAllGarmentSelections();
+    return selections.find(selection => selection.id === selectionId) || null;
+  }
+  
+  /**
+   * Supprime une sélection
+   * @param {string} selectionId - ID de la sélection à supprimer
+   * @returns {boolean} Succès de la suppression
+   */
+  deleteSelection(selectionId) {
+    try {
+      const selections = this.getAllGarmentSelections();
+      const filteredSelections = selections.filter(selection => selection.id !== selectionId);
+      
+      localStorage.setItem(this.STORAGE_KEYS.GARMENT_SELECTIONS, JSON.stringify(filteredSelections));
+      
+      console.log('Sélection supprimée:', selectionId);
+      return true;
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la sélection:', error);
+      return false;
+    }
+  }
+
+  // ========== MÉTHODES SPÉCIALISÉES PAR VÊTEMENT ==========
+  
+  /**
+   * Sauvegarde un design de T-shirt avec ses spécifications
+   * @param {Object} designData - Données du design T-shirt
+   * @returns {string} ID du design sauvegardé
+   */
+  saveTshirtDesign(designData) {
+    try {
+      const designs = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.TSHIRT_DESIGNS) || '[]');
+      const design = {
+        id: this.generateId(),
+        type: 'tshirt',
+        garmentName: 'T-Shirt',
+        fit: designData.fit || 'custom',
+        fabric: designData.fabric || null,
+        colourway: designData.colourway || null,
+        necklabel: designData.necklabel || null,
+        corelabel: designData.corelabel || null,
+        embellishment: designData.embellishment || null,
+        finishings: designData.finishings || null,
+        quantity: designData.quantity || 1,
+        packaging: designData.packaging || null,
+        delivery: designData.delivery || null,
+        sizeData: designData.sizeData || {},
+        uploadedImage: designData.uploadedImage || null,
+        measurements: designData.measurements || [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
+      designs.push(design);
+      localStorage.setItem(this.STORAGE_KEYS.TSHIRT_DESIGNS, JSON.stringify(designs));
+      console.log('Design T-shirt sauvegardé:', design.id);
+      return design.id;
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde du design T-shirt:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Sauvegarde un design de Pull avec ses spécifications
+   * @param {Object} designData - Données du design Pull
+   * @returns {string} ID du design sauvegardé
+   */
+  savePullDesign(designData) {
+    try {
+      const designs = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.PULL_DESIGNS) || '[]');
+      const design = {
+        id: this.generateId(),
+        type: 'pull',
+        garmentName: 'Pull',
+        fit: designData.fit || 'custom',
+        fabric: designData.fabric || null,
+        colourway: designData.colourway || null,
+        necklabel: designData.necklabel || null,
+        corelabel: designData.corelabel || null,
+        embellishment: designData.embellishment || null,
+        finishings: designData.finishings || null,
+        quantity: designData.quantity || 1,
+        packaging: designData.packaging || null,
+        delivery: designData.delivery || null,
+        sizeData: designData.sizeData || {},
+        uploadedImage: designData.uploadedImage || null,
+        measurements: designData.measurements || [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
+      designs.push(design);
+      localStorage.setItem(this.STORAGE_KEYS.PULL_DESIGNS, JSON.stringify(designs));
+      console.log('Design Pull sauvegardé:', design.id);
+      return design.id;
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde du design Pull:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Récupère tous les designs d'un type de vêtement spécifique
+   * @param {string} garmentType - Type de vêtement (tshirt, pull, hoodie, etc.)
+   * @returns {Array} Liste des designs
+   */
+  getDesignsByGarmentType(garmentType) {
+    try {
+      const storageKey = this.STORAGE_KEYS[`${garmentType.toUpperCase()}_DESIGNS`];
+      if (!storageKey) {
+        console.warn(`Type de vêtement non supporté: ${garmentType}`);
+        return [];
+      }
+      
+      return JSON.parse(localStorage.getItem(storageKey) || '[]');
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des designs ${garmentType}:`, error);
+      return [];
+    }
+  }
+  
+  /**
+   * Met à jour un design existant
+   * @param {string} garmentType - Type de vêtement
+   * @param {string} designId - ID du design
+   * @param {Object} updateData - Données à mettre à jour
+   * @returns {boolean} Succès de la mise à jour
+   */
+  updateDesign(garmentType, designId, updateData) {
+    try {
+      const storageKey = this.STORAGE_KEYS[`${garmentType.toUpperCase()}_DESIGNS`];
+      if (!storageKey) {
+        console.warn(`Type de vêtement non supporté: ${garmentType}`);
+        return false;
+      }
+      
+      const designs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      const designIndex = designs.findIndex(design => design.id === designId);
+      
+      if (designIndex !== -1) {
+        designs[designIndex] = {
+          ...designs[designIndex],
+          ...updateData,
+          updatedAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem(storageKey, JSON.stringify(designs));
+        console.log(`Design ${garmentType} mis à jour:`, designId);
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error(`Erreur lors de la mise à jour du design ${garmentType}:`, error);
+      return false;
+    }
+  }
+  
+  /**
+   * Supprime un design
+   * @param {string} garmentType - Type de vêtement
+   * @param {string} designId - ID du design
+   * @returns {boolean} Succès de la suppression
+   */
+  deleteDesign(garmentType, designId) {
+    try {
+      const storageKey = this.STORAGE_KEYS[`${garmentType.toUpperCase()}_DESIGNS`];
+      if (!storageKey) {
+        console.warn(`Type de vêtement non supporté: ${garmentType}`);
+        return false;
+      }
+      
+      const designs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      const filteredDesigns = designs.filter(design => design.id !== designId);
+      
+      if (filteredDesigns.length !== designs.length) {
+        localStorage.setItem(storageKey, JSON.stringify(filteredDesigns));
+        console.log(`Design ${garmentType} supprimé:`, designId);
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error(`Erreur lors de la suppression du design ${garmentType}:`, error);
+      return false;
+    }
+  }
+  
+  /**
+   * Récupère un design spécifique par son ID
+   * @param {string} garmentType - Type de vêtement
+   * @param {string} designId - ID du design
+   * @returns {Object|null} Design trouvé ou null
+   */
+  getDesignById(garmentType, designId) {
+    try {
+      const designs = this.getDesignsByGarmentType(garmentType);
+      return designs.find(design => design.id === designId) || null;
+    } catch (error) {
+      console.error(`Erreur lors de la récupération du design ${garmentType}:`, error);
+      return null;
+    }
+  }
+  
+  /**
+   * Récupère les statistiques des designs par type de vêtement
+   * @returns {Object} Statistiques
+   */
+  getDesignStatistics() {
+    try {
+      const stats = {};
+      const garmentTypes = ['tshirt', 'pull', 'hoodie', 'crewneck', 'longsleeve', 'ziphoodie'];
+      
+      garmentTypes.forEach(type => {
+        const designs = this.getDesignsByGarmentType(type);
+        stats[type] = {
+          total: designs.length,
+          withImages: designs.filter(d => d.uploadedImage).length,
+          byFit: designs.reduce((acc, d) => {
+            acc[d.fit] = (acc[d.fit] || 0) + 1;
+            return acc;
+          }, {})
+        };
+      });
+      
+      return stats;
+    } catch (error) {
+      console.error('Erreur lors du calcul des statistiques:', error);
+      return {};
+    }
+  }
+
   /**
    * Calcule la taille approximative du stockage
    * @returns {string} Taille formatée
