@@ -430,6 +430,7 @@ class Database {
         sizeData: designData.sizeData || {},
         uploadedImage: designData.uploadedImage || null,
         measurements: designData.measurements || [],
+        comments: designData.comments || '',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };

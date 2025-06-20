@@ -138,6 +138,7 @@ function TshirtDesign() {
          sizeData: editableSizeData,
          uploadedImage: uploadedImage,
          selectionId: selectionId,
+         comments: comments,
          measurements: measurements.map(m => ({
            ...m,
            values: Object.keys(editableSizeData).reduce((acc, size) => {
@@ -313,7 +314,10 @@ function TshirtDesign() {
               id="comments"
               className="comments-textarea"
               value={comments}
-              onChange={(e) => setComments(e.target.value)}
+              onChange={(e) => {
+                setComments(e.target.value);
+                setIsModified(true);
+              }}
               placeholder="Ajoutez vos commentaires ou demandes spéciales ici..."
               rows={4}
             />
