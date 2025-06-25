@@ -268,3 +268,81 @@ header {
   color: #fff;
   border-color: #7ca0c7;
 }
+
+/* Styles pour les nouveaux onglets */
+.tab-content {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tab-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.option-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.option-card:hover {
+  border-color: #7ca0c7;
+  background: #f8f9fa;
+}
+
+.option-card.selected {
+  border-color: #7ca0c7;
+  background: #e8f4f8;
+}
+
+.option-card input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+.option-card span {
+  font-weight: 500;
+  color: #333;
+}
+
+.quantity-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quantity-input label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.quantity-input input[type="number"] {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 150px;
+  text-align: center;
+}
+
+.quantity-input input[type="number"]:focus {
+  outline: none;
+  border-color: #7ca0c7;
+}

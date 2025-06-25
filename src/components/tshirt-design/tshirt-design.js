@@ -14,13 +14,23 @@ const tshirtSizeData = {
 
 function TshirtDesign() {
   const [selectedFit, setSelectedFit] = useState('custom');
+  const [selectedFabric, setSelectedFabric] = useState(null);
+  const [selectedColourway, setSelectedColourway] = useState(null);
+  const [selectedNecklabel, setSelectedNecklabel] = useState(null);
+  const [selectedCorelabel, setSelectedCorelabel] = useState(null);
+  const [selectedEmbellishment, setSelectedEmbellishment] = useState(null);
+  const [selectedFinishings, setSelectedFinishings] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [selectedPackaging, setSelectedPackaging] = useState(null);
+  const [selectedDelivery, setSelectedDelivery] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [editableSizeData, setEditableSizeData] = useState({});
   const [isModified, setIsModified] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectionId, setSelectionId] = useState(null);
   const [comments, setComments] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [activeTab, setActiveTab] = useState('fit');
   const navigate = useNavigate();
   
   const handleMyOrdersClick = () => {
@@ -30,6 +40,19 @@ function TshirtDesign() {
   const handleBackToSelection = () => {
     navigate('/design');
   };
+
+  // Définition des mesures
+  const measurements = [
+    { id: 'A', label: 'Total Length', key: 'totalLength' },
+    { id: 'B', label: 'Chest Width', key: 'chestWidth' },
+    { id: 'C', label: 'Bottom Width', key: 'bottomWidth' },
+    { id: 'D', label: 'Sleeve Length', key: 'sleeveLength' },
+    { id: 'E', label: 'Armhole', key: 'armhole' },
+    { id: 'F', label: 'Sleeve Opening', key: 'sleeveOpening' },
+    { id: 'G', label: 'Neck Rib Length', key: 'neckRibLength' },
+    { id: 'H', label: 'Neck Opening', key: 'neckOpening' },
+    { id: 'I', label: 'Shoulder-to-Shoulder', key: 'shoulderToShoulder' }
+  ];
 
   // Initialize editable data with default values and save selection
   useEffect(() => {
@@ -83,10 +106,8 @@ function TshirtDesign() {
             size: file.size
           });
           setImagePreview(preview);
-          setIsModified(true);
-          
-          console.log('Image uploadée et sauvegardée pour T-shirt:', imageId, file.name);
-        };
+           setIsModified(true);
+         };
         reader.readAsDataURL(file);
       } catch (error) {
         console.error('Erreur lors de l\'upload:', error);
@@ -99,9 +120,8 @@ function TshirtDesign() {
   const removeImage = () => {
     if (uploadedImage && uploadedImage.id) {
       // Delete from database
-      database.deleteImage(uploadedImage.id);
-      console.log('Image T-shirt supprimée de la base de données:', uploadedImage.id);
-    }
+       database.deleteImage(uploadedImage.id);
+     }
     setUploadedImage(null);
     setImagePreview(null);
     setIsModified(true);
@@ -130,52 +150,59 @@ function TshirtDesign() {
    };
    
    // Handle quote generation
-   const handleGenerateQuote = () => {
-     try {
-       const quoteData = {
-         garmentType: 'tshirt',
-         garmentName: 'T-Shirt',
-         fit: selectedFit,
-         sizeData: editableSizeData,
-         uploadedImage: uploadedImage,
-         selectionId: selectionId,
-         comments: comments,
-         measurements: measurements.map(m => ({
-           ...m,
-           values: Object.keys(editableSizeData).reduce((acc, size) => {
-             acc[size] = editableSizeData[size][m.key] || 0;
-             return acc;
-           }, {})
-         }))
-       };
-       
-       // Sauvegarder le design T-shirt spécifiquement
-       const designData = {
-         fit: selectedFit,
-         sizeData: editableSizeData,
-         uploadedImage: uploadedImage,
-         measurements: measurements.map(m => ({
-           ...m,
-           values: Object.keys(editableSizeData).reduce((acc, size) => {
-             acc[size] = editableSizeData[size][m.key] || 0;
-             return acc;
-           }, {})
-         })),
-         comments: comments
-       };
-       
-       const designId = database.saveTshirtDesign(designData);
-       const quoteId = database.saveQuote(quoteData);
-       
-       alert(`Design et devis sauvegardés avec succès!\nDesign ID: ${designId}\nDevis ID: ${quoteId}`);
-       console.log('Design T-shirt sauvegardé:', designId, designData);
-       console.log('Devis T-shirt généré:', quoteId, quoteData);
+  const handleGenerateQuote = () => {
+    try {
+      const quoteData = {
+        garmentType: 'tshirt',
+        garmentName: 'T-Shirt',
+        fit: selectedFit,
+        sizeData: editableSizeData,
+        uploadedImage: uploadedImage,
+        selectionId: selectionId,
+        comments: comments,
+        measurements: measurements.map(m => ({
+          ...m,
+          values: Object.keys(editableSizeData).reduce((acc, size) => {
+            acc[size] = editableSizeData[size][m.key] || 0;
+            return acc;
+          }, {})
+        }))
+      };
+      
+      // Sauvegarder le design T-shirt spécifiquement
+      const designData = {
+        fit: selectedFit,
+        fabric: selectedFabric,
+        colourway: selectedColourway,
+        necklabel: selectedNecklabel,
+        corelabel: selectedCorelabel,
+        embellishment: selectedEmbellishment,
+        finishings: selectedFinishings,
+        quantity: selectedQuantity,
+        packaging: selectedPackaging,
+        delivery: selectedDelivery,
+        sizeData: editableSizeData,
+        uploadedImage: uploadedImage,
+        measurements: measurements.map(m => ({
+          ...m,
+          values: Object.keys(editableSizeData).reduce((acc, size) => {
+            acc[size] = editableSizeData[size][m.key] || 0;
+            return acc;
+          }, {})
+        })),
+        comments: comments
+      };
+      
+      const designId = database.saveDesign('tshirt', designData);
+      const quoteId = database.saveQuote(quoteData);
+      
+      alert(`Design et devis sauvegardés avec succès!\nDesign ID: ${designId}\nDevis ID: ${quoteId}`);
        
      } catch (error) {
-       console.error('Erreur lors de la génération du devis:', error);
-       alert('Erreur lors de la génération du devis. Veuillez réessayer.');
-     }
-   };
+      console.error('Erreur lors de la génération du devis:', error);
+      alert('Erreur lors de la génération du devis. Veuillez réessayer.');
+    }
+  };
 
   const fitOptions = [
     { id: 'oversized', label: 'Oversized Fit' },
@@ -185,38 +212,38 @@ function TshirtDesign() {
     { id: 'cropped', label: 'Cropped (1/2 Sleeve) Fit' }
   ];
 
-  const measurements = [
-    { id: 'A', label: 'Total Length', key: 'totalLength' },
-    { id: 'B', label: 'Chest Width', key: 'chestWidth' },
-    { id: 'C', label: 'Bottom Width', key: 'bottomWidth' },
-    { id: 'D', label: 'Sleeve Length', key: 'sleeveLength' },
-    { id: 'E', label: 'Armhole', key: 'armhole' },
-    { id: 'F', label: 'Sleeve Opening', key: 'sleeveOpening' },
-    { id: 'G', label: 'Neck Rib Length', key: 'neckRibLength' },
-    { id: 'H', label: 'Neck Opening', key: 'neckOpening' },
-    { id: 'I', label: 'Shoulder-to-Shoulder', key: 'shoulderToShoulder' }
-  ];
+  // Fonction pour rendre le contenu selon l'onglet actif
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'fit':
+        return renderFitContent();
+      case 'fabric':
+        return renderFabricContent();
+      case 'colourway':
+        return renderColourwayContent();
+      case 'necklabel':
+        return renderNecklabelContent();
+      case 'corelabel':
+        return renderCorelabelContent();
+      case 'embellishment':
+        return renderEmbellishmentContent();
+      case 'finishings':
+        return renderFinishingsContent();
+      case 'quantity':
+        return renderQuantityContent();
+      case 'packaging':
+        return renderPackagingContent();
+      case 'delivery':
+        return renderDeliveryContent();
+      default:
+        return renderFitContent();
+    }
+  };
 
-  return (
-    <div className="tshirt-design-container">
-      <div className="tshirt-design-header">
-        <button className="back-button" onClick={handleBackToSelection}>← Sélection</button>
-        <button className="back-button" onClick={handleMyOrdersClick}>← My orders</button>
-        <div className="header-tabs">
-          <span className="tab active">Fit - T-Shirt</span>
-          <span className="tab">Fabric</span>
-          <span className="tab">Colourway</span>
-          <span className="tab">Necklabel</span>
-          <span className="tab">Corelabel</span>
-          <span className="tab">Embellishment</span>
-          <span className="tab">Finishings</span>
-          <span className="tab">Quantity</span>
-          <span className="tab">Packaging</span>
-          <span className="tab">Delivery</span>
-        </div>
-      </div>
-
-      <div className="tshirt-design-content">
+  // Contenu de l'onglet Fit
+  const renderFitContent = () => {
+    return (
+      <>
         <div className="fit-selection">
           <h3>Sélectionnez le fit de votre T-Shirt</h3>
           <div className="fit-options">
@@ -256,19 +283,12 @@ function TshirtDesign() {
               <div className="slide-indicators">
                 <div className="indicator-track">
                   {fitOptions.map((option, dotIndex) => {
-                    // Trouver l'index de l'élément sélectionné
                     const selectedIndex = fitOptions.findIndex(opt => opt.id === selectedFit);
-                    
-                    // Calculer la position de chaque point
                     const totalElements = fitOptions.length;
-                    const spacing = 20; // espacement entre les points
+                    const spacing = 20;
                     const trackWidth = (totalElements - 1) * spacing;
                     const startPosition = -trackWidth / 2;
-                    
-                    // Position fixe pour chaque point
                     const pointPosition = startPosition + (dotIndex * spacing);
-                    
-                    // Le point est actif s'il correspond à l'élément sélectionné
                     const isActive = dotIndex === selectedIndex;
                     
                     return (
@@ -334,17 +354,12 @@ function TshirtDesign() {
           <h3>Aperçu du T-Shirt</h3>
           <div className="tshirt-svg-container">
             <svg width="200" height="240" viewBox="0 0 200 240" className="tshirt-svg">
-              {/* T-shirt outline */}
               <path d="M50 60 L50 40 Q50 30 60 30 L80 30 Q90 20 110 20 Q130 20 140 30 L160 30 Q170 30 170 40 L170 60 L150 80 L150 220 Q150 230 140 230 L60 230 Q50 230 50 220 L50 80 Z" 
                     fill="#f8f9fa" 
                     stroke="#333" 
                     strokeWidth="2"/>
-              
-              {/* Sleeves */}
               <ellipse cx="40" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
               <ellipse cx="180" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
-              
-              {/* Neckline */}
               <ellipse cx="110" cy="35" rx="20" ry="10" fill="white" stroke="#333" strokeWidth="2"/>
             </svg>
           </div>
@@ -417,6 +432,356 @@ function TshirtDesign() {
             <p className="selection-info">ID de sélection: {selectionId}</p>
           )}
         </div>
+      </>
+    );
+  };
+
+  // Contenu de l'onglet Fabric
+  const renderFabricContent = () => {
+    const fabricOptions = [
+      { id: 'cotton', label: 'Cotton 100%' },
+      { id: 'polyester', label: 'Polyester 100%' },
+      { id: 'blend', label: 'Cotton/Polyester Blend' },
+      { id: 'organic', label: 'Organic Cotton' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Sélectionnez le tissu</h3>
+        <div className="options-grid">
+          {fabricOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedFabric === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="fabric"
+                value={option.id}
+                checked={selectedFabric === option.id}
+                onChange={() => {
+                  setSelectedFabric(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderColourwayContent = () => {
+    const colourwayOptions = [
+      { id: 'white', label: 'Blanc' },
+      { id: 'black', label: 'Noir' },
+      { id: 'navy', label: 'Bleu Marine' },
+      { id: 'grey', label: 'Gris' },
+      { id: 'red', label: 'Rouge' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Sélectionnez la couleur</h3>
+        <div className="options-grid">
+          {colourwayOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedColourway === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="colourway"
+                value={option.id}
+                checked={selectedColourway === option.id}
+                onChange={() => {
+                  setSelectedColourway(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderNecklabelContent = () => {
+    const necklabelOptions = [
+      { id: 'none', label: 'Aucune étiquette' },
+      { id: 'standard', label: 'Étiquette standard' },
+      { id: 'custom', label: 'Étiquette personnalisée' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Étiquette de cou</h3>
+        <div className="options-grid">
+          {necklabelOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedNecklabel === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="necklabel"
+                value={option.id}
+                checked={selectedNecklabel === option.id}
+                onChange={() => {
+                  setSelectedNecklabel(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderCorelabelContent = () => {
+    const corelabelOptions = [
+      { id: 'none', label: 'Aucune étiquette' },
+      { id: 'standard', label: 'Étiquette standard' },
+      { id: 'custom', label: 'Étiquette personnalisée' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Étiquette principale</h3>
+        <div className="options-grid">
+          {corelabelOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedCorelabel === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="corelabel"
+                value={option.id}
+                checked={selectedCorelabel === option.id}
+                onChange={() => {
+                  setSelectedCorelabel(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderEmbellishmentContent = () => {
+    const embellishmentOptions = [
+      { id: 'none', label: 'Aucun' },
+      { id: 'embroidery', label: 'Broderie' },
+      { id: 'print', label: 'Impression' },
+      { id: 'patch', label: 'Patch' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Embellissement</h3>
+        <div className="options-grid">
+          {embellishmentOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedEmbellishment === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="embellishment"
+                value={option.id}
+                checked={selectedEmbellishment === option.id}
+                onChange={() => {
+                  setSelectedEmbellishment(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderFinishingsContent = () => {
+    const finishingsOptions = [
+      { id: 'standard', label: 'Finition standard' },
+      { id: 'premium', label: 'Finition premium' },
+      { id: 'vintage', label: 'Finition vintage' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Finitions</h3>
+        <div className="options-grid">
+          {finishingsOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedFinishings === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="finishings"
+                value={option.id}
+                checked={selectedFinishings === option.id}
+                onChange={() => {
+                  setSelectedFinishings(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderQuantityContent = () => {
+    return (
+      <div className="tab-content">
+        <h3>Quantité</h3>
+        <div className="quantity-input">
+          <label htmlFor="quantity">Nombre de pièces :</label>
+          <input
+            type="number"
+            id="quantity"
+            min="1"
+            max="10000"
+            value={selectedQuantity}
+            onChange={(e) => {
+              setSelectedQuantity(parseInt(e.target.value) || 1);
+              setIsModified(true);
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const renderPackagingContent = () => {
+    const packagingOptions = [
+      { id: 'standard', label: 'Emballage standard' },
+      { id: 'premium', label: 'Emballage premium' },
+      { id: 'eco', label: 'Emballage écologique' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Emballage</h3>
+        <div className="options-grid">
+          {packagingOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedPackaging === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="packaging"
+                value={option.id}
+                checked={selectedPackaging === option.id}
+                onChange={() => {
+                  setSelectedPackaging(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderDeliveryContent = () => {
+    const deliveryOptions = [
+      { id: 'standard', label: 'Livraison standard (7-10 jours)' },
+      { id: 'express', label: 'Livraison express (3-5 jours)' },
+      { id: 'urgent', label: 'Livraison urgente (1-2 jours)' }
+    ];
+    
+    return (
+      <div className="tab-content">
+        <h3>Livraison</h3>
+        <div className="options-grid">
+          {deliveryOptions.map(option => (
+            <label key={option.id} className={`option-card ${selectedDelivery === option.id ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="delivery"
+                value={option.id}
+                checked={selectedDelivery === option.id}
+                onChange={() => {
+                  setSelectedDelivery(option.id);
+                  setIsModified(true);
+                }}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="tshirt-design-container">
+      <div className="tshirt-design-header">
+        <button className="back-button" onClick={handleBackToSelection}>← Sélection</button>
+        <button className="back-button" onClick={handleMyOrdersClick}>← My orders</button>
+        <div className="header-tabs">
+          <span 
+            className={`tab ${activeTab === 'fit' ? 'active' : ''}`}
+            onClick={() => setActiveTab('fit')}
+          >
+            Fit - T-Shirt
+          </span>
+          <span 
+            className={`tab ${activeTab === 'fabric' ? 'active' : ''}`}
+            onClick={() => setActiveTab('fabric')}
+          >
+            Fabric
+          </span>
+          <span 
+            className={`tab ${activeTab === 'colourway' ? 'active' : ''}`}
+            onClick={() => setActiveTab('colourway')}
+          >
+            Colourway
+          </span>
+          <span 
+            className={`tab ${activeTab === 'necklabel' ? 'active' : ''}`}
+            onClick={() => setActiveTab('necklabel')}
+          >
+            Necklabel
+          </span>
+          <span 
+            className={`tab ${activeTab === 'corelabel' ? 'active' : ''}`}
+            onClick={() => setActiveTab('corelabel')}
+          >
+            Corelabel
+          </span>
+          <span 
+            className={`tab ${activeTab === 'embellishment' ? 'active' : ''}`}
+            onClick={() => setActiveTab('embellishment')}
+          >
+            Embellishment
+          </span>
+          <span 
+            className={`tab ${activeTab === 'finishings' ? 'active' : ''}`}
+            onClick={() => setActiveTab('finishings')}
+          >
+            Finishings
+          </span>
+          <span 
+            className={`tab ${activeTab === 'quantity' ? 'active' : ''}`}
+            onClick={() => setActiveTab('quantity')}
+          >
+            Quantity
+          </span>
+          <span 
+            className={`tab ${activeTab === 'packaging' ? 'active' : ''}`}
+            onClick={() => setActiveTab('packaging')}
+          >
+            Packaging
+          </span>
+          <span 
+            className={`tab ${activeTab === 'delivery' ? 'active' : ''}`}
+            onClick={() => setActiveTab('delivery')}
+          >
+            Delivery
+          </span>
+        </div>
+      </div>
+
+      <div className="tshirt-design-content">
+        {renderTabContent()}
       </div>
     </div>
   );
