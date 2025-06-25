@@ -20,6 +20,7 @@ function TshirtDesign() {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectionId, setSelectionId] = useState(null);
   const [comments, setComments] = useState('');
+  const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
   
   const handleMyOrdersClick = () => {
@@ -201,21 +202,57 @@ function TshirtDesign() {
         <div className="fit-selection">
           <h3>Sélectionnez le fit de votre T-Shirt</h3>
           <div className="fit-options">
-            {fitOptions.map((option) => (
-              <label key={option.id} className="fit-option">
-                <input
-                  type="radio"
-                  name="fit"
-                  value={option.id}
-                  checked={selectedFit === option.id}
-                  onChange={(e) => {
-                    setSelectedFit(e.target.value);
+            <div className="fit-options-container" style={{ transform: `translateX(-${currentSlide * 220}px)` }}>
+              {fitOptions.map((option, index) => (
+                <label 
+                  key={option.id} 
+                  className={`fit-option ${selectedFit === option.id ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSelectedFit(option.id);
                     setIsModified(true);
                   }}
-                />
-                <span className="fit-label">{option.label}</span>
-              </label>
-            ))}
+                >
+                  <input
+                    type="radio"
+                    name="fit"
+                    value={option.id}
+                    checked={selectedFit === option.id}
+                    onChange={() => {}}
+                    style={{ display: 'none' }}
+                  />
+                  <div className="fit-icon"></div>
+                  <span className="fit-label">{option.label}</span>
+                </label>
+              ))}
+            </div>
+            
+            <div className="slide-controls">
+              <button 
+                className="slide-button"
+                onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+                disabled={currentSlide === 0}
+              >
+                ←
+              </button>
+              
+              <div className="slide-indicators">
+                {Array.from({ length: Math.ceil(fitOptions.length / 3) }).map((_, index) => (
+                  <div
+                    key={index}
+                    className={`slide-indicator ${currentSlide === index ? 'active' : ''}`}
+                    onClick={() => setCurrentSlide(index)}
+                  />
+                ))}
+              </div>
+              
+              <button 
+                className="slide-button"
+                onClick={() => setCurrentSlide(Math.min(Math.ceil(fitOptions.length / 3) - 1, currentSlide + 1))}
+                disabled={currentSlide >= Math.ceil(fitOptions.length / 3) - 1}
+              >
+                →
+              </button>
+            </div>
           </div>
         </div>
 
