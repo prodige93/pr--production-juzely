@@ -149,8 +149,26 @@ function TshirtDesign() {
          }))
        };
        
+       // Sauvegarder le design T-shirt spécifiquement
+       const designData = {
+         fit: selectedFit,
+         sizeData: editableSizeData,
+         uploadedImage: uploadedImage,
+         measurements: measurements.map(m => ({
+           ...m,
+           values: Object.keys(editableSizeData).reduce((acc, size) => {
+             acc[size] = editableSizeData[size][m.key] || 0;
+             return acc;
+           }, {})
+         })),
+         comments: comments
+       };
+       
+       const designId = database.saveTshirtDesign(designData);
        const quoteId = database.saveQuote(quoteData);
-       alert(`Devis généré avec succès! ID: ${quoteId}`);
+       
+       alert(`Design et devis sauvegardés avec succès!\nDesign ID: ${designId}\nDevis ID: ${quoteId}`);
+       console.log('Design T-shirt sauvegardé:', designId, designData);
        console.log('Devis T-shirt généré:', quoteId, quoteData);
        
      } catch (error) {
