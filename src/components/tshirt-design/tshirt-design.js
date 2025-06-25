@@ -237,42 +237,32 @@ function TshirtDesign() {
               
               <div className="slide-indicators">
                 <div className="indicator-track">
-                  {[0, 1, 2].map((dotIndex) => {
+                  {fitOptions.map((option, dotIndex) => {
                     // Trouver l'index de l'élément sélectionné
-                    const selectedIndex = fitOptions.findIndex(option => option.id === selectedFit);
+                    const selectedIndex = fitOptions.findIndex(opt => opt.id === selectedFit);
                     
-                    // Calculer la position des points en fonction de l'élément sélectionné
+                    // Calculer la position de chaque point
                     const totalElements = fitOptions.length;
-                    const selectedPosition = selectedIndex / Math.max(1, totalElements - 1);
+                    const spacing = 20; // espacement entre les points
+                    const trackWidth = (totalElements - 1) * spacing;
+                    const startPosition = -trackWidth / 2;
                     
-                    // Décalage pour chaque point (gauche, centre, droite)
-                    const baseOffset = 25; // espacement entre les points
-                    const trackWidth = 50; // largeur totale du track
-                    const centerPosition = selectedPosition * trackWidth - trackWidth / 2;
+                    // Position fixe pour chaque point
+                    const pointPosition = startPosition + (dotIndex * spacing);
                     
-                    let offset;
-                    if (dotIndex === 0) {
-                      offset = centerPosition - baseOffset; // point gauche
-                    } else if (dotIndex === 1) {
-                      offset = centerPosition; // point centre
-                    } else {
-                      offset = centerPosition + baseOffset; // point droite
-                    }
-                    
-                    // Le point central est actif quand il correspond à la sélection
-                    const isActive = dotIndex === 1;
+                    // Le point est actif s'il correspond à l'élément sélectionné
+                    const isActive = dotIndex === selectedIndex;
                     
                     return (
                       <div
                         key={dotIndex}
                         className={`slide-indicator ${isActive ? 'active' : ''}`}
                         style={{
-                          transform: `translateX(${offset}px)`,
-                          transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                          transform: `translateX(${pointPosition}px)`,
+                          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
                         }}
                         onClick={() => {
-                          const targetIndex = Math.min(Math.max(0, selectedIndex + (dotIndex - 1)), totalElements - 1);
-                          setSelectedFit(fitOptions[targetIndex].id);
+                          setSelectedFit(option.id);
                           setIsModified(true);
                         }}
                       />
