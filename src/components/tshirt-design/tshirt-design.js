@@ -236,13 +236,49 @@ function TshirtDesign() {
               </button>
               
               <div className="slide-indicators">
-                {Array.from({ length: Math.ceil(fitOptions.length / 3) }).map((_, index) => (
-                  <div
-                    key={index}
-                    className={`slide-indicator ${currentSlide === index ? 'active' : ''}`}
-                    onClick={() => setCurrentSlide(index)}
-                  />
-                ))}
+                <div className="indicator-track">
+                  {[0, 1, 2].map((dotIndex) => {
+                    // Trouver l'index de l'élément sélectionné
+                    const selectedIndex = fitOptions.findIndex(option => option.id === selectedFit);
+                    
+                    // Calculer la position des points en fonction de l'élément sélectionné
+                    const totalElements = fitOptions.length;
+                    const selectedPosition = selectedIndex / Math.max(1, totalElements - 1);
+                    
+                    // Décalage pour chaque point (gauche, centre, droite)
+                    const baseOffset = 25; // espacement entre les points
+                    const trackWidth = 50; // largeur totale du track
+                    const centerPosition = selectedPosition * trackWidth - trackWidth / 2;
+                    
+                    let offset;
+                    if (dotIndex === 0) {
+                      offset = centerPosition - baseOffset; // point gauche
+                    } else if (dotIndex === 1) {
+                      offset = centerPosition; // point centre
+                    } else {
+                      offset = centerPosition + baseOffset; // point droite
+                    }
+                    
+                    // Le point central est actif quand il correspond à la sélection
+                    const isActive = dotIndex === 1;
+                    
+                    return (
+                      <div
+                        key={dotIndex}
+                        className={`slide-indicator ${isActive ? 'active' : ''}`}
+                        style={{
+                          transform: `translateX(${offset}px)`,
+                          transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                        }}
+                        onClick={() => {
+                          const targetIndex = Math.min(Math.max(0, selectedIndex + (dotIndex - 1)), totalElements - 1);
+                          setSelectedFit(fitOptions[targetIndex].id);
+                          setIsModified(true);
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
               
               <button 
