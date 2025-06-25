@@ -149,58 +149,72 @@ function TshirtDesign() {
      return true;
    };
    
-   // Handle quote generation
-  const handleGenerateQuote = () => {
-    try {
-      const quoteData = {
-        garmentType: 'tshirt',
-        garmentName: 'T-Shirt',
+  // Handle quote generation
+  const handleGenerateQuote = async () => {
+    if (!selectedFit) {
+      alert("Veuillez sélectionner un 'Fit' avant de générer un devis.");
+      return;
+    }
+
+    const quoteData = {
+      client: {
+        name: 'Client Name', // Remplacer par les vraies données client
+        email: 'client@example.com',
+      },
+      garment: {
+        type: 'tshirt',
+        name: 'T-Shirt',
         fit: selectedFit,
-        sizeData: editableSizeData,
-        uploadedImage: uploadedImage,
-        selectionId: selectionId,
-        comments: comments,
+        quantity: selectedQuantity,
+        sizes: editableSizeData, // Données de taille
         measurements: measurements.map(m => ({
           ...m,
           values: Object.keys(editableSizeData).reduce((acc, size) => {
             acc[size] = editableSizeData[size][m.key] || 0;
             return acc;
-          }, {})
-        }))
-      };
-      
-      // Sauvegarder le design T-shirt spécifiquement
-      const designData = {
-        fit: selectedFit,
+          }, {}),
+        })),
+      },
+      customization: {
         fabric: selectedFabric,
         colourway: selectedColourway,
         necklabel: selectedNecklabel,
         corelabel: selectedCorelabel,
         embellishment: selectedEmbellishment,
         finishings: selectedFinishings,
-        quantity: selectedQuantity,
+        uploadedImage: uploadedImage ? uploadedImage.id : null,
+        comments: comments,
+      },
+      image_metadata: uploadedImage ? {
+        name: uploadedImage.name,
+        type: uploadedImage.type,
+        size: uploadedImage.size,
+      } : null,
+      pricing: {
+        totalPrice: 0, // Calculer le prix total
+        currency: 'EUR',
+      },
+      delivery: {
         packaging: selectedPackaging,
-        delivery: selectedDelivery,
-        sizeData: editableSizeData,
-        uploadedImage: uploadedImage,
-        measurements: measurements.map(m => ({
-          ...m,
-          values: Object.keys(editableSizeData).reduce((acc, size) => {
-            acc[size] = editableSizeData[size][m.key] || 0;
-            return acc;
-          }, {})
-        })),
-        comments: comments
-      };
-      
-      const designId = database.saveDesign('tshirt', designData);
-      const quoteId = database.saveQuote(quoteData);
-      
-      alert(`Design et devis sauvegardés avec succès!\nDesign ID: ${designId}\nDevis ID: ${quoteId}`);
-       
-     } catch (error) {
+        address: '123 Rue de Paris, 75001 Paris', // Remplacer par l'adresse de livraison
+      },
+      metadata: {
+        selectionId: selectionId,
+        isModified: isModified,
+      },
+    };
+
+    try {
+      const quoteId = await database.createQuote('tshirt', quoteData);
+      if (quoteId) {
+        alert(`Devis généré avec succès ! ID du devis : ${quoteId}`);
+        // navigate('/my-orders'); // Optionnel: rediriger vers la page des commandes
+      } else {
+        alert('Erreur lors de la génération du devis. Aucun ID retourné.');
+      }
+    } catch (error) {
       console.error('Erreur lors de la génération du devis:', error);
-      alert('Erreur lors de la génération du devis. Veuillez réessayer.');
+      alert(`Une erreur est survenue : ${error.message}`);
     }
   };
 

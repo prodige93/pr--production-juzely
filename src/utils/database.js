@@ -98,9 +98,59 @@ class Database {
   }
 
   // ========== GESTION DES DEVIS ==========
+
+  /**
+   * Crée un devis pour un type de vêtement spécifique.
+   * @param {string} garmentType - Le type de vêtement (ex: 'tshirt', 'hoodie').
+   * @param {Object} quoteData - Les données du devis.
+   * @returns {string} L'ID du devis créé.
+   */
+  createQuote(garmentType, quoteData) {
+    try {
+      const garmentKey = `juzely_${garmentType}_designs`;
+      if (!this.STORAGE_KEYS[garmentType.toUpperCase() + '_DESIGNS']) {
+        throw new Error(`Type de vêtement non valide: ${garmentType}`);
+      }
+
+      const quoteId = `quote_${garmentType}_${Date.now()}`;
+      const newQuote = {
+        id: quoteId,
+        ...quoteData,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        status: 'pending',
+      };
+
+      const allQuotesForGarment = this.getQuotesByGarmentType(garmentType);
+      allQuotesForGarment.push(newQuote);
+
+      localStorage.setItem(garmentKey, JSON.stringify(allQuotesForGarment));
+      console.log(`Devis pour ${garmentType} sauvegardé avec l'ID: ${quoteId}`);
+      return quoteId;
+    } catch (error) {
+      console.error('Erreur lors de la création du devis:', error);
+      throw error;
+    }
+  }
   
   /**
-   * Sauvegarde un devis complet
+   * Récupère les devis pour un type de vêtement spécifique.
+   * @param {string} garmentType - Le type de vêtement.
+   * @returns {Array} Une liste des devis pour ce vêtement.
+   */
+  getQuotesByGarmentType(garmentType) {
+    const garmentKey = `juzely_${garmentType}_designs`;
+    try {
+      const quotes = localStorage.getItem(garmentKey);
+      return quotes ? JSON.parse(quotes) : [];
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des devis pour ${garmentType}:`, error);
+      return [];
+    }
+  }
+  
+  /**
+   * Sauvegarde un devis complet (ancienne méthode - dépréciée)
    * @param {Object} quoteData - Données du devis
    * @returns {string} ID du devis
    */
@@ -130,17 +180,31 @@ class Database {
   }
   
   /**
-   * Récupère tous les devis
-   * @returns {Array} Liste des devis
+   * Récupère tous les devis, toutes catégories confondues.
+   * @returns {Array} Une liste de tous les devis.
    */
   getAllQuotes() {
-    try {
-      const quotes = localStorage.getItem(this.STORAGE_KEYS.QUOTES);
-      return quotes ? JSON.parse(quotes) : [];
-    } catch (error) {
-      console.error('Erreur lors de la récupération des devis:', error);
-      return [];
+    let allQuotes = [];
+    const designKeys = Object.keys(this.STORAGE_KEYS).filter(key => key.endsWith('_DESIGNS'));
+
+    for (const key of designKeys) {
+      const garmentType = key.replace('_DESIGNS', '').toLowerCase();
+      const quotes = this.getQuotesByGarmentType(garmentType);
+      allQuotes = allQuotes.concat(quotes);
     }
+
+    // Aussi récupérer les anciens devis si ils existent
+    try {
+      const oldQuotes = localStorage.getItem(this.STORAGE_KEYS.QUOTES);
+      if (oldQuotes) {
+        const parsedOldQuotes = JSON.parse(oldQuotes);
+        allQuotes = allQuotes.concat(parsedOldQuotes);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des anciens devis:', error);
+    }
+
+    return allQuotes;
   }
   
   /**
