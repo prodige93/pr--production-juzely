@@ -208,6 +208,7 @@ function TshirtDesign() {
       const quoteId = await database.createQuote('tshirt', quoteData);
       if (quoteId) {
         alert(`Devis généré avec succès ! ID du devis : ${quoteId}`);
+        setActiveTab('fabric'); // Rediriger vers l'onglet Fabric
         // navigate('/my-orders'); // Optionnel: rediriger vers la page des commandes
       } else {
         alert('Erreur lors de la génération du devis. Aucun ID retourné.');
