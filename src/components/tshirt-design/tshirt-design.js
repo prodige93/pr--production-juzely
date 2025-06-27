@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import database from '../../utils/database';
 import './tshirt-design.css';
@@ -33,6 +33,45 @@ function TshirtDesign() {
   const [activeTab, setActiveTab] = useState('fit');
   const navigate = useNavigate();
 
+  // Fonction pour sauvegarder ou mettre à jour le design
+  const saveOrUpdateDesign = useCallback(() => {
+    try {
+      const designData = {
+        fit: selectedFit,
+        fabric: selectedFabric,
+        colourway: selectedColourway,
+        necklabel: selectedNecklabel,
+        corelabel: selectedCorelabel,
+        embellishment: selectedEmbellishment,
+        finishings: selectedFinishings,
+        quantity: selectedQuantity,
+        packaging: selectedPackaging,
+        delivery: selectedDelivery,
+        sizeData: editableSizeData,
+        uploadedImage: uploadedImage,
+        measurements: [],
+        comments: ''
+      };
+      
+      if (selectionId) {
+        // Mettre à jour le design existant
+        const success = database.updateDesign('tshirt', selectionId, designData);
+        if (success) {
+          console.log('Design mis à jour avec succès:', selectionId);
+        }
+      } else {
+        // Créer un nouveau design
+        const designId = database.saveTshirtDesign(designData);
+        setSelectionId(designId);
+        console.log('Nouveau design créé:', designId);
+        return designId;
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde/mise à jour:', error);
+      throw error;
+    }
+  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, selectionId]);
+
   // Sauvegarde automatique des modifications après la première sauvegarde
   useEffect(() => {
     if (selectionId && isModified) {
@@ -48,7 +87,7 @@ function TshirtDesign() {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, selectionId, isModified]);
+  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, selectionId, isModified, saveOrUpdateDesign]);
   
   const handleMyOrdersClick = () => {
     navigate('/');
@@ -526,44 +565,6 @@ function TshirtDesign() {
   };
 
   // Handle fabric save and next
-  // Fonction pour sauvegarder ou mettre à jour le design
-  const saveOrUpdateDesign = () => {
-    try {
-      const designData = {
-        fit: selectedFit,
-        fabric: selectedFabric,
-        colourway: selectedColourway,
-        necklabel: selectedNecklabel,
-        corelabel: selectedCorelabel,
-        embellishment: selectedEmbellishment,
-        finishings: selectedFinishings,
-        quantity: selectedQuantity,
-        packaging: selectedPackaging,
-        delivery: selectedDelivery,
-        sizeData: editableSizeData,
-        uploadedImage: uploadedImage,
-        measurements: [],
-        comments: ''
-      };
-      
-      if (selectionId) {
-        // Mettre à jour le design existant
-        const success = database.updateDesign('tshirt', selectionId, designData);
-        if (success) {
-          console.log('Design mis à jour avec succès:', selectionId);
-        }
-      } else {
-        // Créer un nouveau design
-        const designId = database.saveTshirtDesign(designData);
-        setSelectionId(designId);
-        console.log('Nouveau design créé:', designId);
-        return designId;
-      }
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde/mise à jour:', error);
-      throw error;
-    }
-  };
 
   const handleFabricSaveNext = () => {
     if (!selectedFabric) {

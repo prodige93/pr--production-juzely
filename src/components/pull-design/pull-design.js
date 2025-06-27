@@ -16,7 +16,6 @@ function PullDesign() {
   const [selectedFit, setSelectedFit] = useState('custom');
   const [editableSizeData, setEditableSizeData] = useState({});
   const [isModified, setIsModified] = useState(false);
-
   const [selectionId, setSelectionId] = useState(null);
   const navigate = useNavigate();
   
