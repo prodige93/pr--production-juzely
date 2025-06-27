@@ -32,9 +32,52 @@ function TshirtDesign() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState('fit');
   const navigate = useNavigate();
+
+  // Sauvegarde automatique des modifications après la première sauvegarde
+  useEffect(() => {
+    if (selectionId && isModified) {
+      const timeoutId = setTimeout(() => {
+        try {
+          saveOrUpdateDesign();
+          setIsModified(false);
+          console.log('Sauvegarde automatique effectuée pour:', selectionId);
+        } catch (error) {
+          console.error('Erreur lors de la sauvegarde automatique:', error);
+        }
+      }, 2000); // Sauvegarde après 2 secondes d'inactivité
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, selectionId, isModified]);
   
   const handleMyOrdersClick = () => {
     navigate('/');
+  };
+
+  // Fonction pour afficher les designs sauvegardés
+  const showSavedDesigns = () => {
+    try {
+      const savedDesigns = database.getDesignsByGarmentType('tshirt');
+      if (savedDesigns.length === 0) {
+        alert('Aucun design T-shirt sauvegardé trouvé.');
+        return;
+      }
+      
+      let designsList = 'Designs T-shirt sauvegardés:\n\n';
+      savedDesigns.forEach((design, index) => {
+        designsList += `${index + 1}. ID: ${design.id}\n`;
+        designsList += `   Coupe: ${design.fit}\n`;
+        designsList += `   Tissu: ${design.fabric || 'Non sélectionné'}\n`;
+        designsList += `   Coloris: ${design.colourway || 'Non sélectionné'}\n`;
+        designsList += `   Créé le: ${new Date(design.createdAt).toLocaleDateString('fr-FR')}\n`;
+        designsList += `   Modifié le: ${new Date(design.updatedAt).toLocaleDateString('fr-FR')}\n\n`;
+      });
+      
+      alert(designsList);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des designs:', error);
+      alert('Erreur lors de la récupération des designs sauvegardés.');
+    }
   };
   
   const handleBackToSelection = () => {
@@ -482,34 +525,104 @@ function TshirtDesign() {
     );
   };
 
+  // Handle fabric save and next
+  // Fonction pour sauvegarder ou mettre à jour le design
+  const saveOrUpdateDesign = () => {
+    try {
+      const designData = {
+        fit: selectedFit,
+        fabric: selectedFabric,
+        colourway: selectedColourway,
+        necklabel: selectedNecklabel,
+        corelabel: selectedCorelabel,
+        embellishment: selectedEmbellishment,
+        finishings: selectedFinishings,
+        quantity: selectedQuantity,
+        packaging: selectedPackaging,
+        delivery: selectedDelivery,
+        sizeData: editableSizeData,
+        uploadedImage: uploadedImage,
+        measurements: [],
+        comments: ''
+      };
+      
+      if (selectionId) {
+        // Mettre à jour le design existant
+        const success = database.updateDesign('tshirt', selectionId, designData);
+        if (success) {
+          console.log('Design mis à jour avec succès:', selectionId);
+        }
+      } else {
+        // Créer un nouveau design
+        const designId = database.saveTshirtDesign(designData);
+        setSelectionId(designId);
+        console.log('Nouveau design créé:', designId);
+        return designId;
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde/mise à jour:', error);
+      throw error;
+    }
+  };
+
+  const handleFabricSaveNext = () => {
+    if (!selectedFabric) {
+      alert("Veuillez sélectionner un tissu avant de continuer.");
+      return;
+    }
+    
+    try {
+      const designId = saveOrUpdateDesign();
+      const currentId = designId || selectionId;
+      
+      alert(`Tissu sauvegardé avec succès! ID de sélection: ${currentId}`);
+      setActiveTab('colourway'); // Rediriger vers l'onglet Colourway
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
+      alert('Erreur lors de la sauvegarde. Veuillez réessayer.');
+    }
+  };
+
   // Contenu de l'onglet Fabric
   const renderFabricContent = () => {
     const fabricOptions = [
-      { id: 'cotton', label: 'Cotton 100%' },
-      { id: 'polyester', label: 'Polyester 100%' },
-      { id: 'blend', label: 'Cotton/Polyester Blend' },
-      { id: 'organic', label: 'Organic Cotton' }
+      { id: 'coton-200', label: '200gsm, 100%, Coton' },
+      { id: 'coton-240', label: '240gsm, 100%, Coton' },
+      { id: 'coton-270', label: '270gsm, 100%, Coton' },
+      { id: 'coton-340', label: '340gsm, 100%, Coton' }
     ];
     
     return (
       <div className="tab-content">
         <h3>Sélectionnez le tissu</h3>
-        <div className="options-grid">
-          {fabricOptions.map(option => (
-            <label key={option.id} className={`option-card ${selectedFabric === option.id ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="fabric"
-                value={option.id}
-                checked={selectedFabric === option.id}
-                onChange={() => {
-                  setSelectedFabric(option.id);
-                  setIsModified(true);
-                }}
-              />
-              <span>{option.label}</span>
-            </label>
-          ))}
+        <div className="actions-section">
+          <div className="options-grid">
+            {fabricOptions.map((option, index) => (
+              <label key={`${option.id}-${index}`} className={`option-card ${selectedFabric === option.id ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="fabric"
+                  value={option.id}
+                  checked={selectedFabric === option.id}
+                  onChange={() => {
+                    setSelectedFabric(option.id);
+                    setIsModified(true);
+                  }}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+          <button 
+            onClick={handleFabricSaveNext}
+            className="generate-quote-button"
+            disabled={!selectedFabric}
+          >
+            Save & Next
+          </button>
+          {selectionId && (
+            <p className="selection-info">ID de sélection: {selectionId}</p>
+          )}
         </div>
       </div>
     );
@@ -762,6 +875,7 @@ function TshirtDesign() {
       <div className="tshirt-design-header">
         <button className="back-button" onClick={handleBackToSelection}>← Sélection</button>
         <button className="back-button" onClick={handleMyOrdersClick}>← My orders</button>
+        <button className="back-button" onClick={showSavedDesigns}>📋 Designs sauvegardés</button>
         <div className="header-tabs">
           <span 
             className={`tab ${activeTab === 'fit' ? 'active' : ''}`}
