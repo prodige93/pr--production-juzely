@@ -148,6 +148,28 @@ function TshirtDesign() {
      }
      return true;
    };
+
+   // Reset all size data to 0
+   const resetSizeData = () => {
+     const resetData = {};
+     Object.keys(editableSizeData).forEach(size => {
+       resetData[size] = {};
+       measurements.forEach(measurement => {
+         resetData[size][measurement.key] = '0';
+       });
+     });
+     setEditableSizeData(resetData);
+     setIsModified(true);
+     
+     // Sélectionner automatiquement le premier champ après reset
+     setTimeout(() => {
+       const firstInput = document.querySelector('.size-table input[type="number"]');
+       if (firstInput) {
+         firstInput.focus();
+         firstInput.select();
+       }
+     }, 100);
+   };
    
   // Handle quote generation
   const handleGenerateQuote = async () => {
@@ -381,7 +403,16 @@ function TshirtDesign() {
         </div>
 
         <div className="size-chart-section">
-          <h3>Tableau des tailles T-Shirt (en cm)</h3>
+          <div className="size-chart-header">
+            <h3>Tableau des tailles T-Shirt (en cm)</h3>
+            <button 
+              onClick={resetSizeData}
+              className="reset-sizes-button"
+              type="button"
+            >
+              Reset des tailles
+            </button>
+          </div>
           <div className="table-container">
             <table className="size-table">
               <thead>
