@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import database from '../../utils/database';
+import designProgressionService from '../../services/design-progression-service';
+import QuoteSystem from '../quote-system/quote-system';
 import './tshirt-design.css';
 
 // Size data definition outside component to avoid re-creation on each render
@@ -31,63 +33,145 @@ function TshirtDesign() {
   const [comments, setComments] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState('fit');
+  const [currentProgressionId, setCurrentProgressionId] = useState(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [lastAutoSave, setLastAutoSave] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Fonction pour sauvegarder ou mettre à jour le design
-  const saveOrUpdateDesign = useCallback(() => {
+  // Fonction pour créer les données de design actuelles
+  const getCurrentDesignData = useCallback(() => {
+    return {
+      fit: selectedFit,
+      fabric: selectedFabric,
+      colourway: selectedColourway,
+      necklabel: selectedNecklabel,
+      corelabel: selectedCorelabel,
+      embellishment: selectedEmbellishment,
+      finishings: selectedFinishings,
+      quantity: selectedQuantity,
+      packaging: selectedPackaging,
+      delivery: selectedDelivery,
+      sizeData: editableSizeData,
+      uploadedImage: uploadedImage,
+      measurements: [],
+      comments: comments
+    };
+  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+
+  // Fonction pour sauvegarder automatiquement la progression
+  const autoSaveProgression = useCallback(() => {
     try {
-      const designData = {
-        fit: selectedFit,
-        fabric: selectedFabric,
-        colourway: selectedColourway,
-        necklabel: selectedNecklabel,
-        corelabel: selectedCorelabel,
-        embellishment: selectedEmbellishment,
-        finishings: selectedFinishings,
-        quantity: selectedQuantity,
-        packaging: selectedPackaging,
-        delivery: selectedDelivery,
-        sizeData: editableSizeData,
-        uploadedImage: uploadedImage,
-        measurements: [],
-        comments: ''
-      };
+      const designData = getCurrentDesignData();
       
-      if (selectionId) {
-        // Mettre à jour le design existant
-        const success = database.updateDesign('tshirt', selectionId, designData);
+      if (currentProgressionId) {
+        // Mettre à jour la progression existante
+        const success = designProgressionService.updateProgression(currentProgressionId, designData, false);
         if (success) {
-          console.log('Design mis à jour avec succès:', selectionId);
+          setLastAutoSave(new Date());
+          setHasUnsavedChanges(false);
+          console.log('Progression auto-sauvegardée:', currentProgressionId);
         }
       } else {
-        // Créer un nouveau design
-        const designId = database.saveTshirtDesign(designData);
-        setSelectionId(designId);
-        console.log('Nouveau design créé:', designId);
-        return designId;
+        // Créer une nouvelle progression
+        const progressionId = designProgressionService.saveProgression('tshirt', designData, false);
+        setCurrentProgressionId(progressionId);
+        setLastAutoSave(new Date());
+        setHasUnsavedChanges(false);
+        console.log('Nouvelle progression créée:', progressionId);
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde/mise à jour:', error);
-      throw error;
+      console.error('Erreur lors de la sauvegarde automatique:', error);
     }
-  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, selectionId]);
+  }, [getCurrentDesignData, currentProgressionId]);
 
-  // Sauvegarde automatique des modifications après la première sauvegarde
-  useEffect(() => {
-    if (selectionId && isModified) {
-      const timeoutId = setTimeout(() => {
-        try {
-          saveOrUpdateDesign();
-          setIsModified(false);
-          console.log('Sauvegarde automatique effectuée pour:', selectionId);
-        } catch (error) {
-          console.error('Erreur lors de la sauvegarde automatique:', error);
+  // Fonction pour sauvegarder manuellement (bouton Save & Next)
+  const manualSaveProgression = useCallback(() => {
+    try {
+      const designData = getCurrentDesignData();
+      
+      if (currentProgressionId) {
+        // Mettre à jour la progression existante
+        const success = designProgressionService.updateProgression(currentProgressionId, designData, true);
+        if (success) {
+          setLastAutoSave(new Date());
+          setHasUnsavedChanges(false);
+          alert('Design sauvegardé avec succès!');
+          console.log('Progression manuellement sauvegardée:', currentProgressionId);
         }
-      }, 2000); // Sauvegarde après 2 secondes d'inactivité
+      } else {
+        // Créer une nouvelle progression
+        const progressionId = designProgressionService.saveProgression('tshirt', designData, true);
+        setCurrentProgressionId(progressionId);
+        setLastAutoSave(new Date());
+        setHasUnsavedChanges(false);
+        alert('Nouveau design sauvegardé avec succès!');
+        console.log('Nouvelle progression manuellement créée:', progressionId);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde manuelle:', error);
+      alert('Erreur lors de la sauvegarde. Veuillez réessayer.');
+    }
+  }, [getCurrentDesignData, currentProgressionId]);
+
+  // Marquer les changements comme non sauvegardés quand les données changent
+  useEffect(() => {
+    setHasUnsavedChanges(true);
+  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+
+  // Sauvegarde automatique après un délai d'inactivité
+  useEffect(() => {
+    if (hasUnsavedChanges) {
+      const timeoutId = setTimeout(() => {
+        autoSaveProgression();
+      }, 3000); // Sauvegarde après 3 secondes d'inactivité
 
       return () => clearTimeout(timeoutId);
     }
-  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, selectionId, isModified, saveOrUpdateDesign]);
+  }, [hasUnsavedChanges, autoSaveProgression]);
+
+  // Démarrer la sauvegarde automatique périodique
+  useEffect(() => {
+    designProgressionService.startAutoSave(() => {
+      if (hasUnsavedChanges) {
+        autoSaveProgression();
+      }
+    });
+
+    return () => {
+      designProgressionService.stopAutoSave();
+    };
+  }, [hasUnsavedChanges, autoSaveProgression]);
+
+  // Restaurer les données de progression si on vient de "Continuer"
+  useEffect(() => {
+    if (location.state && location.state.progressionId && location.state.designData) {
+      const { progressionId, designData } = location.state;
+      
+      // Restaurer l'ID de progression
+      setCurrentProgressionId(progressionId);
+      
+      // Restaurer toutes les données du design
+      if (designData.fit) setSelectedFit(designData.fit);
+      if (designData.fabric) setSelectedFabric(designData.fabric);
+      if (designData.colourway) setSelectedColourway(designData.colourway);
+      if (designData.necklabel) setSelectedNecklabel(designData.necklabel);
+      if (designData.corelabel) setSelectedCorelabel(designData.corelabel);
+      if (designData.embellishment) setSelectedEmbellishment(designData.embellishment);
+      if (designData.finishings) setSelectedFinishings(designData.finishings);
+      if (designData.quantity) setSelectedQuantity(designData.quantity);
+      if (designData.packaging) setSelectedPackaging(designData.packaging);
+      if (designData.delivery) setSelectedDelivery(designData.delivery);
+      if (designData.sizeData) setEditableSizeData(designData.sizeData);
+      if (designData.uploadedImage) setUploadedImage(designData.uploadedImage);
+      if (designData.comments) setComments(designData.comments);
+      
+      // Marquer comme non modifié puisqu'on vient de charger
+      setHasUnsavedChanges(false);
+      
+      console.log('Progression restaurée:', progressionId, designData);
+    }
+  }, [location.state]);
   
   const handleMyOrdersClick = () => {
     navigate('/');
@@ -185,10 +269,11 @@ function TshirtDesign() {
             file: file,
             name: file.name,
             type: file.type,
-            size: file.size
+            size: file.size,
+            preview: preview
           });
           setImagePreview(preview);
-           setIsModified(true);
+          setHasUnsavedChanges(true);
          };
         reader.readAsDataURL(file);
       } catch (error) {
@@ -354,9 +439,80 @@ function TshirtDesign() {
         return renderPackagingContent();
       case 'delivery':
         return renderDeliveryContent();
+      case 'quote':
+        return renderQuoteContent();
       default:
         return renderFitContent();
     }
+  };
+
+  // Contenu de l'onglet Devis
+  const renderQuoteContent = () => {
+    // Préparer les sélections pour le système de devis
+    const selections = {
+      fabric: selectedFabric,
+      colourway: selectedColourway,
+      embellishment: selectedEmbellishment,
+      finishings: selectedFinishings,
+      packaging: selectedPackaging,
+      delivery: selectedDelivery,
+      quantity: selectedQuantity,
+      isCustomSize: selectedFit === 'custom',
+      isRushOrder: false // Peut être ajouté comme option
+    };
+
+    return (
+      <div className="tab-content">
+        <h3>Devis pour votre T-Shirt</h3>
+        <div className="quote-container">
+          <QuoteSystem 
+            garmentType="tshirt"
+            selections={selections}
+            onQuoteCalculated={(quote) => {
+              console.log('Devis calculé:', quote);
+            }}
+            showDetailedBreakdown={true}
+            autoCalculate={true}
+          />
+        </div>
+        
+        {/* Résumé des sélections */}
+        <div className="selections-summary">
+          <h4>📋 Résumé de vos sélections</h4>
+          <div className="summary-grid">
+            <div className="summary-item">
+              <strong>Fit:</strong> {selectedFit || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Tissu:</strong> {selectedFabric || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Coloris:</strong> {selectedColourway || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Embellissement:</strong> {selectedEmbellishment || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Finitions:</strong> {selectedFinishings || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Emballage:</strong> {selectedPackaging || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Livraison:</strong> {selectedDelivery || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Quantité:</strong> {selectedQuantity}
+            </div>
+            {uploadedImage && (
+              <div className="summary-item">
+                <strong>Image:</strong> {uploadedImage.name}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   // Contenu de l'onglet Fit
@@ -573,8 +729,8 @@ function TshirtDesign() {
     }
     
     try {
-      const designId = saveOrUpdateDesign();
-      const currentId = designId || selectionId;
+      manualSaveProgression();
+      const currentId = currentProgressionId || selectionId;
       
       alert(`Tissu sauvegardé avec succès! ID de sélection: ${currentId}`);
       setActiveTab('colourway'); // Rediriger vers l'onglet Colourway
@@ -874,10 +1030,28 @@ function TshirtDesign() {
   return (
     <div className="tshirt-design-container">
       <div className="tshirt-design-header">
-        <button className="back-button" onClick={handleBackToSelection}>← Sélection</button>
-        <button className="back-button" onClick={handleMyOrdersClick}>← My orders</button>
-        <button className="back-button" onClick={showSavedDesigns}>📋 Designs sauvegardés</button>
-        <div className="header-tabs">
+        <div className="header-left">
+          <button className="back-button" onClick={handleBackToSelection}>← Sélection</button>
+          <button className="back-button" onClick={handleMyOrdersClick}>← My orders</button>
+          <button className="back-button" onClick={showSavedDesigns}>📋 Designs sauvegardés</button>
+        </div>
+        <div className="header-right">
+          <button 
+            className="save-next-button" 
+            onClick={manualSaveProgression}
+            disabled={!hasUnsavedChanges}
+          >
+            💾 Save & Next
+          </button>
+          {lastAutoSave && (
+            <span className="auto-save-indicator">
+              Auto-sauvé: {new Date(lastAutoSave).toLocaleTimeString()}
+            </span>
+          )}
+        </div>
+      </div>
+      
+      <div className="header-tabs">
           <span 
             className={`tab ${activeTab === 'fit' ? 'active' : ''}`}
             onClick={() => setActiveTab('fit')}
@@ -938,8 +1112,13 @@ function TshirtDesign() {
           >
             Delivery
           </span>
+          <span 
+            className={`tab ${activeTab === 'quote' ? 'active' : ''}`}
+            onClick={() => setActiveTab('quote')}
+          >
+            💰 Devis
+          </span>
         </div>
-      </div>
 
       <div className="tshirt-design-content">
         {renderTabContent()}

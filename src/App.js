@@ -10,6 +10,7 @@ import HoodieDesign from "./components/hoodie-design/hoodie-design";
 import CrewneckDesign from "./components/crewneck-design/crewneck-design";
 import LongsleeveDesign from "./components/longsleeve-design/longsleeve-design";
 import ZiphoodieDesign from "./components/ziphoodie-design/ziphoodie-design";
+import QuoteDemo from "./components/quote-demo/quote-demo";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/crewneck-design" element={<CrewneckDesign />} />
               <Route path="/longsleeve-design" element={<LongsleeveDesign />} />
               <Route path="/ziphoodie-design" element={<ZiphoodieDesign />} />
+              <Route path="/quote-demo" element={<QuoteDemo />} />
             </Routes>
           </div>
         </div>

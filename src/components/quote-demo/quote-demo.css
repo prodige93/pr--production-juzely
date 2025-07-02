@@ -1,0 +1,285 @@
+/* Styles pour la démonstration du système de devis */
+.quote-demo-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.demo-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+  padding: 20px;
+}
+
+.demo-header h1 {
+  font-size: 2.5em;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.demo-header p {
+  font-size: 1.2em;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.demo-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Contrôles de démonstration */
+.demo-controls {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.demo-controls h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.3em;
+  font-weight: 600;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.control-group {
+  margin-bottom: 16px;
+}
+
+.control-group label {
+  display: block;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 6px;
+  font-size: 0.9em;
+}
+
+.control-group select,
+.control-group input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.control-group select:focus,
+.control-group input[type="number"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.control-group input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+.control-group label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.control-group label:has(input[type="checkbox"]):hover {
+  background-color: #f8f9fa;
+}
+
+/* Section de devis */
+.demo-quote {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.demo-quote h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.3em;
+  font-weight: 600;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+/* Pied de page avec informations */
+.demo-footer {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 30px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.demo-footer h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.3em;
+  font-weight: 600;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.pricing-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.info-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid #667eea;
+}
+
+.info-section h4 {
+  margin: 0 0 12px 0;
+  color: #495057;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.info-section ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: none;
+}
+
+.info-section li {
+  margin-bottom: 6px;
+  color: #6c757d;
+  position: relative;
+  padding-left: 16px;
+}
+
+.info-section li::before {
+  content: '•';
+  color: #667eea;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .demo-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .demo-controls {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-demo-container {
+    padding: 10px;
+  }
+  
+  .demo-header h1 {
+    font-size: 2em;
+  }
+  
+  .demo-header p {
+    font-size: 1em;
+  }
+  
+  .demo-controls,
+  .demo-quote,
+  .demo-footer {
+    padding: 16px;
+  }
+  
+  .pricing-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-section {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-header h1 {
+    font-size: 1.8em;
+  }
+  
+  .control-group {
+    margin-bottom: 12px;
+  }
+  
+  .control-group select,
+  .control-group input[type="number"] {
+    padding: 8px 10px;
+    font-size: 0.85em;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.demo-controls,
+.demo-quote,
+.demo-footer {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.demo-quote {
+  animation-delay: 0.2s;
+}
+
+.demo-footer {
+  animation-delay: 0.4s;
+}
+
+/* Effets de survol */
+.info-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+  transition: all 0.3s ease;
+}
+
+.control-group select:hover,
+.control-group input[type="number"]:hover {
+  border-color: #667eea;
+}
+
+/* Style pour les éléments actifs */
+.control-group select:active,
+.control-group input[type="number"]:active {
+  transform: scale(0.98);
+}

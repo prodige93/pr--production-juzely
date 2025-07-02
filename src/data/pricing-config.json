@@ -1,0 +1,146 @@
+{
+  "basePrice": {
+    "tshirt": 15.00,
+    "hoodie": 35.00,
+    "crewneck": 28.00,
+    "longsleeve": 22.00,
+    "pull": 30.00,
+    "ziphoodie": 40.00
+  },
+  "fabricPricing": {
+    "cotton": {
+      "name": "Coton 100%",
+      "multiplier": 1.0,
+      "additionalCost": 0
+    },
+    "cotton_organic": {
+      "name": "Coton Bio",
+      "multiplier": 1.3,
+      "additionalCost": 5
+    },
+    "polyester": {
+      "name": "Polyester",
+      "multiplier": 0.8,
+      "additionalCost": 0
+    },
+    "blend": {
+      "name": "Mélange Coton/Polyester",
+      "multiplier": 0.9,
+      "additionalCost": 2
+    }
+  },
+  "colourwayPricing": {
+    "single": {
+      "name": "Couleur unique",
+      "additionalCost": 0
+    },
+    "two_colors": {
+      "name": "Deux couleurs",
+      "additionalCost": 3
+    },
+    "multicolor": {
+      "name": "Multicolore",
+      "additionalCost": 8
+    },
+    "gradient": {
+      "name": "Dégradé",
+      "additionalCost": 12
+    }
+  },
+  "embellishmentPricing": {
+    "none": {
+      "name": "Aucun",
+      "additionalCost": 0
+    },
+    "embroidery": {
+      "name": "Broderie",
+      "additionalCost": 15
+    },
+    "print": {
+      "name": "Impression",
+      "additionalCost": 8
+    },
+    "vinyl": {
+      "name": "Vinyle",
+      "additionalCost": 5
+    },
+    "patch": {
+      "name": "Patch",
+      "additionalCost": 12
+    }
+  },
+  "finishingsPricing": {
+    "standard": {
+      "name": "Standard",
+      "additionalCost": 0
+    },
+    "premium": {
+      "name": "Premium",
+      "additionalCost": 8
+    },
+    "luxury": {
+      "name": "Luxe",
+      "additionalCost": 20
+    }
+  },
+  "packagingPricing": {
+    "standard": {
+      "name": "Emballage standard",
+      "additionalCost": 0
+    },
+    "eco": {
+      "name": "Emballage écologique",
+      "additionalCost": 2
+    },
+    "premium": {
+      "name": "Emballage premium",
+      "additionalCost": 5
+    },
+    "gift": {
+      "name": "Emballage cadeau",
+      "additionalCost": 8
+    }
+  },
+  "deliveryPricing": {
+    "standard": {
+      "name": "Livraison standard (7-10 jours)",
+      "cost": 5.99
+    },
+    "express": {
+      "name": "Livraison express (3-5 jours)",
+      "cost": 12.99
+    },
+    "overnight": {
+      "name": "Livraison 24h",
+      "cost": 25.99
+    },
+    "pickup": {
+      "name": "Retrait en magasin",
+      "cost": 0
+    }
+  },
+  "quantityDiscounts": [
+    { "min": 1, "max": 9, "discount": 0 },
+    { "min": 10, "max": 24, "discount": 0.05 },
+    { "min": 25, "max": 49, "discount": 0.10 },
+    { "min": 50, "max": 99, "discount": 0.15 },
+    { "min": 100, "max": 199, "discount": 0.20 },
+    { "min": 200, "max": 499, "discount": 0.25 },
+    { "min": 500, "max": 999, "discount": 0.30 },
+    { "min": 1000, "max": 9999, "discount": 0.35 }
+  ],
+  "customSizeUpcharge": {
+    "enabled": true,
+    "percentage": 0.15,
+    "description": "Supplément pour tailles personnalisées"
+  },
+  "rushOrderUpcharge": {
+    "enabled": true,
+    "percentage": 0.25,
+    "description": "Supplément pour commande urgente"
+  },
+  "taxes": {
+    "vat": 0.20,
+    "description": "TVA 20%"
+  }
+}
