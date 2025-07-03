@@ -278,6 +278,7 @@ function TshirtDesign() {
       const newSizeData = JSON.parse(JSON.stringify(template.data));
       setEditableSizeData(newSizeData);
       setIsModified(true);
+      setHasUnsavedChanges(true); // Déclencher la sauvegarde automatique
       console.log(`Template ${template.name} appliqué:`, newSizeData);
     }
   };
