@@ -14,6 +14,54 @@ const tshirtSizeData = {
   'XL': { totalLength: 73, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 }
 };
 
+// Templates de tailles prédéfinies pour chaque fit
+const predefinedSizeTemplates = {
+  oversized: {
+    name: 'Oversized',
+    data: {
+      'XS': { totalLength: 70, chestWidth: 58, bottomWidth: 58, sleeveLength: 22, armhole: 26, sleeveOpening: 22, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 54 },
+      'S': { totalLength: 72, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 26.5, sleeveOpening: 22.5, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 56 },
+      'M': { totalLength: 74, chestWidth: 62, bottomWidth: 62, sleeveLength: 24, armhole: 27, sleeveOpening: 23, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 58 },
+      'L': { totalLength: 76, chestWidth: 64, bottomWidth: 64, sleeveLength: 25, armhole: 27.5, sleeveOpening: 23.5, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 60 },
+      'XL': { totalLength: 78, chestWidth: 66, bottomWidth: 66, sleeveLength: 26, armhole: 28, sleeveOpening: 24, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 62 }
+    }
+  },
+  regular: {
+    name: 'Regular',
+    data: {
+      'XS': { totalLength: 61, chestWidth: 50, bottomWidth: 50, sleeveLength: 19, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 51 },
+      'S': { totalLength: 67, chestWidth: 54, bottomWidth: 54, sleeveLength: 20, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 53 },
+      'M': { totalLength: 69, chestWidth: 56, bottomWidth: 56, sleeveLength: 21, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 55 },
+      'L': { totalLength: 71, chestWidth: 58, bottomWidth: 58, sleeveLength: 22, armhole: 24.5, sleeveOpening: 20.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 57 },
+      'XL': { totalLength: 73, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 }
+    }
+  },
+  slim: {
+    name: 'Slim',
+    data: {
+      'XS': { totalLength: 63, chestWidth: 48, bottomWidth: 48, sleeveLength: 18, armhole: 22, sleeveOpening: 18, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 49 },
+      'S': { totalLength: 65, chestWidth: 50, bottomWidth: 50, sleeveLength: 19, armhole: 22.5, sleeveOpening: 18.5, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 51 },
+      'M': { totalLength: 67, chestWidth: 52, bottomWidth: 52, sleeveLength: 20, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 53 },
+      'L': { totalLength: 69, chestWidth: 54, bottomWidth: 54, sleeveLength: 21, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 55 },
+      'XL': { totalLength: 71, chestWidth: 56, bottomWidth: 56, sleeveLength: 22, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 57 }
+    }
+  },
+  cropped: {
+    name: 'Cropped',
+    data: {
+      'XS': { totalLength: 50, chestWidth: 52, bottomWidth: 52, sleeveLength: 12, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 51 },
+      'S': { totalLength: 52, chestWidth: 54, bottomWidth: 54, sleeveLength: 13, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 53 },
+      'M': { totalLength: 54, chestWidth: 56, bottomWidth: 56, sleeveLength: 14, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 55 },
+      'L': { totalLength: 56, chestWidth: 58, bottomWidth: 58, sleeveLength: 15, armhole: 24.5, sleeveOpening: 20.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 57 },
+      'XL': { totalLength: 58, chestWidth: 60, bottomWidth: 60, sleeveLength: 16, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 }
+    }
+  },
+  custom: {
+    name: 'Custom',
+    data: tshirtSizeData // Utilise les données par défaut pour custom
+  }
+};
+
 function TshirtDesign() {
   const [selectedFit, setSelectedFit] = useState('custom');
   const [selectedFabric, setSelectedFabric] = useState(null);
@@ -219,6 +267,21 @@ function TshirtDesign() {
     { id: 'H', label: 'Neck Opening', key: 'neckOpening' },
     { id: 'I', label: 'Shoulder-to-Shoulder', key: 'shoulderToShoulder' }
   ];
+
+  // Handle fit change and apply predefined sizes
+  const handleFitChange = (fitType) => {
+    setSelectedFit(fitType);
+    
+    // Appliquer le template de tailles correspondant
+    if (predefinedSizeTemplates[fitType]) {
+      const template = predefinedSizeTemplates[fitType];
+      // Copie profonde des données du template
+      const newSizeData = JSON.parse(JSON.stringify(template.data));
+      setEditableSizeData(newSizeData);
+      setIsModified(true);
+      console.log(`Template ${template.name} appliqué:`, newSizeData);
+    }
+  };
 
   // Initialize editable data with default values and save selection
   useEffect(() => {
@@ -528,8 +591,7 @@ function TshirtDesign() {
                   key={option.id} 
                   className={`fit-option ${selectedFit === option.id ? 'selected' : ''}`}
                   onClick={() => {
-                    setSelectedFit(option.id);
-                    setIsModified(true);
+                    handleFitChange(option.id);
                   }}
                 >
                   <input
@@ -575,8 +637,7 @@ function TshirtDesign() {
                           transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
                         }}
                         onClick={() => {
-                          setSelectedFit(option.id);
-                          setIsModified(true);
+                          handleFitChange(option.id);
                         }}
                       />
                     );
@@ -643,13 +704,29 @@ function TshirtDesign() {
         <div className="size-chart-section">
           <div className="size-chart-header">
             <h3>Tableau des tailles T-Shirt (en cm)</h3>
-            <button 
-              onClick={resetSizeData}
-              className="reset-sizes-button"
-              type="button"
-            >
-              Reset des tailles
-            </button>
+            <div className="size-chart-actions">
+              <div className="predefined-sizes-buttons">
+                {Object.entries(predefinedSizeTemplates).map(([key, template]) => (
+                  <button
+                    key={key}
+                    onClick={() => handleFitChange(key)}
+                    className={`predefined-size-button ${selectedFit === key ? 'active' : ''}`}
+                    type="button"
+                    title={`Appliquer les tailles ${template.name}`}
+                  >
+                    {template.name}
+                  </button>
+                ))}
+              </div>
+              <button 
+                onClick={resetSizeData}
+                className="reset-sizes-button"
+                type="button"
+                title="Réinitialiser toutes les tailles à 0"
+              >
+                Reset
+              </button>
+            </div>
           </div>
           <div className="table-container">
             <table className="size-table">

@@ -510,6 +510,47 @@
   font-weight: 600;
 }
 
+.size-chart-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.predefined-sizes-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.predefined-size-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.predefined-size-button:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+}
+
+.predefined-size-button.active {
+  background: #28a745;
+  box-shadow: 0 3px 8px rgba(40, 167, 69, 0.3);
+}
+
+.predefined-size-button.active:hover {
+  background: #218838;
+}
+
 .reset-sizes-button {
   background: #ff4757;
   color: white;
