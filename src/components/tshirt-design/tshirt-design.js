@@ -7,11 +7,11 @@ import './tshirt-design.css';
 
 // Size data definition outside component to avoid re-creation on each render
 const tshirtSizeData = {
-  'XS': { totalLength: 65, chestWidth: 52, bottomWidth: 52, sleeveLength: 19, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 51 },
-  'S': { totalLength: 67, chestWidth: 54, bottomWidth: 54, sleeveLength: 20, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 53 },
-  'M': { totalLength: 69, chestWidth: 56, bottomWidth: 56, sleeveLength: 21, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 55 },
-  'L': { totalLength: 71, chestWidth: 58, bottomWidth: 58, sleeveLength: 22, armhole: 24.5, sleeveOpening: 20.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 57 },
-  'XL': { totalLength: 73, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 }
+  'XS': { bodyLenght: 65, chest: 52, bottom: 52, shoulders: 19, armhole: 23, sleeveLenghtOutside: 19, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+  'S': { bodyLenght: 67, chest: 54, bottom: 54, shoulders: 20, armhole: 23.5, sleeveLenghtOutside: 19.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+  'M': { bodyLenght: 69, chest: 56, bottom: 56, shoulders: 21, armhole: 24, sleeveLenghtOutside: 20, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+  'L': { bodyLenght: 71, chest: 58, bottom: 58, shoulders: 22, armhole: 24.5, sleeveLenghtOutside: 20.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+  'XL': { bodyLenght: 73, chest: 60, bottom: 60, shoulders: 23, armhole: 25, sleeveLenghtOutside: 21, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 }
 };
 
 // Templates de tailles prédéfinies pour chaque fit
@@ -19,41 +19,41 @@ const predefinedSizeTemplates = {
   oversized: {
     name: 'Oversized',
     data: {
-      'XS': { totalLength: 70, chestWidth: 58, bottomWidth: 58, sleeveLength: 22, armhole: 26, sleeveOpening: 22, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 54 },
-      'S': { totalLength: 72, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 26.5, sleeveOpening: 22.5, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 56 },
-      'M': { totalLength: 74, chestWidth: 62, bottomWidth: 62, sleeveLength: 24, armhole: 27, sleeveOpening: 23, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 58 },
-      'L': { totalLength: 76, chestWidth: 64, bottomWidth: 64, sleeveLength: 25, armhole: 27.5, sleeveOpening: 23.5, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 60 },
-      'XL': { totalLength: 78, chestWidth: 66, bottomWidth: 66, sleeveLength: 26, armhole: 28, sleeveOpening: 24, neckRibLength: 2.5, neckOpening: 19, shoulderToShoulder: 62 }
+      'XS': { bodyLenght: 70, chest: 58, bottom: 58, shoulders: 22, armhole: 26, sleeveLenghtOutside: 22, sleeveArmOpenning: 2.5, sleevelenghtInside: 19 },
+      'S': { bodyLenght: 72, chest: 60, bottom: 60, shoulders: 23, armhole: 26.5, sleeveLenghtOutside: 22.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 19 },
+      'M': { bodyLenght: 74, chest: 62, bottom: 62, shoulders: 24, armhole: 27, sleeveLenghtOutside: 23, sleeveArmOpenning: 2.5, sleevelenghtInside: 19 },
+      'L': { bodyLenght: 76, chest: 64, bottom: 64, shoulders: 25, armhole: 27.5, sleeveLenghtOutside: 23.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 19 },
+      'XL': { bodyLenght: 78, chest: 66, bottom: 66, shoulders: 26, armhole: 28, sleeveLenghtOutside: 24, sleeveArmOpenning: 2.5, sleevelenghtInside: 19 }
     }
   },
   regular: {
     name: 'Regular',
     data: {
-      'XS': { totalLength: 61, chestWidth: 50, bottomWidth: 50, sleeveLength: 19, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 51 },
-      'S': { totalLength: 67, chestWidth: 54, bottomWidth: 54, sleeveLength: 20, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 53 },
-      'M': { totalLength: 69, chestWidth: 56, bottomWidth: 56, sleeveLength: 21, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 55 },
-      'L': { totalLength: 71, chestWidth: 58, bottomWidth: 58, sleeveLength: 22, armhole: 24.5, sleeveOpening: 20.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 57 },
-      'XL': { totalLength: 73, chestWidth: 60, bottomWidth: 60, sleeveLength: 23, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 }
+      'XS': { bodyLenght: 61, chest: 50, bottom: 50, shoulders: 19, armhole: 23, sleeveLenghtOutside: 19, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'S': { bodyLenght: 67, chest: 54, bottom: 54, shoulders: 20, armhole: 23.5, sleeveLenghtOutside: 19.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'M': { bodyLenght: 69, chest: 56, bottom: 56, shoulders: 21, armhole: 24, sleeveLenghtOutside: 20, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'L': { bodyLenght: 71, chest: 58, bottom: 58, shoulders: 22, armhole: 24.5, sleeveLenghtOutside: 20.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'XL': { bodyLenght: 73, chest: 60, bottom: 60, shoulders: 23, armhole: 25, sleeveLenghtOutside: 21, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 }
     }
   },
   slim: {
     name: 'Slim',
     data: {
-      'XS': { totalLength: 63, chestWidth: 48, bottomWidth: 48, sleeveLength: 18, armhole: 22, sleeveOpening: 18, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 49 },
-      'S': { totalLength: 65, chestWidth: 50, bottomWidth: 50, sleeveLength: 19, armhole: 22.5, sleeveOpening: 18.5, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 51 },
-      'M': { totalLength: 67, chestWidth: 52, bottomWidth: 52, sleeveLength: 20, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 53 },
-      'L': { totalLength: 69, chestWidth: 54, bottomWidth: 54, sleeveLength: 21, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 55 },
-      'XL': { totalLength: 71, chestWidth: 56, bottomWidth: 56, sleeveLength: 22, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18, shoulderToShoulder: 57 }
+      'XS': { bodyLenght: 63, chest: 48, bottom: 48, shoulders: 18, armhole: 22, sleeveLenghtOutside: 18, sleeveArmOpenning: 2.5, sleevelenghtInside: 18 },
+      'S': { bodyLenght: 65, chest: 50, bottom: 50, shoulders: 19, armhole: 22.5, sleeveLenghtOutside: 18.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18 },
+      'M': { bodyLenght: 67, chest: 52, bottom: 52, shoulders: 20, armhole: 23, sleeveLenghtOutside: 19, sleeveArmOpenning: 2.5, sleevelenghtInside: 18 },
+      'L': { bodyLenght: 69, chest: 54, bottom: 54, shoulders: 21, armhole: 23.5, sleeveLenghtOutside: 19.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18 },
+      'XL': { bodyLenght: 71, chest: 56, bottom: 56, shoulders: 22, armhole: 24, sleeveLenghtOutside: 20, sleeveArmOpenning: 2.5, sleevelenghtInside: 18 }
     }
   },
   cropped: {
     name: 'Cropped',
     data: {
-      'XS': { totalLength: 50, chestWidth: 52, bottomWidth: 52, sleeveLength: 12, armhole: 23, sleeveOpening: 19, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 51 },
-      'S': { totalLength: 52, chestWidth: 54, bottomWidth: 54, sleeveLength: 13, armhole: 23.5, sleeveOpening: 19.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 53 },
-      'M': { totalLength: 54, chestWidth: 56, bottomWidth: 56, sleeveLength: 14, armhole: 24, sleeveOpening: 20, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 55 },
-      'L': { totalLength: 56, chestWidth: 58, bottomWidth: 58, sleeveLength: 15, armhole: 24.5, sleeveOpening: 20.5, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 57 },
-      'XL': { totalLength: 58, chestWidth: 60, bottomWidth: 60, sleeveLength: 16, armhole: 25, sleeveOpening: 21, neckRibLength: 2.5, neckOpening: 18.5, shoulderToShoulder: 59 }
+      'XS': { bodyLenght: 50, chest: 52, bottom: 52, shoulders: 12, armhole: 23, sleeveLenghtOutside: 19, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'S': { bodyLenght: 52, chest: 54, bottom: 54, shoulders: 13, armhole: 23.5, sleeveLenghtOutside: 19.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'M': { bodyLenght: 54, chest: 56, bottom: 56, shoulders: 14, armhole: 24, sleeveLenghtOutside: 20, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'L': { bodyLenght: 56, chest: 58, bottom: 58, shoulders: 15, armhole: 24.5, sleeveLenghtOutside: 20.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
+      'XL': { bodyLenght: 58, chest: 60, bottom: 60, shoulders: 16, armhole: 25, sleeveLenghtOutside: 21, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 }
     }
   },
   custom: {
@@ -257,15 +257,14 @@ function TshirtDesign() {
 
   // Définition des mesures
   const measurements = [
-    { id: 'A', label: 'Total Length', key: 'totalLength' },
-    { id: 'B', label: 'Chest Width', key: 'chestWidth' },
-    { id: 'C', label: 'Bottom Width', key: 'bottomWidth' },
-    { id: 'D', label: 'Sleeve Length', key: 'sleeveLength' },
+    { id: 'A', label: 'Body Length', key: 'bodyLenght' },
+    { id: 'B', label: 'Chest', key: 'chest' },
+    { id: 'C', label: 'Bottom', key: 'bottom' },
+    { id: 'D', label: 'Shoulders', key: 'shoulders' },
     { id: 'E', label: 'Armhole', key: 'armhole' },
-    { id: 'F', label: 'Sleeve Opening', key: 'sleeveOpening' },
-    { id: 'G', label: 'Neck Rib Length', key: 'neckRibLength' },
-    { id: 'H', label: 'Neck Opening', key: 'neckOpening' },
-    { id: 'I', label: 'Shoulder-to-Shoulder', key: 'shoulderToShoulder' }
+    { id: 'F', label: 'Sleeve lenght OUTSIDE', key: 'sleeveLenghtOutside' },
+    { id: 'G', label: 'Sleeve arm OPENNING', key: 'sleeveArmOpenning' },
+    { id: 'H', label: 'Sleeve lenght INSIDE', key: 'sleevelenghtInside' }
   ];
 
   // Handle fit change and apply predefined sizes

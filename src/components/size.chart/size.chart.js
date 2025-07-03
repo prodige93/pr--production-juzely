@@ -193,15 +193,14 @@ function SizeChart() {
 
 
   const measurements = [
-    { id: 'A', label: 'Total Length', key: 'totalLength' },
-    { id: 'B', label: 'Chest Width', key: 'chestWidth' },
-    { id: 'C', label: 'Bottom Width', key: 'bottomWidth' },
-    { id: 'D', label: 'Sleeve Length', key: 'sleeveLength' },
+    { id: 'A', label: 'Body Lenght', key: 'bodyLenght' },
+    { id: 'B', label: 'Chest', key: 'chest' },
+    { id: 'C', label: 'Bottom', key: 'bottom' },
+    { id: 'D', label: 'Shoulders', key: 'shoulders' },
     { id: 'E', label: 'Armhole', key: 'armhole' },
-    { id: 'F', label: 'Sleeve Opening', key: 'sleeveOpening' },
-    { id: 'G', label: 'Neck Rib Length', key: 'neckRibLength' },
-    { id: 'H', label: 'Neck Opening', key: 'neckOpening' },
-    { id: 'I', label: 'Shoulder-to-Shoulder', key: 'shoulderToShoulder' }
+    { id: 'F', label: 'Sleeve lenght OUTSIDE', key: 'sleeveLenghtOutside' },
+    { id: 'G', label: 'Sleeve arm OPENNING', key: 'sleeveArmOpenning' },
+    { id: 'H', label: 'Sleeve lenght INSIDE', key: 'sleevelenghtInside' },
   ];
 
   return (
