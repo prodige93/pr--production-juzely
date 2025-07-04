@@ -100,6 +100,7 @@ function ZiphoodieDesign() {
       });
       setEditableSizeData(initialData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handle fit selection

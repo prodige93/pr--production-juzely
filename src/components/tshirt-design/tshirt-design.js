@@ -79,7 +79,7 @@ function TshirtDesign() {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectionId, setSelectionId] = useState(null);
   const [comments, setComments] = useState('');
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState('fit');
   const [currentProgressionId, setCurrentProgressionId] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -471,13 +471,13 @@ function TshirtDesign() {
     }
   };
 
-  const fitOptions = [
-    { id: 'oversized', label: 'Oversized Fit' },
-    { id: 'regular', label: 'Regular Fit' },
-    { id: 'slim', label: 'Slim Fit' },
-    { id: 'custom', label: 'Custom Fit' },
-    { id: 'cropped', label: 'Cropped (1/2 Sleeve) Fit' }
-  ];
+  // const fitOptions = [
+  //   { id: 'oversized', label: 'Oversized Fit' },
+  //   { id: 'regular', label: 'Regular Fit' },
+  //   { id: 'slim', label: 'Slim Fit' },
+  //   { id: 'custom', label: 'Custom Fit' },
+  //   { id: 'cropped', label: 'Cropped (1/2 Sleeve) Fit' }
+  // ];
 
   // Fonction pour rendre le contenu selon l'onglet actif
   const renderTabContent = () => {
