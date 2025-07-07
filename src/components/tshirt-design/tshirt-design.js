@@ -484,10 +484,8 @@ function TshirtDesign() {
     switch (activeTab) {
       case 'fit':
         return renderFitContent();
-      case 'fabric':
-        return renderFabricContent();
-      case 'colourway':
-        return renderColourwayContent();
+      case 'fabric-colourway':
+        return renderFabricColourwayContent();
       case 'necklabel':
         return renderNecklabelContent();
       case 'corelabel':
@@ -725,11 +723,15 @@ function TshirtDesign() {
     );
   };
 
-  // Handle fabric save and next
-
-  const handleFabricSaveNext = () => {
+  // Handle fabric and colourway save and next
+  const handleFabricColourwaySaveNext = () => {
     if (!selectedFabric) {
       alert("Veuillez sélectionner un tissu avant de continuer.");
+      return;
+    }
+    
+    if (!selectedColourway) {
+      alert("Veuillez sélectionner un coloris avant de continuer.");
       return;
     }
     
@@ -737,16 +739,16 @@ function TshirtDesign() {
       manualSaveProgression();
       const currentId = currentProgressionId || selectionId;
       
-      alert(`Tissu sauvegardé avec succès! ID de sélection: ${currentId}`);
-      setActiveTab('colourway'); // Rediriger vers l'onglet Colourway
+      alert(`Tissu et coloris sauvegardés avec succès! ID de sélection: ${currentId}`);
+      setActiveTab('necklabel'); // Rediriger vers l'onglet suivant
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
       alert('Erreur lors de la sauvegarde. Veuillez réessayer.');
     }
   };
 
-  // Contenu de l'onglet Fabric
-  const renderFabricContent = () => {
+  // Contenu de l'onglet Fabric & Colourway fusionné
+  const renderFabricColourwayContent = () => {
     const fabricOptions = [
       { id: 'coton-200', label: '200gsm, 100%, Coton' },
       { id: 'coton-240', label: '240gsm, 100%, Coton' },
@@ -754,43 +756,6 @@ function TshirtDesign() {
       { id: 'coton-340', label: '340gsm, 100%, Coton' }
     ];
     
-    return (
-      <div className="tab-content">
-        <h3>Sélectionnez le tissu</h3>
-        <div className="actions-section">
-          <div className="options-grid">
-            {fabricOptions.map((option, index) => (
-              <label key={`${option.id}-${index}`} className={`option-card ${selectedFabric === option.id ? 'selected' : ''}`}>
-                <input
-                  type="radio"
-                  name="fabric"
-                  value={option.id}
-                  checked={selectedFabric === option.id}
-                  onChange={() => {
-                    setSelectedFabric(option.id);
-                    setIsModified(true);
-                  }}
-                />
-                <span>{option.label}</span>
-              </label>
-            ))}
-          </div>
-          <button 
-            onClick={handleFabricSaveNext}
-            className="generate-quote-button"
-            disabled={!selectedFabric}
-          >
-            Save & Next
-          </button>
-          {selectionId && (
-            <p className="selection-info">ID de sélection: {selectionId}</p>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const renderColourwayContent = () => {
     const colourwayOptions = [
       { id: 'white', label: 'Blanc' },
       { id: 'black', label: 'Noir' },
@@ -801,23 +766,64 @@ function TshirtDesign() {
     
     return (
       <div className="tab-content">
-        <h3>Sélectionnez la couleur</h3>
-        <div className="options-grid">
-          {colourwayOptions.map(option => (
-            <label key={option.id} className={`option-card ${selectedColourway === option.id ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="colourway"
-                value={option.id}
-                checked={selectedColourway === option.id}
-                onChange={() => {
-                  setSelectedColourway(option.id);
-                  setIsModified(true);
-                }}
-              />
-              <span>{option.label}</span>
-            </label>
-          ))}
+        <div className="fabric-colourway-container">
+          {/* Section Tissu */}
+          <div className="fabric-section">
+            <h3>Sélectionnez le tissu</h3>
+            <div className="options-grid">
+              {fabricOptions.map((option, index) => (
+                <label key={`${option.id}-${index}`} className={`option-card ${selectedFabric === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="fabric"
+                    value={option.id}
+                    checked={selectedFabric === option.id}
+                    onChange={() => {
+                      setSelectedFabric(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          {/* Section Coloris */}
+          <div className="colourway-section">
+            <h3>Sélectionnez la couleur</h3>
+            <div className="options-grid">
+              {colourwayOptions.map(option => (
+                <label key={option.id} className={`option-card ${selectedColourway === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="colourway"
+                    value={option.id}
+                    checked={selectedColourway === option.id}
+                    onChange={() => {
+                      setSelectedColourway(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        {/* Actions */}
+        <div className="actions-section">
+          <button 
+            onClick={handleFabricColourwaySaveNext}
+            className="generate-quote-button"
+            disabled={!selectedFabric || !selectedColourway}
+          >
+            Save & Next
+          </button>
+          {selectionId && (
+            <p className="selection-info">ID de sélection: {selectionId}</p>
+          )}
         </div>
       </div>
     );
@@ -1064,16 +1070,10 @@ function TshirtDesign() {
             Fit - T-Shirt
           </span>
           <span 
-            className={`tab ${activeTab === 'fabric' ? 'active' : ''}`}
-            onClick={() => setActiveTab('fabric')}
+            className={`tab ${activeTab === 'fabric-colourway' ? 'active' : ''}`}
+            onClick={() => setActiveTab('fabric-colourway')}
           >
-            Fabric
-          </span>
-          <span 
-            className={`tab ${activeTab === 'colourway' ? 'active' : ''}`}
-            onClick={() => setActiveTab('colourway')}
-          >
-            Colourway
+            Fabric & Colourway
           </span>
           <span 
             className={`tab ${activeTab === 'necklabel' ? 'active' : ''}`}
