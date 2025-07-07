@@ -167,7 +167,8 @@ header {
   align-items: center;
 }
 
-/* Active Tab Indicator */
+/* Active Tab Indicator - Disabled */
+/*
 .orders-tabs::before {
   content: '';
   position: absolute;
@@ -182,7 +183,6 @@ header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Tab Position States */
 .orders-tabs[data-active="1"]::before {
   transform: translateX(0);
 }
@@ -194,6 +194,7 @@ header {
 .orders-tabs[data-active="3"]::before {
   transform: translateX(200%);
 }
+*/
 
 /* Tab Button Styles */
 .tab-button {
