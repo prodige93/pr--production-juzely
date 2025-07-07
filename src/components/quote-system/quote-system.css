@@ -336,6 +336,203 @@ a.pdf-btn:visited {
   color: white !important;
 }
 
+/* ========================================
+   RESPONSIVE DESIGN FOR QUOTE SYSTEM
+   ======================================== */
+
+/* Mobile Styles (320px - 768px) */
+@media (max-width: 768px) {
+  .quote-system {
+    padding: 15px;
+    margin: 15px auto;
+  }
+  
+  .quote-header {
+    padding: 15px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .quote-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .quote-content {
+    padding: 15px;
+  }
+  
+  .quote-section {
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+  
+  .quote-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  
+  .quote-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding: 10px 0;
+  }
+  
+  .quote-item-label {
+    font-size: 14px;
+  }
+  
+  .quote-item-value {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .quote-total {
+    padding: 15px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .quote-total-label {
+    font-size: 1.1rem;
+  }
+  
+  .quote-total-value {
+    font-size: 1.5rem;
+  }
+  
+  .quote-actions {
+    padding: 15px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .quote-btn,
+  .pdf-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 14px;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  /* Size Info Responsive */
+  .size-info {
+    padding: 15px;
+  }
+  
+  .size-info h3 {
+    font-size: 1.1rem;
+  }
+  
+  .predefined-size {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .size-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .size-table table {
+    min-width: 600px;
+    font-size: 12px;
+  }
+  
+  .size-table th,
+  .size-table td {
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+}
+
+/* Small Mobile Styles (320px - 480px) */
+@media (max-width: 480px) {
+  .quote-system {
+    padding: 10px;
+    margin: 10px auto;
+  }
+  
+  .quote-header {
+    padding: 12px;
+  }
+  
+  .quote-header h2 {
+    font-size: 1.125rem;
+  }
+  
+  .quote-content {
+    padding: 12px;
+  }
+  
+  .quote-section {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .quote-section h3 {
+    font-size: 1rem;
+  }
+  
+  .quote-item-label,
+  .quote-item-value {
+    font-size: 13px;
+  }
+  
+  .quote-total {
+    padding: 12px;
+  }
+  
+  .quote-total-label {
+    font-size: 1rem;
+  }
+  
+  .quote-total-value {
+    font-size: 1.375rem;
+  }
+  
+  .quote-actions {
+    padding: 12px;
+  }
+  
+  .quote-btn,
+  .pdf-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .size-table table {
+    font-size: 11px;
+  }
+  
+  .size-table th,
+  .size-table td {
+    padding: 4px 6px;
+  }
+}
+
+/* Tablet Styles (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .quote-system {
+    padding: 20px;
+  }
+  
+  .quote-actions {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .quote-btn,
+  .pdf-btn {
+    flex: 1;
+    max-width: 200px;
+  }
+}
+
 .recalculate-btn {
   background: rgba(255, 255, 255, 0.2);
   color: white;

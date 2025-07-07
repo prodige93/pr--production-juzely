@@ -1,0 +1,359 @@
+/* ========================================
+   GLOBAL RESPONSIVE STYLES
+   Styles communs pour tous les composants de design
+   ======================================== */
+
+/* Mobile Styles (320px - 768px) */
+@media (max-width: 768px) {
+  /* Design Container Common Styles */
+  .pull-design-container,
+  .hoodie-design-container,
+  .crewneck-design-container,
+  .longsleeve-design-container,
+  .ziphoodie-design-container {
+    padding: 0;
+  }
+  
+  /* Design Header Common Styles */
+  .pull-design-header,
+  .hoodie-design-header,
+  .crewneck-design-header,
+  .longsleeve-design-header,
+  .ziphoodie-design-header {
+    padding: 15px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  /* Back Button Common Styles */
+  .back-button {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  
+  /* Design Content Common Styles */
+  .pull-design-content,
+  .hoodie-design-content,
+  .crewneck-design-content,
+  .longsleeve-design-content,
+  .ziphoodie-design-content {
+    padding: 20px 15px;
+  }
+  
+  /* Form Sections Common Styles */
+  .form-section,
+  .color-selection,
+  .size-selection,
+  .quantity-selection,
+  .design-section {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .form-section h3,
+  .color-selection h3,
+  .size-selection h3,
+  .quantity-selection h3,
+  .design-section h3 {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  /* Color Options Common Styles */
+  .color-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+    justify-items: center;
+  }
+  
+  .color-option {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .color-option.selected {
+    border-color: #007bff;
+    transform: scale(1.1);
+  }
+  
+  /* Size Options Common Styles */
+  .size-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 10px;
+  }
+  
+  .size-option {
+    padding: 12px 8px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .size-option.selected {
+    border-color: #007bff;
+    background: #e3f2fd;
+    color: #007bff;
+  }
+  
+  /* Quantity Input Common Styles */
+  .quantity-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .quantity-input input {
+    width: 100%;
+    max-width: 150px;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  /* Generate Quote Button Common Styles */
+  .generate-quote-button {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  .generate-quote-button:hover:not(:disabled) {
+    background: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  .generate-quote-button:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  /* Size Table Common Styles */
+  .size-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px 0;
+  }
+  
+  .size-table {
+    min-width: 600px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  
+  .size-table th,
+  .size-table td {
+    padding: 8px 6px;
+    border: 1px solid #ddd;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .size-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+  }
+  
+  .size-table input {
+    width: 60px;
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 11px;
+  }
+}
+
+/* Small Mobile Styles (320px - 480px) */
+@media (max-width: 480px) {
+  /* Design Header Small Mobile */
+  .pull-design-header,
+  .hoodie-design-header,
+  .crewneck-design-header,
+  .longsleeve-design-header,
+  .ziphoodie-design-header {
+    padding: 10px;
+  }
+  
+  /* Design Content Small Mobile */
+  .pull-design-content,
+  .hoodie-design-content,
+  .crewneck-design-content,
+  .longsleeve-design-content,
+  .ziphoodie-design-content {
+    padding: 15px 10px;
+  }
+  
+  /* Form Sections Small Mobile */
+  .form-section,
+  .color-selection,
+  .size-selection,
+  .quantity-selection,
+  .design-section {
+    padding: 15px 10px;
+    margin-bottom: 15px;
+  }
+  
+  .form-section h3,
+  .color-selection h3,
+  .size-selection h3,
+  .quantity-selection h3,
+  .design-section h3 {
+    font-size: 14px;
+  }
+  
+  /* Color Options Small Mobile */
+  .color-options {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 8px;
+  }
+  
+  .color-option {
+    width: 50px;
+    height: 50px;
+  }
+  
+  /* Size Options Small Mobile */
+  .size-options {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 8px;
+  }
+  
+  .size-option {
+    padding: 10px 6px;
+    font-size: 14px;
+  }
+  
+  /* Generate Quote Button Small Mobile */
+  .generate-quote-button {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  /* Size Table Small Mobile */
+  .size-table {
+    font-size: 10px;
+  }
+  
+  .size-table th,
+  .size-table td {
+    padding: 6px 4px;
+  }
+  
+  .size-table input {
+    width: 50px;
+    font-size: 10px;
+  }
+}
+
+/* Tablet Styles (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Design Content Tablet */
+  .pull-design-content,
+  .hoodie-design-content,
+  .crewneck-design-content,
+  .longsleeve-design-content,
+  .ziphoodie-design-content {
+    padding: 25px 20px;
+  }
+  
+  /* Form Sections Tablet */
+  .form-section,
+  .color-selection,
+  .size-selection,
+  .quantity-selection,
+  .design-section {
+    padding: 25px 20px;
+  }
+  
+  /* Color Options Tablet */
+  .color-options {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 12px;
+  }
+  
+  /* Size Options Tablet */
+  .size-options {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 12px;
+  }
+}
+
+/* Landscape Mobile Styles */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Design Header Landscape */
+  .pull-design-header,
+  .hoodie-design-header,
+  .crewneck-design-header,
+  .longsleeve-design-header,
+  .ziphoodie-design-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+  }
+  
+  /* Back Button Landscape */
+  .back-button {
+    width: auto;
+    min-width: 100px;
+  }
+  
+  /* Generate Quote Button Landscape */
+  .generate-quote-button {
+    width: auto;
+    min-width: 200px;
+    align-self: center;
+  }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Improve text rendering on high DPI displays */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (pointer: coarse) {
+  /* Increase touch targets for better usability */
+  .color-option,
+  .size-option,
+  .back-button,
+  .generate-quote-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve button spacing for touch */
+  .color-options,
+  .size-options {
+    gap: 12px;
+  }
+}

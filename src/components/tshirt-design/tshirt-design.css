@@ -198,7 +198,159 @@
 
 .fit-option.selected .fit-icon {
   background: white;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN FOR TSHIRT DESIGN
+   ======================================== */
+
+/* Mobile Styles (320px - 768px) */
+@media (max-width: 768px) {
+  .tshirt-design-container {
+    padding: 0;
+  }
+  
+  .tshirt-design-header {
+    padding: 15px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .header-left,
+  .header-right {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .save-next-button {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+  }
+  
+  .auto-save-indicator {
+    text-align: center;
+    width: 100%;
+  }
+  
+  .header-tabs {
+    padding: 0 15px 15px 15px;
+    justify-content: center;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .tab {
+    flex-shrink: 0;
+    min-width: 80px;
+    text-align: center;
+  }
+  
+  .tshirt-design-content {
+    padding: 20px 15px;
+  }
+  
+  .fit-selection {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .fit-selection h3 {
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .fit-options {
+    padding: 15px 0;
+  }
+  
+  .fit-options-container {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 15px;
+    align-items: stretch;
+  }
+  
+  .fit-option {
+    min-width: 100%;
+    height: 80px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 15px 20px;
+    text-align: left;
+  }
+  
+  .fit-option:hover {
+    transform: none;
+  }
+  
+  .fit-option.selected {
+    transform: none;
+  }
+  
+  .fit-icon {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 0;
+    margin-right: 15px;
+  }
+}
+
+/* Small Mobile Styles (320px - 480px) */
+@media (max-width: 480px) {
+  .tshirt-design-header {
+    padding: 10px;
+  }
+  
+  .header-tabs {
+    padding: 0 10px 10px 10px;
+  }
+  
+  .tab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .tshirt-design-content {
+    padding: 15px 10px;
+  }
+  
+  .fit-selection {
+    padding: 15px 10px;
+  }
+  
+  .fit-selection h3 {
+    font-size: 14px;
+  }
+  
+  .fit-option {
+    height: 70px;
+    padding: 12px 15px;
+  }
+  
+  .fit-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 12px;
+  }
+}
+
+/* Tablet Styles (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .tshirt-design-content {
+    padding: 25px 20px;
+  }
+  
+  .fit-options-container {
+    gap: 15px;
+    padding: 0 20px;
+  }
+  
+  .fit-option {
+    min-width: 160px;
+    height: 90px;
+  }
 }
 
 .fit-icon::before {

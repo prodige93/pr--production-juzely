@@ -9,20 +9,20 @@ function Header () {
     navigate("/");
   };
   return (
-    <div className="page-container">
-      <button className="button-header-studio" onClick={handleLogoClick}>
+    <div className="page-container header-container">
+      <button className="button-header-studio logo-button" onClick={handleLogoClick}>
         <img
-          src={logolab} // Corrigé ici
+          src={logolab}
           alt="Icon le studio juzely"
-          style={{ width: "145px", marginRight: "8px" }}
+          className="header-logo"
         />
       </button>
       <button className="button-header-studio-upgrade">upgrade plan</button>
-      <button className="button-header-studio">
+      <button className="button-header-studio user-button">
         <img 
           src={iconutilisateur}
           alt="icon utilisateur de couleur bleu"
-          style={{ width: "60px", marginLeft: "8px" }}
+          className="header-user-icon"
         />
       </button>
     </div>
