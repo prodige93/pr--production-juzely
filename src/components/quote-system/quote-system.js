@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import quoteService from '../../services/quote-service';
 import './quote-system.css';
+
+// Lazy loading pour les composants PDF
+const LazyPDFDownloadButton = lazy(() => import('./LazyPDFDownloadButton'));
 
 /**
  * Composant système de devis
@@ -69,96 +72,7 @@ function QuoteSystem({
     }
   };
 
-  /**
-   * Génère un devis PDF (simulation)
-   */
-  const generatePDF = () => {
-    if (!quote) return;
-    
-    // Fonction pour générer le contenu des tailles
-    const generateSizeContent = () => {
-      if (!quote.sizeInfo) return '';
-      
-      const { selectedFit, isCustomSize, sizeData } = quote.sizeInfo;
-      
-      if (selectedFit === 'custom' || isCustomSize) {
-        // Pour les tailles personnalisées, afficher le tableau détaillé
-        let sizeTable = '\nTAILLES PERSONNALISÉES:\n';
-        sizeTable += '-'.repeat(50) + '\n';
-        
-        if (sizeData && Object.keys(sizeData).length > 0) {
-          // En-têtes
-          const sizes = Object.keys(sizeData);
-          const measurements = Object.keys(sizeData[sizes[0]] || {});
-          
-          sizeTable += 'Mesures'.padEnd(20);
-          sizes.forEach(size => {
-            sizeTable += size.padEnd(8);
-          });
-          sizeTable += '\n' + '-'.repeat(50) + '\n';
-          
-          // Données
-          measurements.forEach(measurement => {
-            sizeTable += measurement.padEnd(20);
-            sizes.forEach(size => {
-              const value = sizeData[size][measurement] || '0';
-              sizeTable += (value + 'cm').padEnd(8);
-            });
-            sizeTable += '\n';
-          });
-        }
-        
-        return sizeTable;
-      } else {
-        // Pour les tailles prédéfinies, afficher seulement le nom
-        const fitNames = {
-          'oversized': 'Oversized',
-          'regular': 'Regular',
-          'slim': 'Slim',
-          'cropped': 'Cropped'
-        };
-        return `\nTAILLE: ${fitNames[selectedFit] || selectedFit.toUpperCase()}\n`;
-      }
-    };
-    
-    // Simulation de génération PDF
-    const pdfContent = `
-DEVIS JUZELY - ${quote.quoteId}
-${'='.repeat(50)}
 
-Type de vêtement: ${quote.garmentType.toUpperCase()}
-Date: ${new Date(quote.createdAt).toLocaleDateString('fr-FR')}
-${generateSizeContent()}
-DÉTAILS:
-- Tissu: ${quote.breakdown.fabric.name} (+${quote.breakdown.fabric.cost}€)
-- Coloris: ${quote.breakdown.colourway.name} (+${quote.breakdown.colourway.cost}€)
-- Embellissement: ${quote.breakdown.embellishment.name} (+${quote.breakdown.embellishment.cost}€)
-- Finitions: ${quote.breakdown.finishings.name} (+${quote.breakdown.finishings.cost}€)
-- Emballage: ${quote.breakdown.packaging.name} (+${quote.breakdown.packaging.cost}€)
-- Livraison: ${quote.breakdown.delivery.name} (${quote.breakdown.delivery.cost}€)
-
-TARIFICATION:
-- Prix unitaire: ${quote.pricing.unitPrice}€
-- Quantité: ${quote.pricing.quantity}
-- Sous-total: ${quote.pricing.subtotal}€
-- Remise quantité: -${quote.pricing.quantityDiscount.amount}€ (${(quote.pricing.quantityDiscount.percentage * 100).toFixed(1)}%)
-- Livraison: ${quote.pricing.deliveryCost}€
-- TVA (20%): ${quote.pricing.taxAmount}€
-
-TOTAL: ${quote.pricing.totalPrice}€
-    `;
-    
-    // Créer un blob et télécharger
-    const blob = new Blob([pdfContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `devis_${quote.quoteId}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
 
   // Calcul automatique quand les sélections changent
   useEffect(() => {
@@ -397,12 +311,13 @@ TOTAL: ${quote.pricing.totalPrice}€
           {savedQuoteId ? '✅ Sauvegardé' : '💾 Sauvegarder'}
         </button>
         
-        <button 
-          onClick={generatePDF} 
-          className="pdf-btn"
-        >
-          📄 Télécharger
-        </button>
+        <Suspense fallback={<button className="pdf-btn" disabled>⏳ Chargement...</button>}>
+           <LazyPDFDownloadButton 
+             quote={quote} 
+             selections={selections} 
+             className="pdf-btn"
+           />
+         </Suspense>
         
         <button 
           onClick={calculateQuote} 

@@ -297,13 +297,43 @@
 }
 
 .pdf-btn {
-  background: linear-gradient(135deg, #2196F3, #1976D2);
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
 .pdf-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.pdf-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Styles spécifiques pour PDFDownloadLink */
+a.pdf-btn {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+a.pdf-btn:visited {
+  color: white !important;
 }
 
 .recalculate-btn {
