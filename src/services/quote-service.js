@@ -27,7 +27,9 @@ class QuoteService {
         delivery,
         quantity = 1,
         isCustomSize = false,
-        isRushOrder = false
+        isRushOrder = false,
+        selectedFit,
+        editableSizeData
       } = selections;
 
       // Prix de base du vêtement
@@ -125,6 +127,11 @@ class QuoteService {
         surcharges: {
           customSize: isCustomSize ? this.pricingConfig.customSizeUpcharge.percentage : 0,
           rushOrder: isRushOrder ? this.pricingConfig.rushOrderUpcharge.percentage : 0
+        },
+        sizeInfo: {
+          selectedFit: selectedFit || 'custom',
+          isCustomSize: isCustomSize,
+          sizeData: editableSizeData || {}
         },
         createdAt: new Date().toISOString(),
         currency: 'EUR'

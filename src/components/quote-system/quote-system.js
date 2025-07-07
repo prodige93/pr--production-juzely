@@ -75,6 +75,52 @@ function QuoteSystem({
   const generatePDF = () => {
     if (!quote) return;
     
+    // Fonction pour générer le contenu des tailles
+    const generateSizeContent = () => {
+      if (!quote.sizeInfo) return '';
+      
+      const { selectedFit, isCustomSize, sizeData } = quote.sizeInfo;
+      
+      if (selectedFit === 'custom' || isCustomSize) {
+        // Pour les tailles personnalisées, afficher le tableau détaillé
+        let sizeTable = '\nTAILLES PERSONNALISÉES:\n';
+        sizeTable += '-'.repeat(50) + '\n';
+        
+        if (sizeData && Object.keys(sizeData).length > 0) {
+          // En-têtes
+          const sizes = Object.keys(sizeData);
+          const measurements = Object.keys(sizeData[sizes[0]] || {});
+          
+          sizeTable += 'Mesures'.padEnd(20);
+          sizes.forEach(size => {
+            sizeTable += size.padEnd(8);
+          });
+          sizeTable += '\n' + '-'.repeat(50) + '\n';
+          
+          // Données
+          measurements.forEach(measurement => {
+            sizeTable += measurement.padEnd(20);
+            sizes.forEach(size => {
+              const value = sizeData[size][measurement] || '0';
+              sizeTable += (value + 'cm').padEnd(8);
+            });
+            sizeTable += '\n';
+          });
+        }
+        
+        return sizeTable;
+      } else {
+        // Pour les tailles prédéfinies, afficher seulement le nom
+        const fitNames = {
+          'oversized': 'Oversized',
+          'regular': 'Regular',
+          'slim': 'Slim',
+          'cropped': 'Cropped'
+        };
+        return `\nTAILLE: ${fitNames[selectedFit] || selectedFit.toUpperCase()}\n`;
+      }
+    };
+    
     // Simulation de génération PDF
     const pdfContent = `
 DEVIS JUZELY - ${quote.quoteId}
@@ -82,7 +128,7 @@ ${'='.repeat(50)}
 
 Type de vêtement: ${quote.garmentType.toUpperCase()}
 Date: ${new Date(quote.createdAt).toLocaleDateString('fr-FR')}
-
+${generateSizeContent()}
 DÉTAILS:
 - Tissu: ${quote.breakdown.fabric.name} (+${quote.breakdown.fabric.cost}€)
 - Coloris: ${quote.breakdown.colourway.name} (+${quote.breakdown.colourway.cost}€)
@@ -194,6 +240,55 @@ TOTAL: ${quote.pricing.totalPrice}€
 
       {showBreakdown && (
         <div className="quote-breakdown">
+          {/* Section des informations de taille */}
+          {quote.sizeInfo && (
+            <div className="breakdown-section">
+              <h4>📏 Informations de taille</h4>
+              <div className="size-info-content">
+                {quote.sizeInfo.selectedFit === 'custom' || quote.sizeInfo.isCustomSize ? (
+                  <div className="custom-size-details">
+                    <p><strong>Type:</strong> Tailles personnalisées</p>
+                    {quote.sizeInfo.sizeData && Object.keys(quote.sizeInfo.sizeData).length > 0 && (
+                      <div className="size-table-preview">
+                        <table className="size-preview-table">
+                          <thead>
+                            <tr>
+                              <th>Mesures</th>
+                              {Object.keys(quote.sizeInfo.sizeData).map(size => (
+                                <th key={size}>{size}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Object.keys(quote.sizeInfo.sizeData[Object.keys(quote.sizeInfo.sizeData)[0]] || {}).map(measurement => (
+                              <tr key={measurement}>
+                                <td>{measurement}</td>
+                                {Object.keys(quote.sizeInfo.sizeData).map(size => (
+                                  <td key={size}>{quote.sizeInfo.sizeData[size][measurement] || '0'} cm</td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="predefined-size-details">
+                    <p><strong>Taille prédéfinie:</strong> {
+                      {
+                        'oversized': 'Oversized',
+                        'regular': 'Regular', 
+                        'slim': 'Slim',
+                        'cropped': 'Cropped'
+                      }[quote.sizeInfo.selectedFit] || quote.sizeInfo.selectedFit.toUpperCase()
+                    }</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+          
           <div className="breakdown-section">
             <h4>Composition du prix</h4>
             <div className="breakdown-items">

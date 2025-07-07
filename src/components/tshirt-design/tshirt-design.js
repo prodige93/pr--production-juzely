@@ -521,7 +521,9 @@ function TshirtDesign() {
       delivery: selectedDelivery,
       quantity: selectedQuantity,
       isCustomSize: selectedFit === 'custom',
-      isRushOrder: false // Peut être ajouté comme option
+      isRushOrder: false, // Peut être ajouté comme option
+      selectedFit: selectedFit,
+      editableSizeData: editableSizeData
     };
 
     return (

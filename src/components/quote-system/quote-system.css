@@ -338,6 +338,66 @@
   padding-top: 16px;
 }
 
+/* Styles pour les informations de taille */
+.size-info-content {
+  margin-top: 0.5rem;
+}
+
+.custom-size-details p,
+.predefined-size-details p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.size-table-preview {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.size-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.size-preview-table th,
+.size-preview-table td {
+  padding: 0.5rem;
+  text-align: center;
+  border: 1px solid #dee2e6;
+}
+
+.size-preview-table th {
+  background: #e9ecef;
+  font-weight: 600;
+  color: #495057;
+}
+
+.size-preview-table td {
+  background: white;
+}
+
+.size-preview-table tr:nth-child(even) td {
+  background: #f8f9fa;
+}
+
+.predefined-size-details {
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 6px;
+  border-left: 4px solid #2196f3;
+}
+
+.custom-size-details {
+  padding: 1rem;
+  background: #fff3e0;
+  border-radius: 6px;
+  border-left: 4px solid #ff9800;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .quote-system {
