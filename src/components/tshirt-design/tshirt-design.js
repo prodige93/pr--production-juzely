@@ -725,13 +725,8 @@ function TshirtDesign() {
 
   // Handle fabric and colourway save and next
   const handleFabricColourwaySaveNext = () => {
-    if (!selectedFabric) {
-      alert("Veuillez sélectionner un tissu avant de continuer.");
-      return;
-    }
-    
-    if (!selectedColourway) {
-      alert("Veuillez sélectionner un coloris avant de continuer.");
+    if (!selectedFabric && !selectedColourway) {
+      alert("Veuillez sélectionner au moins un tissu ou un coloris avant de continuer.");
       return;
     }
     
@@ -739,7 +734,16 @@ function TshirtDesign() {
       manualSaveProgression();
       const currentId = currentProgressionId || selectionId;
       
-      alert(`Tissu et coloris sauvegardés avec succès! ID de sélection: ${currentId}`);
+      let message = "Sélection sauvegardée avec succès!";
+      if (selectedFabric && selectedColourway) {
+        message = "Tissu et coloris sauvegardés avec succès!";
+      } else if (selectedFabric) {
+        message = "Tissu sauvegardé avec succès!";
+      } else if (selectedColourway) {
+        message = "Coloris sauvegardé avec succès!";
+      }
+      
+      alert(`${message} ID de sélection: ${currentId}`);
       setActiveTab('necklabel'); // Rediriger vers l'onglet suivant
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
@@ -817,7 +821,7 @@ function TshirtDesign() {
           <button 
             onClick={handleFabricColourwaySaveNext}
             className="generate-quote-button"
-            disabled={!selectedFabric || !selectedColourway}
+            disabled={!selectedFabric && !selectedColourway}
           >
             Save & Next
           </button>
