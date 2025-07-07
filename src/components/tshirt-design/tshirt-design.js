@@ -582,52 +582,6 @@ function TshirtDesign() {
   const renderFitContent = () => {
     return (
       <>
-
-        <div className="image-upload-section">
-          <h3>Télécharger une image de référence (optionnel)</h3>
-          <div className="upload-area">
-            {!imagePreview ? (
-              <div className="upload-placeholder">
-                <input
-                  type="file"
-                  id="image-upload"
-                  accept=".svg,.png"
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                />
-                <label htmlFor="image-upload" className="upload-button">
-                  Choisir un fichier SVG ou PNG
-                </label>
-                <p className="upload-info">Taille max: 5MB</p>
-              </div>
-            ) : (
-              <div className="image-preview">
-                <img src={imagePreview} alt="Aperçu" className="preview-image" />
-                <div className="image-info">
-                  <p><strong>Nom:</strong> {uploadedImage.name}</p>
-                  <p><strong>Taille:</strong> {(uploadedImage.size / 1024).toFixed(2)} KB</p>
-                  <button onClick={removeImage} className="remove-button">Supprimer</button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="tshirt-preview-section">
-          <h3>Aperçu du T-Shirt</h3>
-          <div className="tshirt-svg-container">
-            <svg width="200" height="240" viewBox="0 0 200 240" className="tshirt-svg">
-              <path d="M50 60 L50 40 Q50 30 60 30 L80 30 Q90 20 110 20 Q130 20 140 30 L160 30 Q170 30 170 40 L170 60 L150 80 L150 220 Q150 230 140 230 L60 230 Q50 230 50 220 L50 80 Z" 
-                    fill="#f8f9fa" 
-                    stroke="#333" 
-                    strokeWidth="2"/>
-              <ellipse cx="40" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
-              <ellipse cx="180" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
-              <ellipse cx="110" cy="35" rx="20" ry="10" fill="white" stroke="#333" strokeWidth="2"/>
-            </svg>
-          </div>
-        </div>
-
         <div className="size-chart-section">
           <div className="size-chart-header">
             <h3>Tableau des tailles T-Shirt (en cm)</h3>
@@ -691,6 +645,51 @@ function TshirtDesign() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div className="image-upload-section">
+          <h3>Télécharger une image de référence (optionnel)</h3>
+          <div className="upload-area">
+            {!imagePreview ? (
+              <div className="upload-placeholder">
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept=".svg,.png"
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
+                />
+                <label htmlFor="image-upload" className="upload-button">
+                  Choisir un fichier SVG ou PNG
+                </label>
+                <p className="upload-info">Taille max: 5MB</p>
+              </div>
+            ) : (
+              <div className="image-preview">
+                <img src={imagePreview} alt="Aperçu" className="preview-image" />
+                <div className="image-info">
+                  <p><strong>Nom:</strong> {uploadedImage.name}</p>
+                  <p><strong>Taille:</strong> {(uploadedImage.size / 1024).toFixed(2)} KB</p>
+                  <button onClick={removeImage} className="remove-button">Supprimer</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="tshirt-preview-section">
+          <h3>Aperçu du T-Shirt</h3>
+          <div className="tshirt-svg-container">
+            <svg width="200" height="240" viewBox="0 0 200 240" className="tshirt-svg">
+              <path d="M50 60 L50 40 Q50 30 60 30 L80 30 Q90 20 110 20 Q130 20 140 30 L160 30 Q170 30 170 40 L170 60 L150 80 L150 220 Q150 230 140 230 L60 230 Q50 230 50 220 L50 80 Z" 
+                    fill="#f8f9fa" 
+                    stroke="#333" 
+                    strokeWidth="2"/>
+              <ellipse cx="40" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
+              <ellipse cx="180" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
+              <ellipse cx="110" cy="35" rx="20" ry="10" fill="white" stroke="#333" strokeWidth="2"/>
+            </svg>
           </div>
         </div>
 
