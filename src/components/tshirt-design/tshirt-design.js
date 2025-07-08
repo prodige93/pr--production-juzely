@@ -754,10 +754,9 @@ function TshirtDesign() {
     
     const colourwayOptions = [
       { id: 'white', label: 'Blanc' },
+      { id: 'off-white', label: 'Blanc cassé' },
       { id: 'black', label: 'Noir' },
-      { id: 'navy', label: 'Bleu Marine' },
-      { id: 'grey', label: 'Gris' },
-      { id: 'red', label: 'Rouge' }
+      { id: 'custom', label: 'Custom' }
     ];
     
     return (
