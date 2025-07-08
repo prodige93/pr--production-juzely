@@ -746,10 +746,10 @@ function TshirtDesign() {
   // Contenu de l'onglet Fabric & Colourway fusionné
   const renderFabricColourwayContent = () => {
     const fabricOptions = [
-      { id: 'coton-200', label: '200gsm, 100%, Coton' },
-      { id: 'coton-240', label: '240gsm, 100%, Coton' },
-      { id: 'coton-270', label: '270gsm, 100%, Coton' },
-      { id: 'coton-340', label: '340gsm, 100%, Coton' }
+      { id: 'coton-230', label: '230 gsm – 100% coton' },
+      { id: 'coton-270', label: '270 gsm – 100% coton' },
+      { id: 'coton-340', label: '340 gsm – 100% coton' },
+      { id: 'custom', label: 'Custom' }
     ];
     
     const colourwayOptions = [
