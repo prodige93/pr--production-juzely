@@ -610,7 +610,8 @@ function TshirtDesign() {
             </div>
           </div>
           <div className="table-container">
-            <table className="size-table">
+            <div className="table-wrapper">
+              <table className="size-table">
               <thead>
                 <tr>
                   <th>Mesures</th>
@@ -644,7 +645,21 @@ function TshirtDesign() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+              </table>
+            </div>
+            
+            <div className="tshirt-image-container">
+              <h4 className="tshirt-image-title">Guide des mesures</h4>
+              <div className="tshirt-image-placeholder">
+                 <img 
+                   src="/tshirt-guide.svg" 
+                   alt="Guide des mesures du t-shirt" 
+                   className="tshirt-svg"
+                   width="250" 
+                   height="300"
+                 />
+               </div>
+            </div>
           </div>
         </div>
 
@@ -678,20 +693,7 @@ function TshirtDesign() {
           </div>
         </div>
 
-        <div className="tshirt-preview-section">
-          <h3>Aperçu du T-Shirt</h3>
-          <div className="tshirt-svg-container">
-            <svg width="200" height="240" viewBox="0 0 200 240" className="tshirt-svg">
-              <path d="M50 60 L50 40 Q50 30 60 30 L80 30 Q90 20 110 20 Q130 20 140 30 L160 30 Q170 30 170 40 L170 60 L150 80 L150 220 Q150 230 140 230 L60 230 Q50 230 50 220 L50 80 Z" 
-                    fill="#f8f9fa" 
-                    stroke="#333" 
-                    strokeWidth="2"/>
-              <ellipse cx="40" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
-              <ellipse cx="180" cy="70" rx="15" ry="25" fill="#f8f9fa" stroke="#333" strokeWidth="2"/>
-              <ellipse cx="110" cy="35" rx="20" ry="10" fill="white" stroke="#333" strokeWidth="2"/>
-            </svg>
-          </div>
-        </div>
+
 
         <div className="actions-section">
           <div className="comments-section">
