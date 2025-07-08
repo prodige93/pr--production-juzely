@@ -55,6 +55,7 @@ const predefinedSizeTemplates = {
 function TshirtDesign() {
   const [selectedFit, setSelectedFit] = useState('custom');
   const [selectedFabric, setSelectedFabric] = useState(null);
+  const [customFabric, setCustomFabric] = useState('');
   const [selectedColourway, setSelectedColourway] = useState(null);
   const [selectedNecklabel, setSelectedNecklabel] = useState(null);
   const [selectedCorelabel, setSelectedCorelabel] = useState(null);
@@ -81,7 +82,7 @@ function TshirtDesign() {
   const getCurrentDesignData = useCallback(() => {
     return {
       fit: selectedFit,
-      fabric: selectedFabric,
+      fabric: selectedFabric === 'custom' ? customFabric : selectedFabric,
       colourway: selectedColourway,
       necklabel: selectedNecklabel,
       corelabel: selectedCorelabel,
@@ -95,7 +96,7 @@ function TshirtDesign() {
       measurements: [],
       comments: comments
     };
-  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
 
   // Fonction pour sauvegarder automatiquement la progression
   const autoSaveProgression = useCallback(() => {
@@ -155,7 +156,7 @@ function TshirtDesign() {
   // Marquer les changements comme non sauvegardés quand les données changent
   useEffect(() => {
     setHasUnsavedChanges(true);
-  }, [selectedFit, selectedFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
 
   // Sauvegarde automatique après un délai d'inactivité
   useEffect(() => {
@@ -191,7 +192,14 @@ function TshirtDesign() {
       
       // Restaurer toutes les données du design
       if (designData.fit) setSelectedFit(designData.fit);
-      if (designData.fabric) setSelectedFabric(designData.fabric);
+      if (designData.fabric) {
+        if (designData.fabric !== 'coton-230' && designData.fabric !== 'coton-270' && designData.fabric !== 'coton-340') {
+          setSelectedFabric('custom');
+          setCustomFabric(designData.fabric);
+        } else {
+          setSelectedFabric(designData.fabric);
+        }
+      }
       if (designData.colourway) setSelectedColourway(designData.colourway);
       if (designData.necklabel) setSelectedNecklabel(designData.necklabel);
       if (designData.corelabel) setSelectedCorelabel(designData.corelabel);
@@ -537,7 +545,7 @@ function TshirtDesign() {
               <strong>Fit:</strong> {selectedFit || 'Non sélectionné'}
             </div>
             <div className="summary-item">
-              <strong>Tissu:</strong> {selectedFabric || 'Non sélectionné'}
+              <strong>Tissu:</strong> {selectedFabric === 'custom' ? (customFabric || 'Custom - Non spécifié') : (selectedFabric || 'Non sélectionné')}
             </div>
             <div className="summary-item">
               <strong>Coloris:</strong> {selectedColourway || 'Non sélectionné'}
@@ -782,6 +790,24 @@ function TshirtDesign() {
                 </label>
               ))}
             </div>
+            
+            {/* Champ de saisie pour tissu personnalisé */}
+            {selectedFabric === 'custom' && (
+              <div className="custom-input-section">
+                <label htmlFor="custom-fabric">Spécifiez votre tissu :</label>
+                <input
+                  id="custom-fabric"
+                  type="text"
+                  value={customFabric}
+                  onChange={(e) => {
+                    setCustomFabric(e.target.value);
+                    setIsModified(true);
+                  }}
+                  placeholder="Ex: 280 gsm - 100% coton bio"
+                  className="custom-fabric-input"
+                />
+              </div>
+            )}
           </div>
           
           {/* Section Coloris */}
