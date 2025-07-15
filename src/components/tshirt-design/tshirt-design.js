@@ -58,6 +58,7 @@ function TshirtDesign() {
   const [customFabric, setCustomFabric] = useState('');
   const [selectedColourway, setSelectedColourway] = useState(null);
   const [selectedNecklabel, setSelectedNecklabel] = useState(null);
+  const [selectedWashlabel, setSelectedWashlabel] = useState(null);
   const [selectedCorelabel, setSelectedCorelabel] = useState(null);
   const [selectedEmbellishment, setSelectedEmbellishment] = useState(null);
   const [selectedFinishings, setSelectedFinishings] = useState(null);
@@ -430,6 +431,7 @@ function TshirtDesign() {
         colourway: selectedColourway,
         necklabel: selectedNecklabel,
         corelabel: selectedCorelabel,
+        washlabel: selectedWashlabel,
         embellishment: selectedEmbellishment,
         finishings: selectedFinishings,
         uploadedImage: uploadedImage ? uploadedImage.id : null,
@@ -484,10 +486,8 @@ function TshirtDesign() {
         return renderFitContent();
       case 'fabric-colourway':
         return renderFabricColourwayContent();
-      case 'necklabel':
-        return renderNecklabelContent();
-      case 'corelabel':
-        return renderCorelabelContent();
+      case 'labels':
+        return renderLabelsContent();
       case 'embellishment':
         return renderEmbellishmentContent();
       case 'finishings':
@@ -549,6 +549,12 @@ function TshirtDesign() {
             </div>
             <div className="summary-item">
               <strong>Coloris:</strong> {selectedColourway || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Étiquette de cou:</strong> {selectedNecklabel || 'Non sélectionné'}
+            </div>
+            <div className="summary-item">
+              <strong>Étiquette de lavage:</strong> {selectedWashlabel || 'Non sélectionné'}
             </div>
             <div className="summary-item">
               <strong>Embellissement:</strong> {selectedEmbellishment || 'Non sélectionné'}
@@ -744,7 +750,34 @@ function TshirtDesign() {
       }
       
       alert(`${message} ID de sélection: ${currentId}`);
-      setActiveTab('necklabel'); // Rediriger vers l'onglet suivant
+      setActiveTab('embellishment'); // Rediriger vers l'onglet suivant
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
+      alert('Erreur lors de la sauvegarde. Veuillez réessayer.');
+    }
+  };
+
+  const handleLabelsSaveNext = () => {
+    if (!selectedNecklabel && !selectedWashlabel) {
+      alert("Veuillez sélectionner au moins une étiquette avant de continuer.");
+      return;
+    }
+    
+    try {
+      manualSaveProgression();
+      const currentId = currentProgressionId || selectionId;
+      
+      let message = "Sélection sauvegardée avec succès!";
+      if (selectedNecklabel && selectedWashlabel) {
+        message = "Étiquettes sauvegardées avec succès!";
+      } else if (selectedNecklabel) {
+        message = "Étiquette de cou sauvegardée avec succès!";
+      } else if (selectedWashlabel) {
+        message = "Étiquette de lavage sauvegardée avec succès!";
+      }
+      
+      alert(`${message} ID de sélection: ${currentId}`);
+      setActiveTab('embellishment'); // Rediriger vers l'onglet suivant
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
       alert('Erreur lors de la sauvegarde. Veuillez réessayer.');
@@ -850,63 +883,80 @@ function TshirtDesign() {
     );
   };
 
-  const renderNecklabelContent = () => {
+  const renderLabelsContent = () => {
     const necklabelOptions = [
       { id: 'none', label: 'Aucune étiquette' },
       { id: 'standard', label: 'Étiquette standard' },
       { id: 'custom', label: 'Étiquette personnalisée' }
     ];
     
-    return (
-      <div className="tab-content">
-        <h3>Étiquette de cou</h3>
-        <div className="options-grid">
-          {necklabelOptions.map(option => (
-            <label key={option.id} className={`option-card ${selectedNecklabel === option.id ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="necklabel"
-                value={option.id}
-                checked={selectedNecklabel === option.id}
-                onChange={() => {
-                  setSelectedNecklabel(option.id);
-                  setIsModified(true);
-                }}
-              />
-              <span>{option.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderCorelabelContent = () => {
-    const corelabelOptions = [
+    const washlabelOptions = [
       { id: 'none', label: 'Aucune étiquette' },
       { id: 'standard', label: 'Étiquette standard' },
+      { id: 'eco', label: 'Étiquette écologique' },
       { id: 'custom', label: 'Étiquette personnalisée' }
     ];
     
     return (
       <div className="tab-content">
-        <h3>Étiquette principale</h3>
-        <div className="options-grid">
-          {corelabelOptions.map(option => (
-            <label key={option.id} className={`option-card ${selectedCorelabel === option.id ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="corelabel"
-                value={option.id}
-                checked={selectedCorelabel === option.id}
-                onChange={() => {
-                  setSelectedCorelabel(option.id);
-                  setIsModified(true);
-                }}
-              />
-              <span>{option.label}</span>
-            </label>
-          ))}
+        <div className="fabric-colourway-container">
+          {/* Section Étiquette de cou */}
+          <div className="fabric-section">
+            <h3>Sélectionnez l'étiquette de col</h3>
+            <div className="options-grid">
+              {necklabelOptions.map(option => (
+                <label key={option.id} className={`option-card ${selectedNecklabel === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="necklabel"
+                    value={option.id}
+                    checked={selectedNecklabel === option.id}
+                    onChange={() => {
+                      setSelectedNecklabel(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          {/* Section Étiquette de lavage */}
+          <div className="colourway-section">
+            <h3>Sélectionnez l'étiquette de lavage</h3>
+            <div className="options-grid">
+              {washlabelOptions.map(option => (
+                <label key={option.id} className={`option-card ${selectedWashlabel === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="washlabel"
+                    value={option.id}
+                    checked={selectedWashlabel === option.id}
+                    onChange={() => {
+                      setSelectedWashlabel(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        {/* Actions */}
+        <div className="actions-section">
+          <button 
+            onClick={handleLabelsSaveNext}
+            className="generate-quote-button"
+            disabled={!selectedNecklabel && !selectedWashlabel}
+          >
+            Save & Next
+          </button>
+          {selectionId && (
+            <p className="selection-info">ID de sélection: {selectionId}</p>
+          )}
         </div>
       </div>
     );
@@ -922,7 +972,7 @@ function TshirtDesign() {
     
     return (
       <div className="tab-content">
-        <h3>Embellissement</h3>
+        <h3>Sélectionnez l'embellissement</h3>
         <div className="options-grid">
           {embellishmentOptions.map(option => (
             <label key={option.id} className={`option-card ${selectedEmbellishment === option.id ? 'selected' : ''}`}>
@@ -953,7 +1003,7 @@ function TshirtDesign() {
     
     return (
       <div className="tab-content">
-        <h3>Finitions</h3>
+        <h3>Sélectionnez les finitions</h3>
         <div className="options-grid">
           {finishingsOptions.map(option => (
             <label key={option.id} className={`option-card ${selectedFinishings === option.id ? 'selected' : ''}`}>
@@ -978,7 +1028,7 @@ function TshirtDesign() {
   const renderQuantityContent = () => {
     return (
       <div className="tab-content">
-        <h3>Quantité</h3>
+        <h3>Sélectionnez la quantité</h3>
         <div className="quantity-input">
           <label htmlFor="quantity">Nombre de pièces :</label>
           <input
@@ -1006,7 +1056,7 @@ function TshirtDesign() {
     
     return (
       <div className="tab-content">
-        <h3>Emballage</h3>
+        <h3>Sélectionnez l'emballage</h3>
         <div className="options-grid">
           {packagingOptions.map(option => (
             <label key={option.id} className={`option-card ${selectedPackaging === option.id ? 'selected' : ''}`}>
@@ -1037,7 +1087,7 @@ function TshirtDesign() {
     
     return (
       <div className="tab-content">
-        <h3>Livraison</h3>
+        <h3>Sélectionnez la livraison</h3>
         <div className="options-grid">
           {deliveryOptions.map(option => (
             <label key={option.id} className={`option-card ${selectedDelivery === option.id ? 'selected' : ''}`}>
@@ -1088,55 +1138,49 @@ function TshirtDesign() {
             className={`tab ${activeTab === 'fit' ? 'active' : ''}`}
             onClick={() => setActiveTab('fit')}
           >
-            Fit - T-Shirt
+Coupe - T-Shirt
           </span>
           <span 
             className={`tab ${activeTab === 'fabric-colourway' ? 'active' : ''}`}
             onClick={() => setActiveTab('fabric-colourway')}
           >
-            Fabric & Colourway
+Tissu & Couleur
           </span>
           <span 
-            className={`tab ${activeTab === 'necklabel' ? 'active' : ''}`}
-            onClick={() => setActiveTab('necklabel')}
+            className={`tab ${activeTab === 'labels' ? 'active' : ''}`}
+            onClick={() => setActiveTab('labels')}
           >
-            Necklabel
-          </span>
-          <span 
-            className={`tab ${activeTab === 'corelabel' ? 'active' : ''}`}
-            onClick={() => setActiveTab('corelabel')}
-          >
-            Corelabel
+            Étiquettes
           </span>
           <span 
             className={`tab ${activeTab === 'embellishment' ? 'active' : ''}`}
             onClick={() => setActiveTab('embellishment')}
           >
-            Embellishment
+Embellissement
           </span>
           <span 
             className={`tab ${activeTab === 'finishings' ? 'active' : ''}`}
             onClick={() => setActiveTab('finishings')}
           >
-            Finishings
+Finitions
           </span>
           <span 
             className={`tab ${activeTab === 'quantity' ? 'active' : ''}`}
             onClick={() => setActiveTab('quantity')}
           >
-            Quantity
+Quantité
           </span>
           <span 
             className={`tab ${activeTab === 'packaging' ? 'active' : ''}`}
             onClick={() => setActiveTab('packaging')}
           >
-            Packaging
+Emballage
           </span>
           <span 
             className={`tab ${activeTab === 'delivery' ? 'active' : ''}`}
             onClick={() => setActiveTab('delivery')}
           >
-            Delivery
+Livraison
           </span>
           <span 
             className={`tab ${activeTab === 'quote' ? 'active' : ''}`}
