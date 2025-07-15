@@ -219,7 +219,7 @@ function SizeChart() {
           <span className="tab">Packaging</span>
           <span className="tab">Delivery</span>
         </div>
-        <button className="upgrade-btn">Upgrade plan</button>
+
       </div>
 
       <div className="size-chart-content">

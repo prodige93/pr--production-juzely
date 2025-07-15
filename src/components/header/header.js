@@ -17,7 +17,7 @@ function Header () {
           className="header-logo"
         />
       </button>
-      <button className="button-header-studio-upgrade">upgrade plan</button>
+
       <button className="button-header-studio user-button">
         <img 
           src={iconutilisateur}
