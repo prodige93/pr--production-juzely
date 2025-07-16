@@ -972,7 +972,7 @@ function TshirtDesign() {
     
     return (
       <div className="tab-content">
-        <h3>Sélectionnez l'embellissement</h3>
+        <h3>Sélectionnez le marquage</h3>
         <div className="options-grid">
           {embellishmentOptions.map(option => (
             <label key={option.id} className={`option-card ${selectedEmbellishment === option.id ? 'selected' : ''}`}>
@@ -1156,7 +1156,7 @@ Tissu & Couleur
             className={`tab ${activeTab === 'embellishment' ? 'active' : ''}`}
             onClick={() => setActiveTab('embellishment')}
           >
-Embellissement
+Marquage
           </span>
           <span 
             className={`tab ${activeTab === 'finishings' ? 'active' : ''}`}
