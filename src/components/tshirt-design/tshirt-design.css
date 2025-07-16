@@ -1487,3 +1487,248 @@
     font-size: 14px;
   }
 }
+
+/* Styles pour l'onglet Marquage */
+.embellishment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.embellishment-type-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.embellishment-type-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.embellishment-type-title {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #667eea;
+  position: relative;
+}
+
+.embellishment-type-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.embellishment-main {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  min-height: 60px;
+}
+
+.embellishment-main:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+}
+
+.embellishment-main.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.embellishment-main input[type="radio"] {
+  margin-right: 16px;
+  transform: scale(1.3);
+  accent-color: #667eea;
+}
+
+.embellishment-main.selected input[type="radio"] {
+  accent-color: white;
+}
+
+.embellishment-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.embellishment-sizes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.size-option {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  position: relative;
+  min-height: 80px;
+  justify-content: center;
+}
+
+.size-option:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+}
+
+.size-option.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.size-option input[type="radio"] {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  transform: scale(1.2);
+  accent-color: #667eea;
+}
+
+.size-option.selected input[type="radio"] {
+  accent-color: white;
+}
+
+.size-label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+
+.size-description {
+  font-size: 14px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.special-option {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  border-radius: 12px;
+  border: 2px solid #bbdefb;
+  transition: all 0.3s ease;
+}
+
+.special-option:hover {
+  border-color: #667eea;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.checkbox-option input[type="checkbox"] {
+  margin-right: 12px;
+  transform: scale(1.2);
+  accent-color: #667eea;
+}
+
+.checkbox-option span {
+  letter-spacing: 0.3px;
+}
+
+/* Responsive pour l'onglet Marquage */
+@media (max-width: 768px) {
+  .embellishment-container {
+    gap: 20px;
+  }
+  
+  .embellishment-type-section {
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .embellishment-type-title {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .embellishment-sizes {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .size-option {
+    padding: 16px 18px;
+    min-height: 70px;
+  }
+  
+  .embellishment-main {
+    padding: 16px 20px;
+    min-height: 50px;
+  }
+  
+  .size-label {
+    font-size: 15px;
+  }
+  
+  .size-description {
+    font-size: 13px;
+  }
+  
+  .special-option {
+    padding: 14px 18px;
+  }
+  
+  .checkbox-option {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .embellishment-type-section {
+    padding: 16px;
+  }
+  
+  .embellishment-type-title {
+    font-size: 15px;
+  }
+  
+  .size-option {
+    padding: 14px 16px;
+  }
+  
+  .embellishment-main {
+    padding: 14px 16px;
+  }
+}

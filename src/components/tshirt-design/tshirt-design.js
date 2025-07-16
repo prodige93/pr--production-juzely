@@ -963,32 +963,98 @@ function TshirtDesign() {
   };
 
   const renderEmbellishmentContent = () => {
-    const embellishmentOptions = [
-      { id: 'none', label: 'Aucun' },
-      { id: 'embroidery', label: 'Broderie' },
-      { id: 'print', label: 'Impression' },
-      { id: 'patch', label: 'Patch' }
+    const renderEmbellishmentSection = (type, title, sizes, hasSpecialOption = false, specialOptionLabel = '') => {
+      if (type === 'none') {
+        return (
+          <div className="embellishment-type-section">
+            <label className={`option-card embellishment-main ${selectedEmbellishment === 'none' ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="embellishment"
+                value="none"
+                checked={selectedEmbellishment === 'none'}
+                onChange={() => {
+                  setSelectedEmbellishment('none');
+                  setIsModified(true);
+                }}
+              />
+              <span className="embellishment-title">{title}</span>
+            </label>
+          </div>
+        );
+      }
+
+      return (
+        <div className="embellishment-type-section">
+          <h4 className="embellishment-type-title">{title}</h4>
+          
+          {/* Tailles */}
+          <div className="embellishment-sizes">
+            {sizes.map(size => (
+              <label key={`${type}-${size.id}`} className={`option-card size-option ${selectedEmbellishment === `${type}-${size.id}` ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="embellishment"
+                  value={`${type}-${size.id}`}
+                  checked={selectedEmbellishment === `${type}-${size.id}`}
+                  onChange={() => {
+                    setSelectedEmbellishment(`${type}-${size.id}`);
+                    setIsModified(true);
+                  }}
+                />
+                <span className="size-label">{size.label}</span>
+                <span className="size-description">{size.description}</span>
+              </label>
+            ))}
+          </div>
+
+          {/* Option spéciale */}
+          {hasSpecialOption && (
+            <div className="special-option">
+              <label className="checkbox-option">
+                <input
+                  type="checkbox"
+                  checked={selectedEmbellishment && selectedEmbellishment.includes(`${type}-special`)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedEmbellishment(prev => (prev || '') + `-special`);
+                    } else {
+                      setSelectedEmbellishment(prev => (prev || '').replace('-special', ''));
+                    }
+                    setIsModified(true);
+                  }}
+                />
+                <span>{specialOptionLabel}</span>
+              </label>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const sizes = [
+      { id: '100cm2', label: '100 cm²', description: '(10x10 cm)' },
+      { id: '400cm2', label: '400 cm²', description: '(20x20 cm)' },
+      { id: 'plus400cm2', label: '>400 cm²', description: '' }
     ];
     
     return (
       <div className="tab-content">
-        <h3>Sélectionnez le marquage</h3>
-        <div className="options-grid">
-          {embellishmentOptions.map(option => (
-            <label key={option.id} className={`option-card ${selectedEmbellishment === option.id ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="embellishment"
-                value={option.id}
-                checked={selectedEmbellishment === option.id}
-                onChange={() => {
-                  setSelectedEmbellishment(option.id);
-                  setIsModified(true);
-                }}
-              />
-              <span>{option.label}</span>
-            </label>
-          ))}
+        <div className="embellishment-container">
+          {/* Aucun */}
+          {renderEmbellishmentSection('none', 'Aucun')}
+          
+          {/* Broderie */}
+          {renderEmbellishmentSection('embroidery', 'Broderie', sizes, true, 'Broderie 3D')}
+          
+          {/* Sérigraphie */}
+          {renderEmbellishmentSection('serigraphie', 'Sérigraphie', sizes, true, 'Puff print')}
+          
+          {/* DTF */}
+          {renderEmbellishmentSection('dtf', 'DTF (transfert/flocage)', sizes)}
+          
+          {/* DTG */}
+          {renderEmbellishmentSection('dtg', 'DTG (impression directe)', sizes)}
         </div>
       </div>
     );
