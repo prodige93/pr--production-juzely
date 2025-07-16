@@ -71,6 +71,9 @@ function TshirtDesign() {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectionId, setSelectionId] = useState(null);
   const [comments, setComments] = useState('');
+  // États pour les options spéciales de marquage
+  const [isBroderie3D, setIsBroderie3D] = useState(false);
+  const [isPuffPrint, setIsPuffPrint] = useState(false);
   // const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState('fit');
   const [currentProgressionId, setCurrentProgressionId] = useState(null);
@@ -88,6 +91,8 @@ function TshirtDesign() {
       necklabel: selectedNecklabel,
       corelabel: selectedCorelabel,
       embellishment: selectedEmbellishment,
+      broderie3D: isBroderie3D,
+      puffPrint: isPuffPrint,
       finishings: selectedFinishings,
       quantity: selectedQuantity,
       packaging: selectedPackaging,
@@ -97,7 +102,7 @@ function TshirtDesign() {
       measurements: [],
       comments: comments
     };
-  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
 
   // Fonction pour sauvegarder automatiquement la progression
   const autoSaveProgression = useCallback(() => {
@@ -157,7 +162,7 @@ function TshirtDesign() {
   // Marquer les changements comme non sauvegardés quand les données changent
   useEffect(() => {
     setHasUnsavedChanges(true);
-  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
 
   // Sauvegarde automatique après un délai d'inactivité
   useEffect(() => {
@@ -205,6 +210,8 @@ function TshirtDesign() {
       if (designData.necklabel) setSelectedNecklabel(designData.necklabel);
       if (designData.corelabel) setSelectedCorelabel(designData.corelabel);
       if (designData.embellishment) setSelectedEmbellishment(designData.embellishment);
+      if (designData.broderie3D) setIsBroderie3D(designData.broderie3D);
+      if (designData.puffPrint) setIsPuffPrint(designData.puffPrint);
       if (designData.finishings) setSelectedFinishings(designData.finishings);
       if (designData.quantity) setSelectedQuantity(designData.quantity);
       if (designData.packaging) setSelectedPackaging(designData.packaging);
@@ -558,6 +565,8 @@ function TshirtDesign() {
             </div>
             <div className="summary-item">
               <strong>Embellissement:</strong> {selectedEmbellishment || 'Non sélectionné'}
+              {isBroderie3D && <span className="special-option-indicator"> + Broderie 3D</span>}
+              {isPuffPrint && <span className="special-option-indicator"> + Puff print</span>}
             </div>
             <div className="summary-item">
               <strong>Finitions:</strong> {selectedFinishings || 'Non sélectionné'}
@@ -1014,12 +1023,15 @@ function TshirtDesign() {
               <label className="checkbox-option">
                 <input
                   type="checkbox"
-                  checked={selectedEmbellishment && selectedEmbellishment.includes(`${type}-special`)}
+                  checked={
+                    (type === 'embroidery' && isBroderie3D) ||
+                    (type === 'serigraphie' && isPuffPrint)
+                  }
                   onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedEmbellishment(prev => (prev || '') + `-special`);
-                    } else {
-                      setSelectedEmbellishment(prev => (prev || '').replace('-special', ''));
+                    if (type === 'embroidery') {
+                      setIsBroderie3D(e.target.checked);
+                    } else if (type === 'serigraphie') {
+                      setIsPuffPrint(e.target.checked);
                     }
                     setIsModified(true);
                   }}

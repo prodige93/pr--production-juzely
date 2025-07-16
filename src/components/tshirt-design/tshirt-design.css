@@ -1405,6 +1405,13 @@
   margin-right: 8px;
 }
 
+.special-option-indicator {
+  color: #667eea;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
 /* Responsive pour le résumé */
 @media (max-width: 768px) {
   .summary-grid {
