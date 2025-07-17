@@ -1538,6 +1538,10 @@
   border-bottom: 2px solid #667eea;
   position: relative;
   text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .embellishment-type-title::after {
@@ -1561,6 +1565,10 @@
   transition: all 0.3s ease;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   min-height: 60px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .embellishment-main:hover {
@@ -1616,6 +1624,10 @@
   text-align: center;
   width: 100%;
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .size-option:hover {
@@ -1664,6 +1676,10 @@
   border-radius: 8px;
   border: 2px solid #bbdefb;
   transition: all 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .special-option:hover {
@@ -1679,6 +1695,10 @@
   font-size: 13px;
   font-weight: 500;
   color: #495057;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .checkbox-option input[type="checkbox"] {
