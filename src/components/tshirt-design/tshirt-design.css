@@ -1499,22 +1499,29 @@
 .embellishment-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
-  max-width: 1600px;
+  gap: 25px;
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 25px 50px;
+  justify-content: center;
+  align-items: start;
+  box-sizing: border-box;
 }
 
 .embellishment-type-section {
   background: white;
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 25px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #e9ecef;
   transition: all 0.3s ease;
   min-height: 300px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .embellishment-type-section:hover {
@@ -1523,20 +1530,22 @@
 }
 
 .embellishment-type-title {
-  margin: 0 0 20px 0;
+  margin: 0 0 15px 0;
   color: #333;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  padding-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 2px solid #667eea;
   position: relative;
+  text-align: center;
 }
 
 .embellishment-type-title::after {
   content: '';
   position: absolute;
   bottom: -2px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 50px;
   height: 2px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1586,23 +1595,27 @@
 
 .embellishment-sizes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .size-option {
   display: flex;
   flex-direction: column;
-  padding: 18px 20px;
+  padding: 15px 10px;
   border: 2px solid #dee2e6;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   position: relative;
-  min-height: 80px;
+  min-height: 70px;
   justify-content: center;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .size-option:hover {
@@ -1632,23 +1645,23 @@
 }
 
 .size-label {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   letter-spacing: 0.3px;
 }
 
 .size-description {
-  font-size: 14px;
+  font-size: 12px;
   opacity: 0.8;
   font-style: italic;
 }
 
 .special-option {
-  margin-top: 16px;
-  padding: 16px 20px;
+  margin-top: 10px;
+  padding: 12px 15px;
   background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-  border-radius: 12px;
+  border-radius: 8px;
   border: 2px solid #bbdefb;
   transition: all 0.3s ease;
 }
@@ -1663,7 +1676,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   color: #495057;
 }
@@ -1682,87 +1695,89 @@
 @media (max-width: 1200px) {
   .embellishment-container {
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding: 15px;
+    gap: 20px;
+    padding: 25px 35px;
   }
   
   .embellishment-type-section {
     min-height: 280px;
-    padding: 18px;
+    padding: 22px;
   }
 }
 
 @media (max-width: 768px) {
   .embellishment-container {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 10px;
+    gap: 18px;
+    padding: 20px 25px;
   }
   
   .embellishment-type-section {
-    padding: 16px;
-    border-radius: 12px;
+    padding: 20px;
+    border-radius: 8px;
     min-height: 260px;
   }
   
   .embellishment-type-title {
-    font-size: 16px;
-    margin-bottom: 16px;
+    font-size: 14px;
+    margin-bottom: 12px;
   }
   
   .embellishment-sizes {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
   
   .size-option {
-    padding: 16px 18px;
-    min-height: 70px;
+    padding: 14px 10px;
+    min-height: 65px;
   }
   
   .embellishment-main {
-    padding: 16px 20px;
+    padding: 15px 18px;
     min-height: 50px;
   }
   
   .size-label {
-    font-size: 15px;
-  }
-  
-  .size-description {
     font-size: 13px;
   }
   
+  .size-description {
+    font-size: 11px;
+  }
+  
   .special-option {
-    padding: 14px 18px;
+    padding: 12px 15px;
   }
   
   .checkbox-option {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
 @media (max-width: 480px) {
   .embellishment-container {
     grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 8px;
+    gap: 15px;
+    padding: 15px 20px;
   }
   
   .embellishment-type-section {
-    padding: 14px;
+    padding: 18px;
     min-height: 240px;
   }
   
   .embellishment-type-title {
-    font-size: 15px;
+    font-size: 13px;
   }
   
   .size-option {
-    padding: 14px 16px;
+    padding: 12px 10px;
+    min-height: 60px;
   }
   
   .embellishment-main {
-    padding: 14px 16px;
+    padding: 12px 15px;
+    min-height: 45px;
   }
 }
