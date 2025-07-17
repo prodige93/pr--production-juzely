@@ -1497,20 +1497,24 @@
 
 /* Styles pour l'onglet Marquage */
 .embellishment-container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  max-width: 1600px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 .embellishment-type-section {
   background: white;
   border-radius: 16px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #e9ecef;
   transition: all 0.3s ease;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .embellishment-type-section:hover {
@@ -1675,14 +1679,30 @@
 }
 
 /* Responsive pour l'onglet Marquage */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .embellishment-container {
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 15px;
   }
   
   .embellishment-type-section {
-    padding: 20px;
+    min-height: 280px;
+    padding: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .embellishment-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .embellishment-type-section {
+    padding: 16px;
     border-radius: 12px;
+    min-height: 260px;
   }
   
   .embellishment-type-title {
@@ -1723,8 +1743,15 @@
 }
 
 @media (max-width: 480px) {
+  .embellishment-container {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 8px;
+  }
+  
   .embellishment-type-section {
-    padding: 16px;
+    padding: 14px;
+    min-height: 240px;
   }
   
   .embellishment-type-title {
