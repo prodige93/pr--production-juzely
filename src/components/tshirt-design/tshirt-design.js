@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import database from '../../utils/database';
 import designProgressionService from '../../services/design-progression-service';
-import QuoteSystem from '../quote-system/quote-system';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import './tshirt-design.css';
 
 // Size data definition outside component to avoid re-creation on each render
@@ -514,80 +515,275 @@ function TshirtDesign() {
     }
   };
 
+  // Fonctions utilitaires pour le système de devis
+  const calculateUnitPrice = (quantity) => {
+    const basePrice = 15; // Prix de base
+    if (quantity >= 100) return basePrice * 0.8; // -20%
+    if (quantity >= 50) return basePrice * 0.85; // -15%
+    if (quantity >= 20) return basePrice * 0.9; // -10%
+    return basePrice;
+  };
+
+  const generateQuoteNumber = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `DEV-${year}${month}${day}-${random}`;
+  };
+
+  const downloadPDF = async () => {
+    try {
+      const currentDate = new Date();
+      const validityDate = new Date(currentDate);
+      validityDate.setMonth(validityDate.getMonth() + 1);
+      
+      const unitPrice = calculateUnitPrice(selectedQuantity);
+      const totalHT = unitPrice * selectedQuantity;
+      const tvaRate = 0;
+      const totalTTC = totalHT;
+
+      // Créer un élément temporaire avec le contenu PDF complet
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = `
+        <div style="
+          background-color: white;
+          padding: 40px;
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          line-height: 1.4;
+          color: #333;
+          width: 800px;
+        ">
+          <!-- En-tête avec logo et informations -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
+            <div style="flex: 1;">
+              <div style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">
+                STUDIO JUZELY
+              </div>
+              <div style="font-size: 14px; color: #666;">
+                juleslefevre@juzely.eu
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">
+                Date du devis : ${currentDate.toLocaleDateString('fr-FR')}
+              </div>
+              <div style="font-size: 14px; color: #666;">
+                N° ${generateQuoteNumber()}
+              </div>
+            </div>
+          </div>
+
+          <!-- Informations client -->
+          <div style="margin-bottom: 30px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+            <div style="font-weight: bold; margin-bottom: 10px;">Informations client :</div>
+            <div>Nom : ___________________________</div>
+            <div>Prénom : ___________________________</div>
+            <div>Adresse : ___________________________</div>
+            <div>Code postal : ___________________________</div>
+            <div>Ville : ___________________________</div>
+            <div>Pays : ___________________________</div>
+          </div>
+
+          <!-- Tableau des samples -->
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+              <tr style="background-color: #2c3e50; color: white;">
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">N° Sample</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Description</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Quantité</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">PU HT</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">TVA %</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Total HT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: 1px solid #ddd; padding: 12px;">001</td>
+                <td style="border: 1px solid #ddd; padding: 12px;">
+                  <div><strong>T-Shirt ${selectedFit}</strong></div>
+                  <div>Tissu: ${selectedFabric === 'custom' ? customFabric : selectedFabric || 'Non spécifié'}</div>
+                  <div>Coloris: ${selectedColourway || 'Non spécifié'}</div>
+                  <div>Embellissement: ${selectedEmbellishment || 'Aucun'}</div>
+                  ${isBroderie3D ? '<div>+ Broderie 3D</div>' : ''}
+                  ${isPuffPrint ? '<div>+ Puff print</div>' : ''}
+                </td>
+                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${selectedQuantity}</td>
+                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${unitPrice.toFixed(2)} €</td>
+                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${tvaRate}%</td>
+                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${totalHT.toFixed(2)} €</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Totaux -->
+          <div style="text-align: right; margin-bottom: 30px;">
+            <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">
+              Total net HT : ${totalHT.toFixed(2)} €
+            </div>
+            <div style="font-size: 18px; font-weight: bold; color: #2c3e50;">
+              Montant total TTC : ${totalTTC.toFixed(2)} €
+            </div>
+          </div>
+
+          <!-- Signature -->
+          <div style="margin-bottom: 30px; text-align: center;">
+            <div style="margin-bottom: 10px;">Lu et approuvé, bon pour accord</div>
+            <div style="margin-bottom: 5px;">Signature du client :</div>
+            <div style="border: 1px solid #ddd; height: 60px; width: 200px; margin: 0 auto;"></div>
+          </div>
+
+          <!-- Conditions -->
+          <div style="font-size: 12px; color: #666;">
+            <div style="margin-bottom: 5px;">
+              <strong>Date de validité :</strong> ${validityDate.toLocaleDateString('fr-FR')}
+            </div>
+            <div style="margin-bottom: 5px;">
+              <strong>Moyen de règlement :</strong> virement bancaire, carte bancaire
+            </div>
+            <div style="margin-bottom: 5px;">
+              <strong>Délai de règlement :</strong> à la commande
+            </div>
+            <div style="margin-bottom: 5px;">
+              <strong>Mode de TVA :</strong> TVA non applicable, art 293 B du CGI
+            </div>
+            <div style="margin-bottom: 5px;">
+              <strong>Banque :</strong> Revolut
+            </div>
+            <div style="margin-bottom: 5px;">
+              <strong>BIC :</strong> REVOFRP2
+            </div>
+            <div>
+              <strong>IBAN :</strong> FR76 2823 3000 0100 1960 4921 651
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Positionner l'élément hors de la vue
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.left = '-9999px';
+      tempDiv.style.top = '-9999px';
+      document.body.appendChild(tempDiv);
+
+      const canvas = await html2canvas(tempDiv, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff'
+      });
+
+      // Supprimer l'élément temporaire
+      document.body.removeChild(tempDiv);
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const quoteNumber = generateQuoteNumber();
+      pdf.save(`devis-juzely-${quoteNumber}.pdf`);
+    } catch (error) {
+      console.error('Erreur lors de la génération du PDF:', error);
+      alert('Erreur lors de la génération du PDF');
+    }
+  };
+
   // Contenu de l'onglet Devis
   const renderQuoteContent = () => {
-    // Préparer les sélections pour le système de devis
-    const selections = {
-      fabric: selectedFabric,
-      colourway: selectedColourway,
-      embellishment: selectedEmbellishment,
-      finishings: selectedFinishings,
-      packaging: selectedPackaging,
-      delivery: selectedDelivery,
-      quantity: selectedQuantity,
-      isCustomSize: selectedFit === 'custom',
-      isRushOrder: false, // Peut être ajouté comme option
-      selectedFit: selectedFit,
-      editableSizeData: editableSizeData
-    };
+    const unitPrice = calculateUnitPrice(selectedQuantity);
+    const totalHT = unitPrice * selectedQuantity;
+    const totalTTC = totalHT;
 
     return (
       <div className="tab-content">
-        <h3>Devis pour votre T-Shirt</h3>
-        <div className="quote-container">
-          <QuoteSystem 
-            garmentType="tshirt"
-            selections={selections}
-            onQuoteCalculated={(quote) => {
-              console.log('Devis calculé:', quote);
+        <div style={{ marginBottom: '30px', textAlign: 'center' }}>
+          <h3>Générer votre devis</h3>
+          <p style={{ color: '#666', marginBottom: '20px' }}>
+            Cliquez sur le bouton ci-dessous pour télécharger votre devis au format PDF
+          </p>
+          <button 
+            onClick={downloadPDF}
+            style={{
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              padding: '15px 30px',
+              borderRadius: '8px',
+              fontSize: '16px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
             }}
-            showDetailedBreakdown={true}
-            autoCalculate={true}
-          />
+          >
+            📄 Télécharger le devis PDF
+          </button>
         </div>
-        
+
         {/* Résumé des sélections */}
-        <div className="selections-summary">
-          <h4>📋 Résumé de vos sélections</h4>
-          <div className="summary-grid">
-            <div className="summary-item">
-              <strong>Fit:</strong> {selectedFit || 'Non sélectionné'}
-            </div>
-            <div className="summary-item">
-              <strong>Tissu:</strong> {selectedFabric === 'custom' ? (customFabric || 'Custom - Non spécifié') : (selectedFabric || 'Non sélectionné')}
-            </div>
-            <div className="summary-item">
-              <strong>Coloris:</strong> {selectedColourway || 'Non sélectionné'}
-            </div>
-            <div className="summary-item">
-              <strong>Étiquette de cou:</strong> {selectedNecklabel || 'Non sélectionné'}
-            </div>
-            <div className="summary-item">
-              <strong>Étiquette de lavage:</strong> {selectedWashlabel || 'Non sélectionné'}
-            </div>
-            <div className="summary-item">
-              <strong>Embellissement:</strong> {selectedEmbellishment || 'Non sélectionné'}
-              {isBroderie3D && <span className="special-option-indicator"> + Broderie 3D</span>}
-              {isPuffPrint && <span className="special-option-indicator"> + Puff print</span>}
-            </div>
-            <div className="summary-item">
-              <strong>Finitions:</strong> {selectedFinishings || 'Non sélectionné'}
-            </div>
-            <div className="summary-item">
-              <strong>Emballage:</strong> {selectedPackaging || 'Non sélectionné'}
-            </div>
-            <div className="summary-item">
-              <strong>Livraison:</strong> {selectedDelivery || 'Non sélectionné'}
-            </div>
-            <div className="summary-item">
-              <strong>Quantité:</strong> {selectedQuantity}
-            </div>
-            {uploadedImage && (
-              <div className="summary-item">
-                <strong>Image:</strong> {uploadedImage.name}
-              </div>
-            )}
+        <div style={{ 
+          backgroundColor: '#f8f9fa', 
+          padding: '20px', 
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}>
+          <h4 style={{ marginBottom: '15px', color: '#2c3e50' }}>📋 Résumé de votre commande</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '14px' }}>
+            <div><strong>Fit:</strong> {selectedFit || 'Non sélectionné'}</div>
+            <div><strong>Tissu:</strong> {selectedFabric === 'custom' ? (customFabric || 'Custom - Non spécifié') : (selectedFabric || 'Non sélectionné')}</div>
+            <div><strong>Coloris:</strong> {selectedColourway || 'Non sélectionné'}</div>
+            <div><strong>Embellissement:</strong> {selectedEmbellishment || 'Non sélectionné'}</div>
+            <div><strong>Quantité:</strong> {selectedQuantity}</div>
+            <div><strong>Prix unitaire:</strong> {unitPrice.toFixed(2)} €</div>
           </div>
+          {(isBroderie3D || isPuffPrint) && (
+            <div style={{ marginTop: '10px', fontSize: '14px' }}>
+              <strong>Options spéciales:</strong>
+              {isBroderie3D && <span style={{ marginLeft: '10px', color: '#007bff' }}>• Broderie 3D</span>}
+              {isPuffPrint && <span style={{ marginLeft: '10px', color: '#007bff' }}>• Puff print</span>}
+            </div>
+          )}
+        </div>
+
+        {/* Total */}
+        <div style={{ 
+          backgroundColor: '#e9ecef', 
+          padding: '15px', 
+          borderRadius: '8px',
+          textAlign: 'right'
+        }}>
+          <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#2c3e50' }}>
+            Total: {totalTTC.toFixed(2)} € TTC
+          </div>
+          <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+            TVA non applicable, art 293 B du CGI
+          </div>
+        </div>
+
+        <div style={{ 
+          marginTop: '20px', 
+          padding: '15px', 
+          backgroundColor: '#d1ecf1', 
+          borderRadius: '8px',
+          fontSize: '14px',
+          color: '#0c5460'
+        }}>
+          <strong>ℹ️ Information:</strong> Le devis détaillé avec l'en-tête Studio Juzely, les informations client et toutes les conditions sera généré dans le PDF téléchargeable.
         </div>
       </div>
     );
