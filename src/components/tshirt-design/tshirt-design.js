@@ -606,7 +606,7 @@ function TshirtDesign() {
                   <div><strong>T-Shirt ${selectedFit}</strong></div>
                   <div>Tissu: ${selectedFabric === 'custom' ? customFabric : selectedFabric || 'Non spécifié'}</div>
                   <div>Coloris: ${selectedColourway || 'Non spécifié'}</div>
-                  <div>Embellissement: ${selectedEmbellishment || 'Aucun'}</div>
+                  <div>Marquage: ${selectedEmbellishment || 'Aucun'}</div>
                   ${isBroderie3D ? '<div>+ Broderie 3D</div>' : ''}
                   ${isPuffPrint ? '<div>+ Puff print</div>' : ''}
                 </td>
@@ -747,7 +747,7 @@ function TshirtDesign() {
             <div><strong>Fit:</strong> {selectedFit || 'Non sélectionné'}</div>
             <div><strong>Tissu:</strong> {selectedFabric === 'custom' ? (customFabric || 'Custom - Non spécifié') : (selectedFabric || 'Non sélectionné')}</div>
             <div><strong>Coloris:</strong> {selectedColourway || 'Non sélectionné'}</div>
-            <div><strong>Embellissement:</strong> {selectedEmbellishment || 'Non sélectionné'}</div>
+            <div><strong>Marquage:</strong> {selectedEmbellishment || 'Non sélectionné'}</div>
             <div><strong>Quantité:</strong> {selectedQuantity}</div>
             <div><strong>Prix unitaire:</strong> {unitPrice.toFixed(2)} €</div>
           </div>
