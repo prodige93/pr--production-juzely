@@ -417,8 +417,8 @@ function TshirtDesign() {
 
     const quoteData = {
       client: {
-        name: 'Client Name', // Remplacer par les vraies données client
-        email: 'client@example.com',
+        name: 'Nom du Client', // Remplacer par les vraies données client
+      email: 'client@exemple.com',
       },
       garment: {
         type: 'tshirt',
