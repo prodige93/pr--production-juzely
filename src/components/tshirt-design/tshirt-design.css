@@ -4,6 +4,89 @@
   font-family: 'Arial', sans-serif;
 }
 
+/* Styles pour l'onglet Extra */
+.extra-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.extra-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.extra-placeholder {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px dashed #dee2e6;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.placeholder-content h4 {
+  color: #495057;
+  font-size: 24px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.placeholder-content p {
+  color: #6c757d;
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.placeholder-features {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.placeholder-features ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.placeholder-features li {
+  color: #495057;
+  font-size: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e9ecef;
+  position: relative;
+  padding-left: 25px;
+}
+
+.placeholder-features li:before {
+  content: "✨";
+  position: absolute;
+  left: 0;
+  top: 8px;
+}
+
+.placeholder-features li:last-child {
+  border-bottom: none;
+}
+
+/* Animation pour l'onglet Extra */
+.extra-container {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .tshirt-design-header {
   background-color: white;
   padding: 20px;

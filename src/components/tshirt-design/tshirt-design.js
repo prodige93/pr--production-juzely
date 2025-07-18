@@ -505,6 +505,8 @@ function TshirtDesign() {
         return renderPackagingContent();
       case 'delivery':
         return renderDeliveryContent();
+      case 'extra':
+        return renderExtraContent();
       case 'quote':
         return renderQuoteContent();
       default:
@@ -1210,6 +1212,34 @@ function TshirtDesign() {
     );
   };
 
+  const renderExtraContent = () => {
+    return (
+      <div className="tab-content">
+        <div className="extra-container">
+          <h3>⭐ Options Extra</h3>
+          <p className="extra-description">
+            Ici vous pouvez ajouter des options supplémentaires pour votre T-Shirt.
+          </p>
+          
+          <div className="extra-placeholder">
+            <div className="placeholder-content">
+              <h4>🚧 Section en construction</h4>
+              <p>Cette section sera bientôt disponible avec des options supplémentaires.</p>
+              <div className="placeholder-features">
+                <ul>
+                  <li>Options de personnalisation avancées</li>
+                  <li>Services premium</li>
+                  <li>Accessoires complémentaires</li>
+                  <li>Options de finition spéciales</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="tshirt-design-container">
       <div className="tshirt-design-header">
@@ -1282,6 +1312,12 @@ Emballage
             onClick={() => setActiveTab('delivery')}
           >
 Livraison
+          </span>
+          <span 
+            className={`tab ${activeTab === 'extra' ? 'active' : ''}`}
+            onClick={() => setActiveTab('extra')}
+          >
+            ⭐ Extra
           </span>
           <span 
             className={`tab ${activeTab === 'quote' ? 'active' : ''}`}
