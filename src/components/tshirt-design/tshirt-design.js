@@ -984,6 +984,9 @@ function TshirtDesign() {
                 checked={selectedEmbellishment === 'none'}
                 onChange={() => {
                   setSelectedEmbellishment('none');
+                  // Désactiver les options spéciales si "Aucun" est sélectionné
+                  setIsBroderie3D(false);
+                  setIsPuffPrint(false);
                   setIsModified(true);
                 }}
               />
@@ -992,6 +995,12 @@ function TshirtDesign() {
           </div>
         );
       }
+
+      // Vérifier si une option de cette section est sélectionnée
+      const isSectionSelected = selectedEmbellishment && selectedEmbellishment.startsWith(type);
+      
+      // Déterminer si l'option spéciale est activée pour cette section
+      const isSpecialOptionEnabled = (type === 'embroidery' && isBroderie3D) || (type === 'serigraphie' && isPuffPrint);
 
       return (
         <div className="embellishment-type-section">
@@ -1007,7 +1016,17 @@ function TshirtDesign() {
                   value={`${type}-${size.id}`}
                   checked={selectedEmbellishment === `${type}-${size.id}`}
                   onChange={() => {
-                    setSelectedEmbellishment(`${type}-${size.id}`);
+                    const newSelection = `${type}-${size.id}`;
+                    setSelectedEmbellishment(newSelection);
+                    
+                    // Désactiver les options spéciales des autres sections
+                    if (type !== 'embroidery') {
+                      setIsBroderie3D(false);
+                    }
+                    if (type !== 'serigraphie') {
+                      setIsPuffPrint(false);
+                    }
+                    
                     setIsModified(true);
                   }}
                 />
@@ -1019,15 +1038,19 @@ function TshirtDesign() {
 
           {/* Option spéciale */}
           {hasSpecialOption && (
-            <div className="special-option">
-              <label className="checkbox-option">
+            <div className={`special-option ${!isSectionSelected ? 'disabled' : ''}`}>
+              <label className={`checkbox-option ${!isSectionSelected ? 'disabled' : ''}`}>
                 <input
                   type="checkbox"
-                  checked={
-                    (type === 'embroidery' && isBroderie3D) ||
-                    (type === 'serigraphie' && isPuffPrint)
-                  }
+                  disabled={!isSectionSelected}
+                  checked={isSpecialOptionEnabled}
                   onChange={(e) => {
+                    if (!isSectionSelected) {
+                      // Afficher un message d'information
+                      alert(`Veuillez d'abord sélectionner une taille dans la section ${title} pour activer ${specialOptionLabel}.`);
+                      return;
+                    }
+                    
                     if (type === 'embroidery') {
                       setIsBroderie3D(e.target.checked);
                     } else if (type === 'serigraphie') {
