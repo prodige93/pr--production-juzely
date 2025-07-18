@@ -66,6 +66,11 @@ function TshirtDesign() {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedPackaging, setSelectedPackaging] = useState(null);
   const [selectedDelivery, setSelectedDelivery] = useState(null);
+  // Variables d'état pour les options Extra
+  const [selectedHangtag, setSelectedHangtag] = useState('aucun');
+  const [selectedPackagingExtra, setSelectedPackagingExtra] = useState('polybag-offert');
+  const [selectedDelavage, setSelectedDelavage] = useState('sans');
+  const [selectedStickers, setSelectedStickers] = useState('sans');
   const [uploadedImage, setUploadedImage] = useState(null);
   const [editableSizeData, setEditableSizeData] = useState({});
   const [isModified, setIsModified] = useState(false);
@@ -98,12 +103,17 @@ function TshirtDesign() {
       quantity: selectedQuantity,
       packaging: selectedPackaging,
       delivery: selectedDelivery,
+      // Options Extra
+      hangtag: selectedHangtag,
+      packagingExtra: selectedPackagingExtra,
+      delavage: selectedDelavage,
+      stickers: selectedStickers,
       sizeData: editableSizeData,
       uploadedImage: uploadedImage,
       measurements: [],
       comments: comments
     };
-  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, selectedHangtag, selectedPackagingExtra, selectedDelavage, selectedStickers, editableSizeData, uploadedImage, comments]);
 
   // Fonction pour sauvegarder automatiquement la progression
   const autoSaveProgression = useCallback(() => {
@@ -163,7 +173,7 @@ function TshirtDesign() {
   // Marquer les changements comme non sauvegardés quand les données changent
   useEffect(() => {
     setHasUnsavedChanges(true);
-  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, selectedHangtag, selectedPackagingExtra, selectedDelavage, selectedStickers, editableSizeData, uploadedImage, comments]);
 
   // Sauvegarde automatique après un délai d'inactivité
   useEffect(() => {
@@ -609,6 +619,10 @@ function TshirtDesign() {
                   <div>Marquage: ${selectedEmbellishment || 'Aucun'}</div>
                   ${isBroderie3D ? '<div>+ Broderie 3D</div>' : ''}
                   ${isPuffPrint ? '<div>+ Puff print</div>' : ''}
+                  ${selectedHangtag !== 'aucun' ? `<div>Hangtag: ${selectedHangtag}</div>` : ''}
+                  ${selectedPackagingExtra !== 'polybag-offert' ? `<div>Packaging: ${selectedPackagingExtra}</div>` : ''}
+                  ${selectedDelavage !== 'sans' ? `<div>Délavage: ${selectedDelavage}</div>` : ''}
+                  ${selectedStickers !== 'sans' ? `<div>Stickers: ${selectedStickers}</div>` : ''}
                 </td>
                 <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${selectedQuantity}</td>
                 <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${unitPrice.toFixed(2)} €</td>
@@ -744,8 +758,8 @@ function TshirtDesign() {
         }}>
           <h4 style={{ marginBottom: '15px', color: '#2c3e50' }}>📋 Résumé de votre commande</h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '14px' }}>
-            <div><strong>Fit:</strong> {selectedFit || 'Non sélectionné'}</div>
-            <div><strong>Tissu:</strong> {selectedFabric === 'custom' ? (customFabric || 'Custom - Non spécifié') : (selectedFabric || 'Non sélectionné')}</div>
+            <div><strong>Coupe:</strong> {selectedFit || 'Non sélectionné'}</div>
+            <div><strong>Tissu:</strong> {selectedFabric === 'custom' ? (customFabric || 'Personnalisé - Non spécifié') : (selectedFabric || 'Non sélectionné')}</div>
             <div><strong>Coloris:</strong> {selectedColourway || 'Non sélectionné'}</div>
             <div><strong>Marquage:</strong> {selectedEmbellishment || 'Non sélectionné'}</div>
             <div><strong>Quantité:</strong> {selectedQuantity}</div>
@@ -756,6 +770,15 @@ function TshirtDesign() {
               <strong>Options spéciales:</strong>
               {isBroderie3D && <span style={{ marginLeft: '10px', color: '#007bff' }}>• Broderie 3D</span>}
               {isPuffPrint && <span style={{ marginLeft: '10px', color: '#007bff' }}>• Puff print</span>}
+            </div>
+          )}
+          {(selectedHangtag !== 'aucun' || selectedPackagingExtra !== 'polybag-offert' || selectedDelavage !== 'sans' || selectedStickers !== 'sans') && (
+            <div style={{ marginTop: '10px', fontSize: '14px' }}>
+              <strong>Options Extra:</strong>
+              {selectedHangtag !== 'aucun' && <div style={{ marginLeft: '10px', color: '#28a745' }}>• Hangtag: {selectedHangtag}</div>}
+              {selectedPackagingExtra !== 'polybag-offert' && <div style={{ marginLeft: '10px', color: '#28a745' }}>• Packaging: {selectedPackagingExtra}</div>}
+              {selectedDelavage !== 'sans' && <div style={{ marginLeft: '10px', color: '#28a745' }}>• Délavage: {selectedDelavage}</div>}
+              {selectedStickers !== 'sans' && <div style={{ marginLeft: '10px', color: '#28a745' }}>• Stickers: {selectedStickers}</div>}
             </div>
           )}
         </div>
@@ -1409,26 +1432,119 @@ function TshirtDesign() {
   };
 
   const renderExtraContent = () => {
+    const hangtagOptions = [
+      { id: 'aucun', label: 'Aucun' },
+      { id: 'standard', label: 'Standard' },
+      { id: 'custom', label: 'Custom' }
+    ];
+
+    const packagingExtraOptions = [
+      { id: 'polybag-offert', label: 'Polybag offert' },
+      { id: 'polybag-custom', label: 'Polybag custom' },
+      { id: 'full-custom', label: 'Full custom' }
+    ];
+
+    const delavageOptions = [
+      { id: 'sans', label: 'Sans' },
+      { id: 'standard', label: 'Standard' },
+      { id: 'custom', label: 'Custom' }
+    ];
+
+    const stickersOptions = [
+      { id: 'sans', label: 'Sans' },
+      { id: 'pack-standard', label: 'Pack standard de 1000 unités custom' }
+    ];
+
     return (
       <div className="tab-content">
         <div className="extra-container">
           <h3>⭐ Options Extra</h3>
-          <p className="extra-description">
-            Ici vous pouvez ajouter des options supplémentaires pour votre T-Shirt.
-          </p>
           
-          <div className="extra-placeholder">
-            <div className="placeholder-content">
-              <h4>🚧 Section en construction</h4>
-              <p>Cette section sera bientôt disponible avec des options supplémentaires.</p>
-              <div className="placeholder-features">
-                <ul>
-                  <li>Options de personnalisation avancées</li>
-                  <li>Services premium</li>
-                  <li>Accessoires complémentaires</li>
-                  <li>Options de finition spéciales</li>
-                </ul>
-              </div>
+          {/* Hangtag */}
+          <div className="extra-section">
+            <h4>🏷️ Hangtag</h4>
+            <div className="options-grid">
+              {hangtagOptions.map(option => (
+                <label key={option.id} className={`option-card ${selectedHangtag === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="hangtag"
+                    value={option.id}
+                    checked={selectedHangtag === option.id}
+                    onChange={() => {
+                      setSelectedHangtag(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Packaging */}
+          <div className="extra-section">
+            <h4>📦 Packaging</h4>
+            <div className="options-grid">
+              {packagingExtraOptions.map(option => (
+                <label key={option.id} className={`option-card ${selectedPackagingExtra === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="packagingExtra"
+                    value={option.id}
+                    checked={selectedPackagingExtra === option.id}
+                    onChange={() => {
+                      setSelectedPackagingExtra(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Délavage */}
+          <div className="extra-section">
+            <h4>🌊 Délavage</h4>
+            <div className="options-grid">
+              {delavageOptions.map(option => (
+                <label key={option.id} className={`option-card ${selectedDelavage === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="delavage"
+                    value={option.id}
+                    checked={selectedDelavage === option.id}
+                    onChange={() => {
+                      setSelectedDelavage(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Stickers */}
+          <div className="extra-section">
+            <h4>🏷️ Stickers</h4>
+            <div className="options-grid">
+              {stickersOptions.map(option => (
+                <label key={option.id} className={`option-card ${selectedStickers === option.id ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="stickers"
+                    value={option.id}
+                    checked={selectedStickers === option.id}
+                    onChange={() => {
+                      setSelectedStickers(option.id);
+                      setIsModified(true);
+                    }}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
             </div>
           </div>
         </div>
