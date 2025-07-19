@@ -1393,9 +1393,9 @@ function TshirtDesign() {
 
   const renderDeliveryContent = () => {
     const deliveryOptions = [
-      { id: 'standard', label: 'Livraison standard (7-10 jours)' },
-      { id: 'express', label: 'Livraison express (3-5 jours)' },
-      { id: 'urgent', label: 'Livraison urgente (1-2 jours)' }
+      { id: 'rapide', label: 'Livraison rapide (3-5 jours)' },
+      { id: 'standard', label: 'Livraison standard (8-10 jours)' },
+      { id: 'economique', label: 'Livraison économique (40-50 jours)' }
     ];
     
     return (
