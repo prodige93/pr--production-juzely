@@ -1024,10 +1024,10 @@ function TshirtDesign() {
     ];
     
     const colourwayOptions = [
-      { id: 'white', label: 'Blanc' },
-      { id: 'off-white', label: 'Blanc cassé' },
-      { id: 'black', label: 'Noir' },
-      { id: 'custom', label: 'Custom' }
+      { id: 'white', label: 'Blanc', color: '#FFFFFF' },
+      { id: 'off-white', label: 'Blanc cassé', color: '#F5F5DC' },
+      { id: 'black', label: 'Noir', color: '#000000' },
+      { id: 'custom', label: 'Custom', color: null }
     ];
     
     return (
@@ -1089,7 +1089,21 @@ function TshirtDesign() {
                       setIsModified(true);
                     }}
                   />
-                  <span>{option.label}</span>
+                  <span className="color-option-content">
+                    <span className="color-label">{option.label}</span>
+                    {option.color && (
+                      <span 
+                        className="color-swatch" 
+                        style={{ 
+                          backgroundColor: option.color,
+                          border: option.id === 'white' ? '1px solid #ddd' : 'none'
+                        }}
+                      ></span>
+                    )}
+                    {option.id === 'custom' && (
+                      <span className="custom-indicator">⚙️</span>
+                    )}
+                  </span>
                 </label>
               ))}
             </div>

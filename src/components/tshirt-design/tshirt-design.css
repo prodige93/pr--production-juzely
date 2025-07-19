@@ -1352,6 +1352,33 @@
   transition: all 0.3s ease;
 }
 
+/* Styles pour les pastilles de couleur */
+.color-option-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.color-label {
+  flex: 1;
+}
+
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.custom-indicator {
+  margin-left: 10px;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
 .fabric-section .option-card.selected span,
 .colourway-section .option-card.selected span {
   font-weight: 700;
