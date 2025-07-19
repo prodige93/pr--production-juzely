@@ -196,9 +196,9 @@
 
 .tab {
   flex-shrink: 0;
-  min-width: 80px;
+  min-width: 120px;
   text-align: center;
-  padding: 10px 15px;
+  padding: 12px 20px;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
@@ -218,18 +218,18 @@
 
 @media (max-width: 900px) {
   .tab {
-    min-width: 70px;
+    min-width: 100px;
     font-size: 12px;
-    padding: 8px 8px;
+    padding: 10px 12px;
     margin: 0 6px;
   }
 }
 
 @media (max-width: 600px) {
   .tab {
-    min-width: 60px;
+    min-width: 80px;
     font-size: 11px;
-    padding: 6px 4px;
+    padding: 8px 8px;
     margin: 0 3px;
   }
 }
@@ -1968,5 +1968,155 @@
   .embellishment-main {
     padding: 12px 15px;
     min-height: 45px;
+  }
+}
+
+/* Styles pour le slider de quantité */
+.quantity-slider-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.quantity-display {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+}
+
+.quantity-value {
+  font-size: 48px;
+  font-weight: bold;
+  color: #007bff;
+  text-shadow: 0 2px 4px rgba(0,123,255,0.2);
+}
+
+.quantity-unit {
+  font-size: 18px;
+  color: #666;
+  font-weight: 500;
+}
+
+.slider-container {
+  margin-bottom: 20px;
+}
+
+.quantity-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #e9ecef;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin-bottom: 15px;
+}
+
+.quantity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.quantity-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,123,255,0.4);
+}
+
+.quantity-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.quantity-slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,123,255,0.4);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.quantity-info {
+  margin-top: 20px;
+}
+
+.quantity-info p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.price-info {
+  color: #28a745 !important;
+  font-weight: 600;
+  font-size: 16px !important;
+  margin-top: 15px !important;
+}
+
+/* Responsive pour le slider */
+@media (max-width: 768px) {
+  .quantity-slider-container {
+    padding: 20px;
+    margin: 0 10px;
+  }
+  
+  .quantity-value {
+    font-size: 36px;
+  }
+  
+  .quantity-unit {
+    font-size: 16px;
+  }
+  
+  .quantity-slider {
+    height: 6px;
+  }
+  
+  .quantity-slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .quantity-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quantity-value {
+    font-size: 28px;
+  }
+  
+  .quantity-unit {
+    font-size: 14px;
+  }
+  
+  .slider-labels {
+    font-size: 10px;
   }
 }

@@ -504,8 +504,6 @@ function TshirtDesign() {
         return renderLabelsContent();
       case 'embellishment':
         return renderEmbellishmentContent();
-      case 'quantity':
-        return renderQuantityContent();
       case 'packaging':
         return renderPackagingContent();
       case 'delivery':
@@ -723,7 +721,7 @@ function TshirtDesign() {
         <div style={{ marginBottom: '30px', textAlign: 'center' }}>
           <h3>Générer votre devis</h3>
           <p style={{ color: '#666', marginBottom: '20px' }}>
-            Cliquez sur le bouton ci-dessous pour télécharger votre devis au format PDF
+            Ajustez la quantité et cliquez sur le bouton ci-dessous pour télécharger votre devis au format PDF
           </p>
           <button 
             onClick={downloadPDF}
@@ -741,6 +739,40 @@ function TshirtDesign() {
           >
             📄 Télécharger le devis PDF
           </button>
+        </div>
+
+        {/* Slider de quantité */}
+        <div className="quantity-slider-container" style={{ marginBottom: '30px' }}>
+          <h4 style={{ marginBottom: '20px', color: '#2c3e50', textAlign: 'center' }}>📊 Ajuster la quantité</h4>
+          <div className="quantity-display">
+            <span className="quantity-value">{selectedQuantity}</span>
+            <span className="quantity-unit">pièces</span>
+          </div>
+          <div className="slider-container">
+            <input
+              type="range"
+              id="quantity-slider-quote"
+              min="1"
+              max="1000"
+              step="1"
+              value={selectedQuantity}
+              onChange={(e) => {
+                setSelectedQuantity(parseInt(e.target.value));
+                setIsModified(true);
+              }}
+              className="quantity-slider"
+            />
+            <div className="slider-labels">
+              <span>1</span>
+              <span>100</span>
+              <span>500</span>
+              <span>1000</span>
+            </div>
+          </div>
+          <div className="quantity-info">
+            <p>Glissez le curseur pour ajuster la quantité</p>
+            <p className="price-info">Prix unitaire estimé : {unitPrice.toFixed(2)} €</p>
+          </div>
         </div>
 
         {/* Résumé des sélections */}
@@ -1326,27 +1358,7 @@ function TshirtDesign() {
 
 
 
-  const renderQuantityContent = () => {
-    return (
-      <div className="tab-content">
-        <h3>Sélectionnez la quantité</h3>
-        <div className="quantity-input">
-          <label htmlFor="quantity">Nombre de pièces :</label>
-          <input
-            type="number"
-            id="quantity"
-            min="1"
-            max="10000"
-            value={selectedQuantity}
-            onChange={(e) => {
-              setSelectedQuantity(parseInt(e.target.value) || 1);
-              setIsModified(true);
-            }}
-          />
-        </div>
-      </div>
-    );
-  };
+
 
   const renderPackagingContent = () => {
     const packagingOptions = [
@@ -1579,12 +1591,6 @@ Tissu & Couleur
             onClick={() => setActiveTab('embellishment')}
           >
 Marquage
-          </span>
-          <span 
-            className={`tab ${activeTab === 'quantity' ? 'active' : ''}`}
-            onClick={() => setActiveTab('quantity')}
-          >
-Quantité
           </span>
           <span 
             className={`tab ${activeTab === 'packaging' ? 'active' : ''}`}
