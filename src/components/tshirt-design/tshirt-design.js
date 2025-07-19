@@ -299,20 +299,23 @@ function TshirtDesign() {
 
   // Initialize editable data with default values and save selection
   useEffect(() => {
-    setEditableSizeData(tshirtSizeData);
-    
-    // Save garment selection to database
-    try {
-      const id = database.saveGarmentSelection('tshirt', {
-        garmentName: 'T-Shirt',
-        category: 'basic',
-        initialSizeData: tshirtSizeData
-      });
-      setSelectionId(id);
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde de la sélection T-shirt:', error);
+    // Ne pas réinitialiser si on vient de restaurer une progression
+    if (!location.state || !location.state.progressionId) {
+      setEditableSizeData(tshirtSizeData);
+      
+      // Save garment selection to database
+      try {
+        const id = database.saveGarmentSelection('tshirt', {
+          garmentName: 'T-Shirt',
+          category: 'basic',
+          initialSizeData: tshirtSizeData
+        });
+        setSelectionId(id);
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde de la sélection T-shirt:', error);
+      }
     }
-  }, []);
+  }, [location.state]);
   
   // Handle image upload
   const handleImageUpload = async (event) => {
