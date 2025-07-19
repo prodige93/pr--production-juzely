@@ -30,11 +30,11 @@ const predefinedSizeTemplates = {
   regular: {
     name: 'Regular',
     data: {
-      'XS': { bodyLenght: 61, chest: 50, bottom: 50, shoulders: 19, armhole: 23, sleeveLenghtOutside: 19, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
-      'S': { bodyLenght: 67, chest: 54, bottom: 54, shoulders: 20, armhole: 23.5, sleeveLenghtOutside: 19.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
-      'M': { bodyLenght: 69, chest: 56, bottom: 56, shoulders: 21, armhole: 24, sleeveLenghtOutside: 20, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
-      'L': { bodyLenght: 71, chest: 58, bottom: 58, shoulders: 22, armhole: 24.5, sleeveLenghtOutside: 20.5, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 },
-      'XL': { bodyLenght: 73, chest: 60, bottom: 60, shoulders: 23, armhole: 25, sleeveLenghtOutside: 21, sleeveArmOpenning: 2.5, sleevelenghtInside: 18.5 }
+      'XS': { bodyLenght: 61, chest: 50, bottom: 50, shoulders: 41, armhole: 23, sleeveLenghtOutside: 21, sleeveArmOpenning: 16, sleevelenghtInside: 12 },
+      'S': { bodyLenght: 63, chest: 52, bottom: 52, shoulders: 43, armhole: 24, sleeveLenghtOutside: 22, sleeveArmOpenning: 17, sleevelenghtInside: 13 },
+      'M': { bodyLenght: 65, chest: 54, bottom: 54, shoulders: 45, armhole: 25, sleeveLenghtOutside: 23, sleeveArmOpenning: 18, sleevelenghtInside: 14 },
+      'L': { bodyLenght: 67, chest: 56, bottom: 56, shoulders: 47, armhole: 26, sleeveLenghtOutside: 24, sleeveArmOpenning: 19, sleevelenghtInside: 15 },
+      'XL': { bodyLenght: 69, chest: 58, bottom: 58, shoulders: 49, armhole: 27, sleeveLenghtOutside: 25, sleeveArmOpenning: 20, sleevelenghtInside: 16 }
     }
   },
   boxy: {
