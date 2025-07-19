@@ -62,7 +62,6 @@ function TshirtDesign() {
   const [selectedWashlabel, setSelectedWashlabel] = useState(null);
   const [selectedCorelabel, setSelectedCorelabel] = useState(null);
   const [selectedEmbellishment, setSelectedEmbellishment] = useState(null);
-  const [selectedFinishings, setSelectedFinishings] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedPackaging, setSelectedPackaging] = useState(null);
   const [selectedDelivery, setSelectedDelivery] = useState(null);
@@ -99,7 +98,6 @@ function TshirtDesign() {
       embellishment: selectedEmbellishment,
       broderie3D: isBroderie3D,
       puffPrint: isPuffPrint,
-      finishings: selectedFinishings,
       quantity: selectedQuantity,
       packaging: selectedPackaging,
       delivery: selectedDelivery,
@@ -113,7 +111,7 @@ function TshirtDesign() {
       measurements: [],
       comments: comments
     };
-  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, selectedHangtag, selectedPackagingExtra, selectedDelavage, selectedStickers, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedQuantity, selectedPackaging, selectedDelivery, selectedHangtag, selectedPackagingExtra, selectedDelavage, selectedStickers, editableSizeData, uploadedImage, comments]);
 
   // Fonction pour sauvegarder automatiquement la progression
   const autoSaveProgression = useCallback(() => {
@@ -173,7 +171,7 @@ function TshirtDesign() {
   // Marquer les changements comme non sauvegardés quand les données changent
   useEffect(() => {
     setHasUnsavedChanges(true);
-  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedFinishings, selectedQuantity, selectedPackaging, selectedDelivery, selectedHangtag, selectedPackagingExtra, selectedDelavage, selectedStickers, editableSizeData, uploadedImage, comments]);
+  }, [selectedFit, selectedFabric, customFabric, selectedColourway, selectedNecklabel, selectedCorelabel, selectedEmbellishment, isBroderie3D, isPuffPrint, selectedQuantity, selectedPackaging, selectedDelivery, selectedHangtag, selectedPackagingExtra, selectedDelavage, selectedStickers, editableSizeData, uploadedImage, comments]);
 
   // Sauvegarde automatique après un délai d'inactivité
   useEffect(() => {
@@ -223,7 +221,6 @@ function TshirtDesign() {
       if (designData.embellishment) setSelectedEmbellishment(designData.embellishment);
       if (designData.broderie3D) setIsBroderie3D(designData.broderie3D);
       if (designData.puffPrint) setIsPuffPrint(designData.puffPrint);
-      if (designData.finishings) setSelectedFinishings(designData.finishings);
       if (designData.quantity) setSelectedQuantity(designData.quantity);
       if (designData.packaging) setSelectedPackaging(designData.packaging);
       if (designData.delivery) setSelectedDelivery(designData.delivery);
@@ -451,7 +448,6 @@ function TshirtDesign() {
         corelabel: selectedCorelabel,
         washlabel: selectedWashlabel,
         embellishment: selectedEmbellishment,
-        finishings: selectedFinishings,
         uploadedImage: uploadedImage ? uploadedImage.id : null,
         comments: comments,
       },
@@ -508,8 +504,6 @@ function TshirtDesign() {
         return renderLabelsContent();
       case 'embellishment':
         return renderEmbellishmentContent();
-      case 'finishings':
-        return renderFinishingsContent();
       case 'quantity':
         return renderQuantityContent();
       case 'packaging':
@@ -1330,36 +1324,7 @@ function TshirtDesign() {
     );
   };
 
-  const renderFinishingsContent = () => {
-    const finishingsOptions = [
-      { id: 'standard', label: 'Finition standard' },
-      { id: 'premium', label: 'Finition premium' },
-      { id: 'vintage', label: 'Finition vintage' }
-    ];
-    
-    return (
-      <div className="tab-content">
-        <h3>Sélectionnez les finitions</h3>
-        <div className="options-grid">
-          {finishingsOptions.map(option => (
-            <label key={option.id} className={`option-card ${selectedFinishings === option.id ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="finishings"
-                value={option.id}
-                checked={selectedFinishings === option.id}
-                onChange={() => {
-                  setSelectedFinishings(option.id);
-                  setIsModified(true);
-                }}
-              />
-              <span>{option.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-    );
-  };
+
 
   const renderQuantityContent = () => {
     return (
@@ -1614,12 +1579,6 @@ Tissu & Couleur
             onClick={() => setActiveTab('embellishment')}
           >
 Marquage
-          </span>
-          <span 
-            className={`tab ${activeTab === 'finishings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('finishings')}
-          >
-Finitions
           </span>
           <span 
             className={`tab ${activeTab === 'quantity' ? 'active' : ''}`}
