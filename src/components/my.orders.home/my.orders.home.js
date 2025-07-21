@@ -23,6 +23,18 @@ function Orders() {
     };
 
     loadProgressions();
+
+    // Ajout : recharger les progressions à chaque fois que la page devient visible
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        setLoading(true);
+        loadProgressions();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   const handleTabClick = (tabIndex) => {

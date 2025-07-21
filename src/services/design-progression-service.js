@@ -91,6 +91,33 @@ class DesignProgressionService {
   }
 
   /**
+   * Met à jour le statut d'une progression (draft, sample, bulk)
+   * @param {string} progressionId - ID de la progression
+   * @param {string} newStatus - Nouveau statut ('draft', 'sample', 'bulk')
+   * @returns {boolean} Succès de la mise à jour
+   */
+  updateProgressionStatus(progressionId, newStatus) {
+    try {
+      const progressions = this.getAllProgressions();
+      const index = progressions.findIndex(p => p.id === progressionId);
+      if (index !== -1) {
+        progressions[index] = {
+          ...progressions[index],
+          status: newStatus,
+          updatedAt: new Date().toISOString(),
+        };
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(progressions));
+        console.log(`Statut de la progression ${progressionId} mis à jour: ${newStatus}`);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du statut de progression:', error);
+      return false;
+    }
+  }
+
+  /**
    * Récupère toutes les progressions
    * @returns {Array} Liste des progressions
    */

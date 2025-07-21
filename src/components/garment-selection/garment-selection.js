@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import database from '../../utils/database';
 import './garment-selection.css';
+import designProgressionService from '../../services/design-progression-service';
 
 function GarmentSelection() {
   const navigate = useNavigate();
@@ -46,6 +47,9 @@ function GarmentSelection() {
       });
       
       console.log(`Sélection ${garmentName} sauvegardée:`, selectionId);
+
+      // Créer une progression draft automatiquement à chaque sélection, même si une existe déjà
+      designProgressionService.saveProgression(garmentType, {}, false); // status draft par défaut
       
       // Navigate to specific garment design page
       if (garmentType === 'tshirt') {

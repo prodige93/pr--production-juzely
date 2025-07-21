@@ -480,6 +480,10 @@ function TshirtDesign() {
       if (quoteId) {
         alert(`Devis généré avec succès ! ID du devis : ${quoteId}`);
         setActiveTab('fabric'); // Rediriger vers l'onglet Fabric
+        // Mettre à jour le statut de la progression si existante
+        if (currentProgressionId) {
+          designProgressionService.updateProgressionStatus(currentProgressionId, 'bulk');
+        }
         // navigate('/my-orders'); // Optionnel: rediriger vers la page des commandes
       } else {
         alert('Erreur lors de la génération du devis. Aucun ID retourné.');
@@ -1600,6 +1604,17 @@ function TshirtDesign() {
   useEffect(() => {
     init('B6T2kYYHHXxJnShTc');
   }, []);
+
+  // Ajout d'un effet pour passer le statut à 'sample' dès la première modification
+  useEffect(() => {
+    if (currentProgressionId && hasUnsavedChanges) {
+      // Récupérer la progression pour vérifier le statut
+      const progression = designProgressionService.getProgressionById(currentProgressionId);
+      if (progression && progression.status === 'draft') {
+        designProgressionService.updateProgressionStatus(currentProgressionId, 'sample');
+      }
+    }
+  }, [hasUnsavedChanges, currentProgressionId]);
 
   return (
     <div className="tshirt-design-container">
