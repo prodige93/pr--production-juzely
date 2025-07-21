@@ -716,27 +716,38 @@ function TshirtDesign() {
   };
 
   const sendQuoteByEmail = async () => {
-    if (!destinataireEmail) {
+    const email = destinataireEmail.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
       alert('Veuillez saisir un email destinataire.');
       return;
     }
+    if (!emailRegex.test(email)) {
+      alert('Veuillez saisir une adresse email valide.');
+      return;
+    }
     try {
+      // Prépare les paramètres attendus par le template EmailJS
       const templateParams = {
-        to_email: destinataireEmail,
+        to_email: email, // doit correspondre exactement au champ du template EmailJS
         to_name: 'Destinataire',
         from_name: 'Studio Juzely',
         from_email: 'eliassrachid@gmail.com',
-        subject: 'Test EmailJS',
-        order_id: '12345',
-        message: 'Ceci est un test.'
+        subject: 'Devis Juzely',
+        order_id: Math.floor(Math.random() * 1000000),
+        message: 'Merci pour votre demande de devis.'
       };
+      // Log pour debug
+      console.log('Envoi EmailJS avec :', templateParams);
+      // Envoi via EmailJS
       const result = await send(
         'service_c6mhnml', // Service ID
         'template_rhcqa2l', // Template ID
-        templateParams
+        templateParams,
+        'B6T2kYYHHXxJnShTc' // Public Key
       );
       console.log('Résultat EmailJS:', result);
-      alert('Résultat EmailJS: ' + JSON.stringify(result));
+      alert('Email envoyé avec succès !');
     } catch (emailError) {
       console.error('Erreur EmailJS:', emailError);
       alert(`⚠️ Erreur EmailJS: ${emailError?.text || emailError?.message || JSON.stringify(emailError)}`);
