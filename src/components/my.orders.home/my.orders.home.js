@@ -198,6 +198,13 @@ function Orders() {
                     <div className="progression-header">
                       <div className="progression-number">{getProgressionNumber(progression.id)}</div>
                       <div className="progression-type">{progression.garmentType.charAt(0).toUpperCase() + progression.garmentType.slice(1)}</div>
+                      <button 
+                        className="delete-btn"
+                        onClick={(e) => handleDeleteProgression(progression.id, e)}
+                        title="Supprimer"
+                      >
+                        ×
+                      </button>
                     </div>
                     <div className="progression-content">
                       <div className="progression-thumbnail">
@@ -231,6 +238,13 @@ function Orders() {
                     <div className="progression-header">
                       <div className="progression-number">{getProgressionNumber(progression.id)}</div>
                       <div className="progression-type">{progression.garmentType.charAt(0).toUpperCase() + progression.garmentType.slice(1)}</div>
+                      <button 
+                        className="delete-btn"
+                        onClick={(e) => handleDeleteProgression(progression.id, e)}
+                        title="Supprimer"
+                      >
+                        ×
+                      </button>
                     </div>
                     <div className="progression-content">
                       <div className="progression-thumbnail">
