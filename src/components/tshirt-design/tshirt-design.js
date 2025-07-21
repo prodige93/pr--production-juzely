@@ -713,6 +713,10 @@ function TshirtDesign() {
 
       const quoteNumber = generateQuoteNumber();
       pdf.save(`devis-juzely-${quoteNumber}.pdf`);
+      // Mettre à jour le statut de la progression si existante
+      if (currentProgressionId) {
+        designProgressionService.updateProgressionStatus(currentProgressionId, 'bulk');
+      }
     } catch (error) {
       console.error('Erreur lors de la génération du PDF:', error);
       alert('Erreur lors de la génération du PDF');
@@ -752,6 +756,10 @@ function TshirtDesign() {
       );
       console.log('Résultat EmailJS:', result);
       alert('Email envoyé avec succès !');
+      // Mettre à jour le statut de la progression si existante
+      if (currentProgressionId) {
+        designProgressionService.updateProgressionStatus(currentProgressionId, 'bulk');
+      }
     } catch (emailError) {
       console.error('Erreur EmailJS:', emailError);
       alert(`⚠️ Erreur EmailJS: ${emailError?.text || emailError?.message || JSON.stringify(emailError)}`);
