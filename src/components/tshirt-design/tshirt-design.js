@@ -767,38 +767,23 @@ function TshirtDesign() {
           <p style={{ color: '#666', marginBottom: '20px' }}>
             Ajustez la quantité et cliquez sur l'un des boutons ci-dessous
           </p>
-          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="email-actions">
             <button 
               onClick={downloadPDF}
-              style={{
-                backgroundColor: '#007bff',
-                color: 'white',
-                border: 'none',
-                padding: '15px 30px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}
+              className="email-action-btn blue-btn"
             >
               📄 Télécharger le devis PDF
             </button>
             <button 
               onClick={sendQuoteByEmail}
-              style={{
-                backgroundColor: '#28a745',
-                color: 'white',
-                border: 'none',
-                padding: '15px 30px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}
+              className="email-action-btn green-btn"
             >
-              📧 Envoyer automatiquement à eliassrachid@gmail.com
+              <span style={{display: 'block', fontWeight: 500}}>📧 Envoyer automatiquement à</span>
+              {destinataireEmail && (
+                <span style={{display: 'block', fontSize: '15px', color: '#fff', wordBreak: 'break-all'}}>
+                  {destinataireEmail}
+                </span>
+              )}
             </button>
           </div>
           <input
@@ -806,16 +791,7 @@ function TshirtDesign() {
             placeholder="Email du destinataire"
             value={destinataireEmail}
             onChange={e => setDestinataireEmail(e.target.value)}
-            style={{
-              marginTop: '10px',
-              padding: '10px',
-              borderRadius: '6px',
-              border: '1px solid #ccc',
-              width: '100%',
-              maxWidth: '400px',
-              fontSize: '16px',
-              display: 'block'
-            }}
+            className="email-input"
           />
         </div>
 
