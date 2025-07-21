@@ -4,6 +4,7 @@ import database from '../../utils/database';
 import designProgressionService from '../../services/design-progression-service';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { init, send } from '@emailjs/browser';
 import './tshirt-design.css';
 
 // Size data definition outside component to avoid re-creation on each render
@@ -86,6 +87,7 @@ function TshirtDesign() {
   const [lastAutoSave, setLastAutoSave] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [destinataireEmail, setDestinataireEmail] = useState('');
 
   // Fonction pour créer les données de design actuelles
   const getCurrentDesignData = useCallback(() => {
@@ -713,6 +715,34 @@ function TshirtDesign() {
     }
   };
 
+  const sendQuoteByEmail = async () => {
+    if (!destinataireEmail) {
+      alert('Veuillez saisir un email destinataire.');
+      return;
+    }
+    try {
+      const templateParams = {
+        to_email: destinataireEmail,
+        to_name: 'Destinataire',
+        from_name: 'Studio Juzely',
+        from_email: 'eliassrachid@gmail.com',
+        subject: 'Test EmailJS',
+        order_id: '12345',
+        message: 'Ceci est un test.'
+      };
+      const result = await send(
+        'service_c6mhnml', // Service ID
+        'template_rhcqa2l', // Template ID
+        templateParams
+      );
+      console.log('Résultat EmailJS:', result);
+      alert('Résultat EmailJS: ' + JSON.stringify(result));
+    } catch (emailError) {
+      console.error('Erreur EmailJS:', emailError);
+      alert(`⚠️ Erreur EmailJS: ${emailError?.text || emailError?.message || JSON.stringify(emailError)}`);
+    }
+  };
+
   // Contenu de l'onglet Devis
   const renderQuoteContent = () => {
     const unitPrice = calculateUnitPrice(selectedQuantity);
@@ -724,24 +754,58 @@ function TshirtDesign() {
         <div style={{ marginBottom: '30px', textAlign: 'center' }}>
           <h3>Générer votre devis</h3>
           <p style={{ color: '#666', marginBottom: '20px' }}>
-            Ajustez la quantité et cliquez sur le bouton ci-dessous pour télécharger votre devis au format PDF
+            Ajustez la quantité et cliquez sur l'un des boutons ci-dessous
           </p>
-          <button 
-            onClick={downloadPDF}
+          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button 
+              onClick={downloadPDF}
+              style={{
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                padding: '15px 30px',
+                borderRadius: '8px',
+                fontSize: '16px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              📄 Télécharger le devis PDF
+            </button>
+            <button 
+              onClick={sendQuoteByEmail}
+              style={{
+                backgroundColor: '#28a745',
+                color: 'white',
+                border: 'none',
+                padding: '15px 30px',
+                borderRadius: '8px',
+                fontSize: '16px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              📧 Envoyer automatiquement à eliassrachid@gmail.com
+            </button>
+          </div>
+          <input
+            type="email"
+            placeholder="Email du destinataire"
+            value={destinataireEmail}
+            onChange={e => setDestinataireEmail(e.target.value)}
             style={{
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              padding: '15px 30px',
-              borderRadius: '8px',
+              marginTop: '10px',
+              padding: '10px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              width: '100%',
+              maxWidth: '400px',
               fontSize: '16px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              display: 'block'
             }}
-          >
-            📄 Télécharger le devis PDF
-          </button>
+          />
         </div>
 
         {/* Slider de quantité */}
@@ -1545,6 +1609,10 @@ function TshirtDesign() {
       </div>
     );
   };
+
+  useEffect(() => {
+    init('B6T2kYYHHXxJnShTc');
+  }, []);
 
   return (
     <div className="tshirt-design-container">
